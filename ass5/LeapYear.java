@@ -1,27 +1,23 @@
 import java.util.Scanner;
 import java.lang.Math;
 
-/*
-The first number must not be a 0
-The fourth number must not be a 0 or a 1
-The first three numbers must not contain 8s or 9s
-*/
-
-public class Piecewise {
+public class LeapYear {
     public static void main(String[] args) {
       Scanner scanner = new Scanner(System.in);
       
-      double x = askD(scanner,"Input: ");
-
-      double f = x<2?3*x-4:Math.pow(x,2)/2;
-      double fn = 3*x-4;
-      double fd = Math.pow(x,2)/2;
-
-      pl("Your coordinates are ("+x+", "+f+")");
-      if (fn==fd) {
-        pl("The function is continuous at P = "+x);
+      int year = (int)askD(scanner,"Input: ");
+      if (year<1582) {
+        pl("Year must be 1582 or later.");
+      } else if (year%4==0) {
+        if (!(year%100==0)) {
+          pl(year+" is a leap year.");
+        } else if (year%400==0) {
+          pl(year+" is a leap year.");
+        } else {
+          pl(year+" is not a leap year.");
+        }
       } else {
-        pl("The function is discontinuous at P = "+x);
+        pl(year+" is not a leap year.");
       }
 
       scanner.close();

@@ -1,27 +1,22 @@
 import java.util.Scanner;
 import java.lang.Math;
 
-/*
-The first number must not be a 0
-The fourth number must not be a 0 or a 1
-The first three numbers must not contain 8s or 9s
-*/
-
-public class Piecewise {
+public class Insurance {
     public static void main(String[] args) {
       Scanner scanner = new Scanner(System.in);
       
-      double x = askD(scanner,"Input: ");
+      int age = (int) (Math.random()*(99-16+1))+16;
+      int carAccidents = (int) (Math.random()*(10-0+1))+0;
+      int creditRating = (int)(Math.random()*(850-300+1))+300;
 
-      double f = x<2?3*x-4:Math.pow(x,2)/2;
-      double fn = 3*x-4;
-      double fd = Math.pow(x,2)/2;
-
-      pl("Your coordinates are ("+x+", "+f+")");
-      if (fn==fd) {
-        pl("The function is continuous at P = "+x);
-      } else {
-        pl("The function is discontinuous at P = "+x);
+      if (age<25) {
+        pl("This client is a potential risk due to age.");
+      }
+      if (carAccidents>1) {
+        pl("This client is a potential risk due to previous accidents.");
+      }
+      if (creditRating<500) {
+        pl("This client is a potential risk due to credit rating.");
       }
 
       scanner.close();
