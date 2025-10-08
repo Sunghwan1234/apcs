@@ -1,18 +1,21 @@
 import java.util.Scanner;
 import java.lang.Math;
 
-public class LeapYear {
+public class LessSmartTest {
     public static void main(String[] args) {
       Scanner scanner = new Scanner(System.in);
-      
-      int year = (int)askD(scanner,"Input: ");
-      if (year<1582) {
-        pl("Year must be 1582 or later.");
-      } else if (year%4==0 && (!(year%100==0) || year%400==0)) {
-        pl(year+" is a leap year.");
-      } else {
-        pl(year+" is not a leap year.");
+
+      int q1 = askI(scanner,"1+1=");
+      int q2 = askI(scanner,"!(8^(2/3))=");
+      int correct=0;
+      if (q1==2) {
+        correct+=1;
       }
+      if (q2==24) {
+        correct+=2;
+      }
+      String[] grades = {"D","C","B","A"};
+      pl(grades[correct]);
 
       scanner.close();
     }
@@ -30,6 +33,12 @@ public class LeapYear {
     public static String ask(Scanner scanner, String askString) {
       System.out.print(askString);
       String out = scanner.next();
+      System.out.println();
+      return out;
+    }
+    public static int askI(Scanner scanner, String ask) {
+      System.out.print(ask);
+      int out = scanner.nextInt();
       System.out.println();
       return out;
     }
