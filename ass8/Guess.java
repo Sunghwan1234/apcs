@@ -1,48 +1,35 @@
 import java.util.Scanner;
 import java.lang.Math;
 
-public class Main {
+public class Guess {
     public static void main(String[] args) {
       Scanner scanner = new Scanner(System.in);
-      long i = -1;
-      int steps = 0;
-      while (i!=0) {
-        System.out.print("Pick a number >1, 0 will exit : ");
-        while (i<0) {
-          i = scanner.nextLong();
-        }
-        if (i==0) {break;}
-        /*
-         * abcd
-         * a=i%1000
-         * rep l/2
-         * 0000 += d*1000 c*100 b*10 a
-         * dcba
-         * 
-         * oh shet i searched it up and ts is NOT it
-         * whatever
-         */
-        while (i>1 && steps<100) {
-          long b = 0;
-          int l = (int) Math.ceil(Math.log10(i)+0.001);
-          for (int j = 1; j < l+1; j++) {
-            b += (i%Math.pow(10,j)-i%Math.pow(10,j-1))/Math.pow(10,j-1) * Math.pow(10,l-j);
-          }
-          System.out.println(i+"-"+b+"="+Math.abs(i-b));
-          i = Math.abs(i-b);
-          steps++;
-        }
-        if (steps>=100) {
-          System.out.println("Too many steps, stopping.");
-        } else {
-          System.out.println("\nStepped "+steps+" times.");
-        }
-        steps = 0;
-        i=-1;
+      int i = 0;
+      System.out.println("high bound >0");
+      while (i<=0) {
+        i = scanner.nextInt();
       }
-      System.out.println("\nClosing.");
+      System.out.println("low bound <0");
+      int l = 0;
+      while (l>=0) {
+        l = scanner.nextInt();
+      } 
+      int r = (int) (Math.random()*(i-l+1)+l);
+      System.out.println("guess between "+l+" and "+i);
+      i = 0;
+        int g=0;
+      while (!(i==r)) {
+        i = scanner.nextInt();
+        if (i>r) {
+          System.out.println("high");
+        } else if (i<r) {
+          System.out.println("low");
+        }
+        g+=1;
+      }
+      System.out.println("Took you "+g);
+
       scanner.close();
-      return;
     }
     public static double dist(double[] p1,double[] p2) {
       return Math.sqrt(Math.pow(p2[0]-p1[0],2)+Math.pow(p2[1]-p1[1],2));

@@ -1,7 +1,7 @@
 import java.util.Scanner;
 import java.lang.Math;
 
-public class Main {
+public class Conjecture {
     public static void main(String[] args) {
       Scanner scanner = new Scanner(System.in);
       long i = -1;
@@ -12,33 +12,19 @@ public class Main {
           i = scanner.nextLong();
         }
         if (i==0) {break;}
-        /*
-         * abcd
-         * a=i%1000
-         * rep l/2
-         * 0000 += d*1000 c*100 b*10 a
-         * dcba
-         * 
-         * oh shet i searched it up and ts is NOT it
-         * whatever
-         */
-        while (i>1 && steps<100) {
-          long b = 0;
-          int l = (int) Math.ceil(Math.log10(i)+0.001);
-          for (int j = 1; j < l+1; j++) {
-            b += (i%Math.pow(10,j)-i%Math.pow(10,j-1))/Math.pow(10,j-1) * Math.pow(10,l-j);
+        while (i>1) {
+          System.out.print(i+" ");
+          if (i%2==0) {
+            i = i/2;
+          } else {
+            i = 3*i+1;
           }
-          System.out.println(i+"-"+b+"="+Math.abs(i-b));
-          i = Math.abs(i-b);
+          
           steps++;
         }
-        if (steps>=100) {
-          System.out.println("Too many steps, stopping.");
-        } else {
-          System.out.println("\nStepped "+steps+" times.");
-        }
-        steps = 0;
-        i=-1;
+        System.out.print(i+" ");
+        System.out.println("\nStepped "+steps+" times.");
+        i = -1;
       }
       System.out.println("\nClosing.");
       scanner.close();
