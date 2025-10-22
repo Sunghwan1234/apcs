@@ -1,37 +1,20 @@
 import java.util.Scanner; // Sunghwan In
 import java.lang.Math;
 
-public class Main {
+public class MultTable {
     public static void main(String[] args) {
       Scanner scanner = new Scanner(System.in);
-      while (true) {
-        String string = "The numbers that are multiples of ";
-        int min = askI(scanner,"Enter the minimum number (-1 to exit): ");
-        if (min == -1) {
-          break;
+      int min = askI(scanner,"Enter the minimum number: ");
+      int max = askI(scanner,"Enter the maximum number: ");
+      String s = "";
+      for (int i=min;i<=max;i++) {
+        for (int j=min;j<=max;j++) {
+          s += i*j + "\t";
         }
-        int max = askI(scanner,"Enter the maximum number: ");
-        int multiple = askI(scanner,"Enter the multiple: ");
-        boolean findMultiple = askI(scanner,"Find multiples? (1 for yes, 0 for no): ") == 1;
-
-        string += multiple + " from " + min + " to " + max + " are ";
-
-        for (int i = min; i <= max; i++) {
-          if ((i % multiple == 0) == findMultiple) {
-            string += i + " ";
-          }
-        }
-        System.out.println(string);
+        s += "\n";
       }
-      
-
+      System.out.println(s);
       scanner.close();
-    }
-    public static int len(int n) {
-      return (int)(Math.log10(n)) + 1;
-    }
-    public static int digit(int n, int digit) {
-      return (int)(n/Math.pow(10,digit))%10;
     }
     public static double dist(double[] p1,double[] p2) {
       return Math.sqrt(Math.pow(p2[0]-p1[0],2)+Math.pow(p2[1]-p1[1],2));

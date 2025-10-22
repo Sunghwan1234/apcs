@@ -1,29 +1,28 @@
 import java.util.Scanner; // Sunghwan In
 import java.lang.Math;
 
-public class Main {
+public class DigitDisplay {
     public static void main(String[] args) {
       Scanner scanner = new Scanner(System.in);
-      while (true) {
-        String string = "The numbers that are multiples of ";
-        int min = askI(scanner,"Enter the minimum number (-1 to exit): ");
-        if (min == -1) {
-          break;
-        }
-        int max = askI(scanner,"Enter the maximum number: ");
-        int multiple = askI(scanner,"Enter the multiple: ");
-        boolean findMultiple = askI(scanner,"Find multiples? (1 for yes, 0 for no): ") == 1;
+      String string = "";
 
-        string += multiple + " from " + min + " to " + max + " are ";
+      int num = 10;
+      while (num>0) {
+        num = askI(scanner,"Input: ");
 
-        for (int i = min; i <= max; i++) {
-          if ((i % multiple == 0) == findMultiple) {
-            string += i + " ";
+        for (int i = len(num)-1; i >= 0; i--) {
+          for (int t = 0; t < 9; t++) {
+            if (t >= 9-digit(num,i)) {
+              string += digit(num, i);
+            } else {
+              string += " ";
+            }
           }
+          string += "\n";
         }
-        System.out.println(string);
-      }
-      
+
+        System.out.print(string);
+     }
 
       scanner.close();
     }
