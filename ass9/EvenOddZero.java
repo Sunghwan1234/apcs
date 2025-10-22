@@ -1,29 +1,37 @@
 import java.util.Scanner; // Sunghwan In
 import java.lang.Math;
 
-public class Main {
+public class EvenOddZero {
     public static void main(String[] args) {
       Scanner scanner = new Scanner(System.in);
 
-      String poem = scanner.nextLine();
-      int f = poem.length()-1;
-      int lastSpace = poem.length();
-      String rev = "";
-      while (f>=0) {
-        if (poem.charAt(f)==' ' || f==0) {
-          if (f==0) {
-            rev += poem.substring(f,lastSpace)+" ";
-          } else {
-          rev += poem.substring(f+1,lastSpace)+" ";
+      int even=0; int odd=0; int zero=0;
+      
+      int num = scanner.nextInt();
+      for (int i=0;i<Math.floor(Math.log10(num))+1;i++) {
+        int digit = (int) (num/Math.pow(10,i)%10);
+        //System.out.println(digit);
+        if (digit==0) {
+          zero++;
+        } else if (digit%2==0) {
+          even++;
+        } else {
+          odd++;
         }
-          lastSpace = f;
-          f--;
-        }
-        f--;
+      }
+      System.out.print("Odd: "+odd+"\t");
+      for (int i=0;i<odd;i++) {
+        System.out.print("*");
+      }
+      System.out.print("\nEven: "+even+"\t");
+      for (int i=0;i<even;i++) {
+        System.out.print("*");
+      }
+      System.out.print("\nZero: "+zero+"\t");
+      for (int i=0;i<zero;i++) {
+        System.out.print("*");
       }
 
-      
-      System.out.println(rev);
       scanner.close();
     }
     public static double dist(double[] p1,double[] p2) {

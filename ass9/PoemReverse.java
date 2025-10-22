@@ -1,7 +1,7 @@
 import java.util.Scanner; // Sunghwan In
 import java.lang.Math;
 
-public class Main {
+public class PoemReverse {
     public static void main(String[] args) {
       Scanner scanner = new Scanner(System.in);
 

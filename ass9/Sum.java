@@ -1,29 +1,27 @@
 import java.util.Scanner; // Sunghwan In
 import java.lang.Math;
 
-public class Main {
+public class Sum {
     public static void main(String[] args) {
       Scanner scanner = new Scanner(System.in);
-
-      String poem = scanner.nextLine();
-      int f = poem.length()-1;
-      int lastSpace = poem.length();
-      String rev = "";
-      while (f>=0) {
-        if (poem.charAt(f)==' ' || f==0) {
-          if (f==0) {
-            rev += poem.substring(f,lastSpace)+" ";
-          } else {
-          rev += poem.substring(f+1,lastSpace)+" ";
-        }
-          lastSpace = f;
-          f--;
-        }
-        f--;
+      int min=1;
+      System.out.print("Enter a min: ");
+      min = scanner.nextInt();
+      int max = min-1;
+      while (max<min) {
+        System.out.print("Enter a max: ");
+        max = scanner.nextInt();
       }
-
       
-      System.out.println(rev);
+      int s = 0;
+      int i = min;
+      System.out.print("Sum from " + min + " to " + max + " is ");
+      while (i <= max) {
+        System.out.print(i + (i==max?" = ":" + "));
+        s += i;
+        i++;
+      }
+      System.out.println(s);
       scanner.close();
     }
     public static double dist(double[] p1,double[] p2) {
