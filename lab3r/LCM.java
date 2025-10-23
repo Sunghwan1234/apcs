@@ -1,32 +1,21 @@
 import java.util.Scanner; // Sunghwan In
 import java.lang.Math;
 
-public class Main {
+public class LCM {
     public static void main(String[] args) {
       Scanner scanner = new Scanner(System.in);
-      int input=reqI(scanner, "input: ",1);
-
-      int hd=1; int count = 0;
-      for (int i = 1; i*i < input; i++) {
-        if (input%(i*i)==0) {
-          hd=i*i;
-          count++;
-        }
+      int n1=0, n2=0;
+      while (n1<1 && n2<1) {
+        n1 = scanner.nextInt();
+        n2 = scanner.nextInt();
       }
-      System.out.println(input+" is evenly div. by "+count+" sq nums");
-      System.out.println("Largest is "+hd);
-      System.out.println("sqrt("+input+") = "+Math.sqrt(hd)+" * sqrt("+input/hd+")");
-
-
+      int div = 1;
+      while (div%n1!=0 || div%n2!=0) {
+        div++;
+      }
+      System.out.println(div);
 
       scanner.close();
-    }
-    public static int reqI(Scanner scanner, String ask, int low) {
-      int ret = low-1;
-      while (ret<low) {
-        ret = askI(scanner,ask);
-      }
-      return ret;
     }
     public static int len(int n) {
       return (int)(Math.log10(n)) + 1;

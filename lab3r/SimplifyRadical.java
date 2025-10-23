@@ -1,7 +1,7 @@
 import java.util.Scanner; // Sunghwan In
 import java.lang.Math;
 
-public class Main {
+public class SimplifyRadical {
     public static void main(String[] args) {
       Scanner scanner = new Scanner(System.in);
       int input=reqI(scanner, "input: ",1);
