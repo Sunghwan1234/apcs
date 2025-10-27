@@ -4,26 +4,32 @@ import java.lang.Math;
 public class Main {
     public static void main(String[] args) {
       Scanner scanner = new Scanner(System.in);
+      // char[] cipher = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+      // char[] chars = scanner.nextLine().toLowerCase().toCharArray();
+      // int next = scanner.nextInt();
+      // char[] out = new char[chars.length];
+      // for (int i=0;i<chars.length;i++) {
+      //   int ci=0;
+      //   while (chars[i]!=cipher[ci]) {
+      //     ci++;
+      //     if (ci>=cipher.length) {
+      //       out[i]=chars[i];
+      //       break;
+      //     }
+      //   }
+      //   if (ci<cipher.length) {
+      //     out[i] = cipher[(ci+next)%cipher.length];
+      //   }
+      // }
+      // System.out.println(out);
+
       char[] cipher = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-      char[] chars = scanner.nextLine().toLowerCase().toCharArray();
-      int next = scanner.nextInt();
+      char[] chars = "helphelphelphelphelp".toCharArray();
       char[] out = new char[chars.length];
       for (int i=0;i<chars.length;i++) {
-        //System.out.print(" "+chars[i]);
-        int ci=0;
-        while (chars[i]!=cipher[ci]) {
-          //System.out.print(cipher[ci]);
-          ci++;
-          if (ci>=cipher.length) {
-            out[i]=chars[i];
-            break;
-          }
-        }
-        if (ci<cipher.length) {
-          out[i] = cipher[(ci+next)%cipher.length];
-        }
-        
-        
+        int ci;
+        for (ci=0;chars[i]!=cipher[ci];ci++) {}
+        out[i] = cipher[(ci+1)%26];
       }
       System.out.println(out);
 

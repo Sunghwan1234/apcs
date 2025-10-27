@@ -1,3 +1,3 @@
 if not exist bin mkdir bin
-javac -d bin/ -sourcepath note4.1/ note4.1/HundredFlips.java
-java -cp bin/ HundredFlips
+javac -d bin/ -sourcepath per1/ per1/Main.java
+java -cp bin/ Main
