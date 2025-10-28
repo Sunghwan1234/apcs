@@ -23,16 +23,8 @@ public class Main {
       // }
       // System.out.println(out);
 
-      char[] cipher = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-      char[] chars = "helphelphelphelphelp".toCharArray();
-      char[] out = new char[chars.length];
-      for (int i=0;i<chars.length;i++) {
-        int ci;
-        for (ci=0;chars[i]!=cipher[ci];ci++) {}
-        out[i] = cipher[(ci+1)%26];
-      }
-      System.out.println(out);
-
+      String c="abcdefghijklmnopqrstuvwxyz";
+      for(int i=0;i<15;i++){System.out.print(c.toCharArray()[(c.indexOf("ifmqnfifmqnfifm".toCharArray()[i])-1)%26]);}
 
       scanner.close();
     }
