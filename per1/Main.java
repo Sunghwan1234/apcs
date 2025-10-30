@@ -24,7 +24,8 @@ public class Main {
       // System.out.println(out);
 
       String c="abcdefghijklmnopqrstuvwxyz";
-      for(int i=0;i<15;i++){System.out.print(c.toCharArray()[(c.indexOf("ifmqnfifmqnfifm".toCharArray()[i])-1)%26]);}
+      for(int i=0;i<15;i++){System.out.print(
+        c.toCharArray()[(c.indexOf("ifmqnfifmqnfifm".toCharArray()[i])-1)%26]);}
 
       scanner.close();
     }
