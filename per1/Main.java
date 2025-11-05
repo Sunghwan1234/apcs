@@ -3,31 +3,7 @@ import java.lang.Math;
 
 public class Main {
     public static void main(String[] args) {
-      Scanner scanner = new Scanner(System.in);
-      // char[] cipher = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-      // char[] chars = scanner.nextLine().toLowerCase().toCharArray();
-      // int next = scanner.nextInt();
-      // char[] out = new char[chars.length];
-      // for (int i=0;i<chars.length;i++) {
-      //   int ci=0;
-      //   while (chars[i]!=cipher[ci]) {
-      //     ci++;
-      //     if (ci>=cipher.length) {
-      //       out[i]=chars[i];
-      //       break;
-      //     }
-      //   }
-      //   if (ci<cipher.length) {
-      //     out[i] = cipher[(ci+next)%cipher.length];
-      //   }
-      // }
-      // System.out.println(out);
-
-      String c="abcdefghijklmnopqrstuvwxyz";
-      for(int i=0;i<15;i++){System.out.print(
-        c.toCharArray()[(c.indexOf("ifmqnfifmqnfifm".toCharArray()[i])-1)%26]);}
-
-      scanner.close();
+      
     }
     public static int reqI(Scanner scanner, String ask, int low) {
       int ret = low-1;
