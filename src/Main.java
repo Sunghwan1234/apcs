@@ -4,28 +4,14 @@ import java.lang.Math;
 public class Main {
     public static void main(String[] args) {
       Scanner scanner = new Scanner(System.in);
-      char[] cipher = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-      char[] chars = scanner.nextLine().toLowerCase().toCharArray();
-      int next = scanner.nextInt();
-      char[] out = new char[chars.length];
-      for (int i=0;i<chars.length;i++) {
-        //System.out.print(" "+chars[i]);
-        int ci=0;
-        while (chars[i]!=cipher[ci]) {
-          //System.out.print(cipher[ci]);
-          ci++;
-          if (ci>=cipher.length) {
-            out[i]=chars[i];
-            break;
-          }
+      int x=1034;
+      while (x>0) {
+        if (x/10%2==0) {
+          System.out.println(x);
         }
-        if (ci<cipher.length) {
-          out[i] = cipher[(ci+next)%cipher.length];
-        }
-        
-        
+        x=x/10;
       }
-      System.out.println(out);
+      System.out.println(x);
 
 
       scanner.close();
