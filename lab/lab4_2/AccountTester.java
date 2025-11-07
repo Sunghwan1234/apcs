@@ -1,4 +1,4 @@
-package lab4_2;
+package lab.lab4_2;
 /**
  * AccuntTester contains a main method to test an Account object.
  * 

@@ -1,4 +1,4 @@
-package lab4_2p2;
+package lab.lab4_2p2;
 
 /**
  * NumberPairTester contains a main method to test NumberPair objects.

@@ -1,4 +1,4 @@
-package lab4_2p2;
+package lab.lab4_2p2;
 
 /**
  * CompoundWordTester contains a main method to test a CompoundWord object.

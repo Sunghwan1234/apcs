@@ -1,4 +1,4 @@
-package lab4_2p2;
+package lab.lab4_2p2;
 
 public class NumberPair {
   private final double num1, num2;
