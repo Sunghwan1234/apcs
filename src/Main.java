@@ -4,14 +4,7 @@ import java.lang.Math;
 public class Main {
     public static void main(String[] args) {
       Scanner scanner = new Scanner(System.in);
-      int x=1034;
-      while (x>0) {
-        if (x/10%2==0) {
-          System.out.println(x);
-        }
-        x=x/10;
-      }
-      System.out.println(x);
+      
 
 
       scanner.close();
@@ -32,8 +25,8 @@ public class Main {
     public static double dist(double[] p1,double[] p2) {
       return Math.sqrt(Math.pow(p2[0]-p1[0],2)+Math.pow(p2[1]-p1[1],2));
     }
-    public static void pl(String p) {
-      System.out.println(p);
+    public static void p(Object o) {
+      System.out.println(o);
     }
     public static void printOut(String[] out) {
       for (int i = 0; i < out.length; i++) {
@@ -53,7 +46,6 @@ public class Main {
     public static double askD(Scanner scanner, String ask) {
       System.out.print(ask);
       double out = scanner.nextDouble();
-      System.out.println();
       return out;
     }
 }
