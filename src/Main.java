@@ -5,8 +5,8 @@ public class Main {
     public static void main(String[] args) {
       Scanner scanner = new Scanner(System.in);
       
-
-
+      String alpha = new String("APCS"); String beta = new String("APCS"); String delta = alpha; System.out.println(alpha.equals(beta)); System.out.println(alpha == beta); System.out.println(alpha == delta);
+      
       scanner.close();
     }
     public static int reqI(Scanner scanner, String ask, int low) {
