@@ -1,9 +1,10 @@
 import java.util.Scanner; // Sunghwan In
 import java.lang.Math;
 
-public class Main {
+public class Test {
     public static void main(String[] args) {
-      
+      String w = "hello";
+      pl(w.substring(w.length()-1));
     }
     public static int reqI(Scanner scanner, String ask, int low) {
       int ret = low-1;
@@ -21,7 +22,7 @@ public class Main {
     public static double dist(double[] p1,double[] p2) {
       return Math.sqrt(Math.pow(p2[0]-p1[0],2)+Math.pow(p2[1]-p1[1],2));
     }
-    public static void pl(String p) {
+    public static void pl(Object p) {
       System.out.println(p);
     }
     public static void printOut(String[] out) {
