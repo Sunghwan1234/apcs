@@ -7,7 +7,7 @@ package lab5_3;
  * setPriority, getPriority, and compareTo methods, and prints the results.
  */
 public class TaskTester {
-  public static void main (String[] args) {
+  public static void main(String[] args) {
     Task job1 = new Task("Homework", "Completing assignments and studying", 8);
     Task job2 = new Task("Sleep", "A good night's sleep", 9);
     Task job3 = new Task("Eat", "Three meals per day, plus snacks", 10);
