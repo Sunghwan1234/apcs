@@ -1,3 +1,5 @@
+package gamelab5_3;
+
 /**
  * A character can change its name, stamina, strength, current room, and may die.
  */

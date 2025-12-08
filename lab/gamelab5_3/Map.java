@@ -1,3 +1,5 @@
+package gamelab5_3;
+
 import java.util.*;
 
 /**
