@@ -1,4 +1,4 @@
-package lab.sign;
+package AP.sign;
 
 /**
  * SignTester contains a main method to test Sign objects.

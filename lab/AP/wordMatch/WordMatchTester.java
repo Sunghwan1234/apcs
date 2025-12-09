@@ -1,4 +1,4 @@
-package wordMatch;
+package AP.wordMatch;
 
 /**
  * WordMatchTester contains a main method to test WordMatch objects.

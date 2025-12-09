@@ -1,4 +1,4 @@
-package labSb;
+package AP.Scoreboard;
 
 /**
  * ScoreboardTester contains a main method to test Scoreboard objects.

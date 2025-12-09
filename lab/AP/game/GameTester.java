@@ -1,4 +1,4 @@
-package lab.game;
+package AP.game;
 
 /**
  * GameTester contains a main method to test the Game class.

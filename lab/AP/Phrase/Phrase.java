@@ -1,4 +1,4 @@
-package Phrase;
+package AP.Phrase;
 
 /**
  * A phrase can be searched to find an occurrence of a given string within.

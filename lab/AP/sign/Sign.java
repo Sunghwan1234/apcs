@@ -1,4 +1,4 @@
-package lab.sign;
+package AP.sign;
 
 public class Sign {
   private String msg;

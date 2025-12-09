@@ -1,4 +1,4 @@
-package labSb;
+package AP.Scoreboard;
 
 public class Scoreboard {
   private String team1, team2;

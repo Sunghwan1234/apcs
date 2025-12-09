@@ -1,4 +1,4 @@
-package lab.game;
+package AP.game;
 
 /**
  * A level earns points for the player if it is completed.

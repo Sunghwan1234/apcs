@@ -1,4 +1,4 @@
-package lab.dogwalker;
+package AP.dogwalker;
 
 /**
  * DogWalkTester contains a main method to test a DogWalker object.

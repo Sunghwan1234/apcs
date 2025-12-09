@@ -1,4 +1,4 @@
-package lab.dogwalker;
+package AP.dogwalker;
 
 /**
  * A dog walker works for a company and can walk a maximum number of dogs in a

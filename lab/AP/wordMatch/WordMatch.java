@@ -1,4 +1,4 @@
-package wordMatch;
+package AP.wordMatch;
 
 /**
  * A word match contains a secret word that may be guessed.

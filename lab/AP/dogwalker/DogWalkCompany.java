@@ -1,4 +1,4 @@
-package lab.dogwalker;
+package AP.dogwalker;
 
 /**
  * A Dog walk company tracks the number of dogs available to walk in a given
