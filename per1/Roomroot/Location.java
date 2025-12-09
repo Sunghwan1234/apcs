@@ -1,3 +1,5 @@
+package Roomroot;
+
 public class Location {
     public static ArrayList<Location> locations = new ArrayList<>();
 
@@ -22,7 +24,7 @@ public class Location {
         locations.add(this);
         this.discovered = true;
     }
-    public Location(String name, Location passages, Entity[] entities) {
+    public Location(String name, Location[] passages, Entity[] entities) {
         Location(name,passages);
         this.entities = entities;
     }
