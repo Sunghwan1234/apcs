@@ -4,4 +4,5 @@ public interface Entity extends Thing {
     
 
     public boolean isAlive();
+    public String retStatus();
 }

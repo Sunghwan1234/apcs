@@ -15,10 +15,12 @@ public class Roomroot {
 
         player.loc = new Location();
 
+        pSepL("You have arrived at "+player.loc+".");
+
         while (inPlay) {
-            pSep();
-            pl("You have arrived at "+player.loc+".");
-            pSep();
+            pl("You are at "+player.loc+".\n");
+
+            
 
 
             inPlay=false;
@@ -36,6 +38,6 @@ public class Roomroot {
         pl("------------------------------------------");
     }
     public static void pSepL(Object o) {
-        
+        pSep(); pl(o); pSep();
     }
 }
