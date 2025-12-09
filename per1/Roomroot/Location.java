@@ -1,6 +1,8 @@
 package Roomroot;
 
-public class Location {
+import java.util.ArrayList;
+
+public class Location implements Thing {
     public static ArrayList<Location> locations = new ArrayList<>();
 
 
@@ -12,11 +14,13 @@ public class Location {
     public Entity[] entities;
 
     public Location() {
-        String[] sl = {""};
+        String[] sl = {"ale","nuo","bel","cao","bnu","pho","ghi","ard","fri","sni","gho","who","cru","jan","las","vei","kos","qou","zma","xil","yni","fud"};
         this.name = "";
-        for (int i=0;i<Math.random()*5;i++) {
+        int rep = (int) Math.random()*3+2;
+        for (int i=0;i<rep;i++) {
             this.name += sl[(int) (Math.random()*(sl.length-1))];
         }
+        this.name = this.name.substring(0,1).toUpperCase()+this.name.substring(1);
     }
     public Location(String name, Location[] passages) {
         this.name=name; this.passages=passages;
@@ -25,8 +29,22 @@ public class Location {
         this.discovered = true;
     }
     public Location(String name, Location[] passages, Entity[] entities) {
-        Location(name,passages);
+        this.name=name; this.passages=passages;
         this.entities = entities;
+
+        locations.add(this);
+        this.discovered = true;
+    }
+
+    public ArrayList<Action> getActions() {
+        ArrayList<Action> actions = new ArrayList<>();
+        for (int i=0;i<this.entities.length;i++) {
+            if (entities[i].isAlive()) {
+                actions.addAll(entities[i].getActions());
+            }
+        }
+
+        return actions;
     }
 
     public String toString() {
