@@ -1,4 +1,4 @@
-package lab.apline;
+package AP.apline;
 
 public class APLine {
     double a,b,c;
