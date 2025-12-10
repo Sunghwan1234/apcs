@@ -21,15 +21,30 @@ public class Roomroot {
         pSepL("You have arrived at "+player.loc+".");
         pl();
         while (inPlay) {
-            pl("You are at "+player.loc+".\n");
+            pl("You are at "+player.loc+".");
             if (!player.loc.discovered) {
                 pl("You have discovered a new location!");
                 player.loc.discovered=true;
             }
-
+            pl(printDescription(player.loc.getDescription(), "\n", "\t"));
+            pl();
+            pl("Your Status:");
             pl(printStatus(player.getStatus()));
 
-            pl("Your Actions: "+printActions(player.getActions()));
+            pl("Your Actions: "+printActions(player.getActions(),", "));
+            pl();
+            int playerActionNumber=-1;
+            while (playerActionNumber<=0 || playerActionNumber>player.getActions().size()) {
+                p("Choose Action (number): ");
+                try {
+                    playerActionNumber = input.nextInt();
+                } catch (Exception e) {
+                    pSepL("Invalid input. Please enter a number corresponding to an action.");
+                }
+            }
+            Action playerAction = player.getActions().get(playerActionNumber-1);
+            playerAction.Execute(player);
+
 
 
             inPlay=false;
@@ -46,12 +61,21 @@ public class Roomroot {
         return status;
     }
 
-    public static String printActions(ArrayList<Action> actions) {
+    public static String printDescription(ArrayList<String> arr, String sep, String tab) {
+        String list = "";
+        for (int i=0;i<arr.size();i++) {
+            if (i!=0) {list+=sep;}
+            list+=tab+arr.get(i);
+        }
+
+        return list;
+    }
+    public static String printActions(ArrayList<Action> arr, String sep) {
         String list = "";
 
-        for (int i=0;i<actions.size();i++) {
-            if (i!=0) {list+=", ";}
-            list+=actions.get(i);
+        for (int i=0;i<arr.size();i++) {
+            if (i!=0) {list+=sep;}
+            list+=arr.get(i);
         }
 
         return list;
