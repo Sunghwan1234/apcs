@@ -10,14 +10,18 @@ public class Action {
     public int type;
     public Object target;
 
+    public String name;
+
     public Action(int type, Entity target, Entity executer, ArrayList<Object> params) {
         this.type = type;
+        this.target = target;
+
     }
     public Action(Location loc) {
         this.type = Action.MOVE;
         this.target = loc;
 
-
+        this.name = "Move to "+loc.name;
 
     }
 
@@ -31,4 +35,8 @@ public class Action {
         }
     }
 
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }

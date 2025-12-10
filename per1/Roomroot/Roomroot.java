@@ -16,11 +16,13 @@ public class Roomroot {
         pl("Welcome to Roomroot, "+player.name+".");
         pl("Starting Roomroot...");
 
-        player.loc = new Location();
+        player.loc = new Location("Spawn");
 
         pSepL("You have arrived at "+player.loc+".");
         pl();
         while (inPlay) {
+            pSep();
+            player.loc.visit();
             pl("You are at "+player.loc+".");
             if (!player.loc.discovered) {
                 pl("You have discovered a new location!");
@@ -37,9 +39,9 @@ public class Roomroot {
             while (playerActionNumber<=0 || playerActionNumber>player.getActions().size()) {
                 p("Choose Action (number): ");
                 try {
-                    playerActionNumber = input.nextInt();
+                    playerActionNumber = Integer.parseInt(input.nextLine());
                 } catch (Exception e) {
-                    pSepL("Invalid input. Please enter a number corresponding to an action.");
+                    pl("Invalid input. Please enter a number corresponding to an action.");
                 }
             }
             Action playerAction = player.getActions().get(playerActionNumber-1);

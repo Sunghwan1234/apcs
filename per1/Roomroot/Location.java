@@ -8,14 +8,14 @@ public class Location implements Thing {
 
 
     public String name;
-    public ArrayList<Location> passages;
+    public ArrayList<Location> passages = new ArrayList<>();
     public boolean discovered = false;
     public boolean locked = false;
     public boolean visible = true;
 
     public Entity[] entities;
 
-    public Location() {
+    public Location(String type) {
         map.add(this);
 
         String[] sl = {"ale","nuo","bel","cao","bnu","pho","ghi","ard","fri","sni","gho","who","cru","jan","las","vei","kos","qou","zma","xil","yni","fud"};
@@ -25,31 +25,41 @@ public class Location implements Thing {
             this.name += sl[(int) (Math.random()*(sl.length-1))];
         }
         this.name = this.name.substring(0,1).toUpperCase()+this.name.substring(1);
-
-        int passageCount = (int)(Math.random()*3+1);
-        passages = new ArrayList<>();
-        for (int i=0;i<passageCount;i++) {
-            if (Math.random()<0.3 && map.size()>0) {
-                Location Existingloc = map.get((int) (Math.random()*map.size()));
-                passages.add(Existingloc);
-                if (Math.random()<0.9) {
-                    Existingloc.passages.add(this);
-                }
-                continue;
-            }
-            passages.add(new Location(this));
-        }
-
     }
     /** For creating NEW passage locations. */
     private Location(Location passage) {
-        this();
+        this("Normal");
         this.passages.add(passage);
         if (Math.random()<0.1) {
             this.locked=true;
         }
         if (Math.random()<0.1) {
             this.visible=false;
+        }
+    }
+
+    /** 
+     * Activates the room when visited:
+     * 
+     * - Generates passages if undiscovered
+     */
+    public void visit() {
+        if (!this.discovered) {
+            this.discovered=true;
+
+            int passageCount = (int)(Math.random()*3+1);
+            passages = new ArrayList<>();
+            for (int i=0;i<passageCount;i++) {
+                if (Math.random()<0.3 && map.size()>0) {
+                    Location Existingloc = map.get((int) (Math.random()*map.size()));
+                    passages.add(Existingloc);
+                    if (Math.random()<0.9) {
+                        Existingloc.passages.add(this);
+                    }
+                    continue;
+                }
+                passages.add(new Location(this));
+            }
         }
     }
     
@@ -84,15 +94,13 @@ public class Location implements Thing {
                 actions.add(new Action(passages.get(i)));
             }
         }
-
-
-
+        /* 
         for (int i=0;i<this.entities.length;i++) {
             if (entities[i].isAlive()) {
                 actions.addAll(entities[i].getActions());
             }
         }
-
+        */
         return actions;
     }
 
