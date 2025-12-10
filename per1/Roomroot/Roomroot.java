@@ -22,6 +22,10 @@ public class Roomroot {
         pl();
         while (inPlay) {
             pl("You are at "+player.loc+".\n");
+            if (!player.loc.discovered) {
+                pl("You have discovered a new location!");
+                player.loc.discovered=true;
+            }
 
             pl(printStatus(player.getStatus()));
 
@@ -45,7 +49,10 @@ public class Roomroot {
     public static String printActions(ArrayList<Action> actions) {
         String list = "";
 
-        
+        for (int i=0;i<actions.size();i++) {
+            if (i!=0) {list+=", ";}
+            list+=actions.get(i);
+        }
 
         return list;
     }
