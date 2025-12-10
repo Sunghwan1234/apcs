@@ -1,4 +1,6 @@
 package Roomroot;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Roomroot {
@@ -10,23 +12,44 @@ public class Roomroot {
 
         p("Player name: ");
         Player player = new Player(input.next());
+        pSep();
         pl("Welcome to Roomroot, "+player.name+".");
         pl("Starting Roomroot...");
 
         player.loc = new Location();
 
         pSepL("You have arrived at "+player.loc+".");
-
+        pl();
         while (inPlay) {
             pl("You are at "+player.loc+".\n");
 
-            
+            pl(printStatus(player.getStatus()));
+
+            pl("Your Actions: "+printActions(player.getActions()));
 
 
             inPlay=false;
         }
         input.close();
     }
+
+    public static String printStatus(String[] statuses) {
+        String status="";
+        for (int i=0;i<statuses.length;i++) {
+            if(i!=0) {status+="\n";}
+            status+="\t"+statuses[i];
+        }
+        return status;
+    }
+
+    public static String printActions(ArrayList<Action> actions) {
+        String list = "";
+
+        
+
+        return list;
+    }
+
     public static void p(Object o) {System.out.print(o);}
     public static void pl() {pl("");}
     public static void pl(Object o) {System.out.println(o);}

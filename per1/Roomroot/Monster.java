@@ -6,7 +6,7 @@ public class Monster implements Entity {
     String name;
     int hp_max, hp, mana, mana_max;
 
-    public Entity(String type) {
+    public Monster(String type) {
 
     };
 
@@ -20,8 +20,12 @@ public class Monster implements Entity {
     public boolean isAlive() {return this.hp>0;}
     
     @Override
-    public String retStatus() {
-        return "HP: "+hp+"/"+hp_max;
+    public String[] getStatus() {
+        String[] statuses = {
+            name+"'s Health: "+hp+"/"+hp_max,
+            name+"'s Mana: "+mana+"/"+mana_max
+        };
+        return statuses;
     }
     
 }

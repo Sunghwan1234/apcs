@@ -26,4 +26,14 @@ public class Player implements Entity {
     public boolean isAlive() {
         return hp>0;
     }
+
+
+    @Override
+    public String[] getStatus() {
+        String[] statuses = {
+            "Your Health: "+hp+"/"+hp_max,
+            "Your Mana: "+mana+"/"+mana_max
+        };
+        return statuses;
+    }
 }
