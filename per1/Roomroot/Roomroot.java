@@ -11,7 +11,7 @@ public class Roomroot {
         Scanner input = new Scanner(System.in);
 
         p("Player name: ");
-        Player player = new Player(input.next());
+        Player player = new Player(input.nextLine());
         pSep();
         pl("Welcome to Roomroot, "+player.name+".");
         pl("Starting Roomroot...");
@@ -45,11 +45,30 @@ public class Roomroot {
                 }
             }
             Action playerAction = player.getActions().get(playerActionNumber-1);
+            if (playerAction.type==Action.SUBACTION) {
+                pl("Subactions:");
+                ArrayList<Action> subactions = playerAction.subactions;
+                pl(printActions(subactions, "\n", "\t"));
+
+                int subactionNumber=-1;
+                while (subactionNumber<=0 || subactionNumber>subactions.size()) {
+                    p("Choose Subaction (number): ");
+                    try {
+                        subactionNumber = Integer.parseInt(input.nextLine());
+                    } catch (Exception e) {
+                        pl("Invalid input. Please enter a number corresponding to a subaction.");
+                    }
+                }
+                playerAction = subactions.get(subactionNumber-1);
+            }
             playerAction.Execute(player);
 
 
 
-            inPlay=false;
+            if (!player.isAlive()) {
+                pSepL("You have died.");
+                inPlay=false;
+            }
         }
         input.close();
     }
@@ -72,12 +91,25 @@ public class Roomroot {
 
         return list;
     }
-    public static String printActions(ArrayList<Action> arr, String sep) {
+    public static String printActions(ArrayList<Action> arr, String sep, String tab) {
         String list = "";
 
         for (int i=0;i<arr.size();i++) {
             if (i!=0) {list+=sep;}
-            list+=arr.get(i);
+            list+=tab+arr.get(i);
+        }
+
+        return list;
+    }
+    public static String printActions(ArrayList<Action> arr, String sep) {
+        return printActions(arr, sep, "");
+    }
+    public static String printActions(Action[] arr, String sep, String tab) {
+        String list = "";
+
+        for (int i=0;i<arr.length;i++) {
+            if (i!=0) {list+=sep;}
+            list+=tab+arr[i];
         }
 
         return list;

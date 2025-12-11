@@ -89,11 +89,13 @@ public class Location implements Thing {
     public ArrayList<Action> getActions() {
         ArrayList<Action> actions = new ArrayList<>();
 
+        ArrayList<Action> moveActions = new ArrayList<>();
         for (int i=0;i<passages.size();i++) {
             if (passages.get(i).visible && !passages.get(i).locked) {
-                actions.add(new Action(passages.get(i)));
+                moveActions.add(new Action(passages.get(i)));
             }
         }
+        actions.add(new Action(moveActions, "Move"));
         /* 
         for (int i=0;i<this.entities.length;i++) {
             if (entities[i].isAlive()) {

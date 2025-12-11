@@ -18,6 +18,7 @@ public class Player implements Entity {
     public ArrayList<Action> getActions() {
         ArrayList<Action> actions = new ArrayList<>();
         actions.addAll(this.loc.getActions());
+        actions.add(new Action(-100));
 
         return actions;
     }
