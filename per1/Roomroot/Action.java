@@ -50,7 +50,7 @@ public class Action {
     private void setName() {
         switch (this.type) {
             case MOVE:
-                this.name = "Move to "+((Location)this.target).name;
+                this.name = "Move to "+((Location)this.target);
                 break;
             case BACK:
                 this.name = "Back";
@@ -69,7 +69,7 @@ public class Action {
             case MOVE:
                 if (executer instanceof Player) {
                     ((Player) executer).loc = (Location)this.target;
-                    return "You moved to "+((Location)this.target).name+".";
+                    return "You moved to "+((Location)this.target)+".";
                 }
             case -100:
                 if (executer instanceof Player) {

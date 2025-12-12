@@ -8,7 +8,7 @@ public class Location implements Thing {
     public static int discoveredLocations = 0;
 
 
-    public String name;
+    private String name;
     private ArrayList<Location> passages = new ArrayList<>();
     public boolean discovered = false;
     public boolean locked = false;
@@ -19,11 +19,11 @@ public class Location implements Thing {
     public Location(String type) {
         map.add(this);
 
-        String[] sl = {"ale","nuo","bel","cao","bnu","pho","ghi","ard","fri","sni","gho","who","cru","jan","las","vei","kos","qou","zma","xil","yni","fud"};
+        String[] sl = {"ael","nuo","bel","cao","bun","pho","ghi","ard","fri","sin","gho","who","cry","jan","las","vei","kos","qou","za","xu","yi","fu","bi","ne","lly"};
         int r = (int)(Math.random()*3+2);
         this.name = "";
         for (int i=0;i<r;i++) {
-            this.name += sl[(int) (Math.random()*(sl.length-1))];
+            this.name += sl[(int) (Math.random()*sl.length)];
         }
         this.name = this.name.substring(0,1).toUpperCase()+this.name.substring(1);
     }
@@ -49,11 +49,12 @@ public class Location implements Thing {
             //Roomroot.p("Visiting Location "+name); //debug
             this.discovered=true;
             discoveredLocations++;
+            Player.addLocationToPath(this);
 
             int passageCount = (int)(Math.random()*4+1);
             //Roomroot.pl(" | With Passages: "+passageCount); //debug
             for (int i=0;i<passageCount;i++) {
-                if (Math.random()<0.25 && map.size()>1) {
+                if (Math.random()<0.25 && map.size()>3) {
                     Location Existingloc = map.get((int) (Math.random()*map.size()));
                     this.addPassage(Existingloc);
                     if (Math.random()<0.9) {
@@ -120,6 +121,9 @@ public class Location implements Thing {
     }
 
     public String toString() {
+        if (Player.path.size()>0 && Player.path.get(0)==this) {
+            return this.name+" (Home)";
+        }
         return this.name;
     }
 }

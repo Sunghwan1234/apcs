@@ -107,7 +107,8 @@ public class Roomroot {
 
         for (int i=0;i<arr.size();i++) {
             if (i!=0) {list+=sep;}
-            list+=tab+arr.get(i);
+            if (tab=="\t") {list+="("+(i+1)+")"+tab+arr.get(i);}
+            else {list+=tab+arr.get(i);}
         }
 
         return list;
