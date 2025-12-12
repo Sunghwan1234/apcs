@@ -5,6 +5,7 @@ import java.util.ArrayList;
 /** All rooms in the game Roomroot. */
 public class Location implements Thing {
     public static ArrayList<Location> map = new ArrayList<>();
+    public static int discoveredLocations = 0;
 
 
     public String name;
@@ -46,19 +47,22 @@ public class Location implements Thing {
     public void visit() {
         if (!this.discovered) {
             this.discovered=true;
+            discoveredLocations++;
 
             int passageCount = (int)(Math.random()*3+1);
             passages = new ArrayList<>();
             for (int i=0;i<passageCount;i++) {
+                Location loc = new Location(this);
                 if (Math.random()<0.3 && map.size()>0) {
-                    Location Existingloc = map.get((int) (Math.random()*map.size()));
-                    passages.add(Existingloc);
+                    loc = map.get((int) (Math.random()*map.size()));
+                    passages.add(loc);
                     if (Math.random()<0.9) {
-                        Existingloc.passages.add(this);
+                        loc.passages.add(this);
                     }
                     continue;
                 }
-                passages.add(new Location(this));
+                if (passages.contains(loc)) {continue;}
+                passages.add(loc);
             }
         }
     }

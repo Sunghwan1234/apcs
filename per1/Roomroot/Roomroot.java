@@ -10,18 +10,21 @@ public class Roomroot {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 
+        pSep(); pl();
         p("Player name: ");
         Player player = new Player(input.nextLine());
-        pSep();
+        pl(); pSep();
         pl("Welcome to Roomroot, "+player.name+".");
         pl("Starting Roomroot...");
+        pSep();
+        newLines(10);
 
         player.loc = new Location("Spawn");
 
-        pSepL("You have arrived at "+player.loc+".");
-        pl();
+        pl("You have arrived at "+player.loc+".");
+        pl(); pSep();
+        /* Game Loop */
         while (inPlay) {
-            pSep();
             player.loc.visit();
             pl("You are at "+player.loc+".");
             if (!player.loc.discovered) {
@@ -32,45 +35,53 @@ public class Roomroot {
             pl();
             pl("Your Status:");
             pl(printStatus(player.getStatus()));
-
-            pl("Your Actions: "+printActions(player.getActions(),", "));
             pl();
-            int playerActionNumber=-1;
-            while (playerActionNumber<=0 || playerActionNumber>player.getActions().size()) {
-                p("Choose Action (number): ");
-                try {
-                    playerActionNumber = Integer.parseInt(input.nextLine());
-                } catch (Exception e) {
-                    pl("Invalid input. Please enter a number corresponding to an action.");
-                }
-            }
-            Action playerAction = player.getActions().get(playerActionNumber-1);
-            if (playerAction.type==Action.SUBACTION) {
-                pl("Subactions:");
-                ArrayList<Action> subactions = playerAction.subactions;
-                pl(printActions(subactions, "\n", "\t"));
 
-                int subactionNumber=-1;
-                while (subactionNumber<=0 || subactionNumber>subactions.size()) {
-                    p("Choose Subaction (number): ");
-                    try {
-                        subactionNumber = Integer.parseInt(input.nextLine());
-                    } catch (Exception e) {
-                        pl("Invalid input. Please enter a number corresponding to a subaction.");
-                    }
-                }
-                playerAction = subactions.get(subactionNumber-1);
-            }
-            playerAction.Execute(player);
+            /* Choose Actions */
+            Action playerAction = new Action(-100);
+            boolean choseFinalAction = false;
+            while (!choseFinalAction) {
+                // Choose Player Action
+                playerAction = chooseAction(player.getActions(), input, "Your Actions: ");
 
+                while (playerAction.type==Action.SUBACTION) {
+                    Action subAction = chooseAction(playerAction.subactions, input, "Your Subactions for "+playerAction+":\n", "\n", "\t");
+                    playerAction = subAction;
+                }
+                if (playerAction.type!=Action.BACK) {choseFinalAction=true;}
+            }
+
+            pSep(); pl();
+            pl(playerAction.execute(player));
+            pl(); pSep();
 
 
             if (!player.isAlive()) {
-                pSepL("You have died.");
+                pl(); pSepL("You have died.");
                 inPlay=false;
             }
         }
         input.close();
+    }
+
+    public static Action chooseAction(ArrayList<Action> actions, Scanner input, String prompt) {
+        return chooseAction(actions, input, prompt, ", ", "");
+    }
+
+    public static Action chooseAction(ArrayList<Action> actions, Scanner input, String prompt, String sep, String tab) {
+        p(prompt);
+        pl(printActions(actions, sep, tab));
+
+        int actionNumber=-1;
+        while (actionNumber<=0 || actionNumber>actions.size()) {
+            p("Choose your Action (number): ");
+            try {
+                actionNumber = Integer.parseInt(input.nextLine());
+            } catch (Exception e) {
+                pl("Invalid input. Please enter a number corresponding to an action.");
+            }
+        }
+        return actions.get(actionNumber-1);
     }
 
     public static String printStatus(String[] statuses) {

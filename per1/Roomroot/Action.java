@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /** Base of all actions. */
 public class Action {
-    public static final int MOVE=0, ATT=1, USE=2, SUBACTION=-1;
+    public static final int MOVE=0, ATT=1, USE=2, SUBACTION=-1, BACK=-2;
 
     public int type;
     public Object executer;
@@ -29,6 +29,15 @@ public class Action {
         this.type = Action.SUBACTION;
         this.name = name;
         this.subactions = subactions;
+        this.subactions.add(new Action(Action.BACK));
+    }
+    public Action(ArrayList<Action> subactions, String name, boolean canGoBack) {
+        this.type = Action.SUBACTION;
+        this.subactions = subactions;
+
+        if (canGoBack) {
+            this.subactions.add(new Action(Action.BACK));
+        }
     }
 
     public Action(Location loc) {
@@ -43,6 +52,9 @@ public class Action {
             case MOVE:
                 this.name = "Move to "+((Location)this.target).name;
                 break;
+            case BACK:
+                this.name = "Back";
+                break;
             case -100:
                 this.name = "Suicide";
                 break;
@@ -52,17 +64,20 @@ public class Action {
         }
     }
 
-    public void Execute(Entity executer) {
+    public String execute(Entity executer) {
         switch (this.type) {
             case MOVE:
                 if (executer instanceof Player) {
                     ((Player) executer).loc = (Location)this.target;
+                    return "You moved to "+((Location)this.target).name+".";
                 }
-                break;
             case -100:
                 if (executer instanceof Player) {
                     ((Player) executer).hp = -134340;
+                    return "You have committed suicide.";
                 }
+            default:
+                return "null";
         }
     }
 
