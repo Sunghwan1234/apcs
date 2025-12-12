@@ -8,7 +8,7 @@ public class Location implements Thing {
 
 
     public String name;
-    public ArrayList<Location> passages = new ArrayList<>();
+    private ArrayList<Location> passages = new ArrayList<>();
     public boolean discovered = false;
     public boolean locked = false;
     public boolean visible = true;
@@ -29,7 +29,7 @@ public class Location implements Thing {
     /** For creating NEW passage locations. */
     private Location(Location passage) {
         this("Normal");
-        this.passages.add(passage);
+        this.addPassage(passage);
         if (Math.random()<0.1) {
             this.locked=true;
         }
@@ -45,20 +45,22 @@ public class Location implements Thing {
      */
     public void visit() {
         if (!this.discovered) {
+            //Roomroot.p("Visiting Location "+name); //debug
             this.discovered=true;
 
-            int passageCount = (int)(Math.random()*3+1);
-            passages = new ArrayList<>();
+            int passageCount = (int)(Math.random()*4+1);
+            //Roomroot.pl(" | With Passages: "+passageCount); //debug
             for (int i=0;i<passageCount;i++) {
-                if (Math.random()<0.3 && map.size()>0) {
+                if (Math.random()<0.25 && map.size()>1) {
                     Location Existingloc = map.get((int) (Math.random()*map.size()));
-                    passages.add(Existingloc);
+                    this.addPassage(Existingloc);
                     if (Math.random()<0.9) {
-                        Existingloc.passages.add(this);
+                        //Roomroot.p(">> ");
+                        Existingloc.addPassage(this);
                     }
                     continue;
                 }
-                passages.add(new Location(this));
+                this.addPassage(new Location(this));
             }
         }
     }
@@ -106,7 +108,16 @@ public class Location implements Thing {
         return actions;
     }
 
+    public void addPassage(Location location) {
+        if (!(this.passages.contains(location) || this.equals(location))) {
+            this.passages.add(location);
+            //Roomroot.pl("Location "+this+" Added Passaage to: "+location); //debug
+        } else {
+            //Roomroot.pl("Location "+this+" Did not add Passage to "+location); //debug
+        }
+    }
+
     public String toString() {
         return this.name;
-    }   
+    }
 }
