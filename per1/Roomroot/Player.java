@@ -5,9 +5,10 @@ import java.util.ArrayList;
 public class Player implements Entity {
     public static ArrayList<Location> path = new ArrayList<>();
 
-    public String name;
-    public int hp_max=100; public int hp=100;
-    public int mana=100; public int mana_max=100;
+    private String name;
+    public int level = 0;
+    public int hp_max=100, hp=100, hp_level=0;
+    public int mana_max=100, mana=100, magic_level=0;
     public Location loc;
     
 
@@ -42,5 +43,13 @@ public class Player implements Entity {
 
     public static void addLocationToPath(Location location) {
         Player.path.add(location);
+    }
+    public int getLevel() {
+        return level;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 }

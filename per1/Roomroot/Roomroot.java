@@ -1,6 +1,5 @@
 package Roomroot;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Roomroot {
@@ -14,7 +13,7 @@ public class Roomroot {
         p("Player name: ");
         Player player = new Player(input.nextLine());
         pl(); pSep();
-        pl("Welcome to Roomroot, "+player.name+".");
+        pl("Welcome to Roomroot, "+player+".");
         pl("Starting Roomroot...");
         pSep();
         newLines(10);
