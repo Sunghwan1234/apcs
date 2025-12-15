@@ -1,28 +1,20 @@
 package Roomroot;
 
+import Roomroot.Monsters;
+
 import java.util.ArrayList;
 
 public class Monster implements Entity {
+    private static final int equalProbability = 90;
+
     public String name, type;
     private int level;
     private int hp_max=100, hp=100, mana_max=0, mana=0, damage=10;
 
-    public int chance;
     public Monster(Player player) {
-        Monster[] monsters = {
-            new Monster("Goblin", 3, 10, 0, 5),
-            new Monster("Bully Goblin", 5, 10, 0 ,5),
-            new Monster("Troll", 7, 10, 0, 5),
-            new Monster("Orc", 10, 100, 0, 25)
-        };
-
-        while (type==null) {
-            Monster m = monsters[(int)(Math.random()*monsters.length)];
-            if (Math.random()*(player.level+10) > m.level) {
-                create(m);
-            }
-        }
+        setSelf(getRandomMonster(player));
     }
+
     public Monster(String type, int level, int hp, int mana, int damage) {
         c_basic(type,level, hp, mana, damage);
     }
@@ -33,12 +25,21 @@ public class Monster implements Entity {
         this.mana=mana;
         this.damage=damage;
     }
-    public void create(Monster m) {
+    public void setSelf(Monster m) {
         this.type=m.type;
         this.level=m.level;
         this.hp=m.hp;
         this.mana=m.mana;
         this.damage=m.damage;
+    }
+
+    public static Monster getRandomMonster(Player player) {
+        while (true) {
+            Monster m = Monsters.monsters[(int)(Math.random()*Monsters.monsters.length)];
+            if (100*Math.random() < equalProbability + Math.abs(Math.pow(player.level-m.level,3))) {
+                return m;
+            }
+        }
     }
 
     @Override
@@ -56,6 +57,10 @@ public class Monster implements Entity {
             name+"'s Mana: "+mana+"/"+mana_max
         };
         return statuses;
+    }
+
+    public String toString() {
+        return this.type;
     }
     
 }

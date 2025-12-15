@@ -14,7 +14,7 @@ public class Location implements Thing {
     public boolean locked = false;
     public boolean visible = true;
 
-    public Entity[] entities;
+    public ArrayList<Entity> entities;
 
     public Location(String type) {
         map.add(this);
@@ -44,7 +44,7 @@ public class Location implements Thing {
      * 
      * - Generates passages if undiscovered
      */
-    public void visit() {
+    public void visit(Player player) {
         if (!this.discovered) {
             //Roomroot.p("Visiting Location "+name); //debug
             this.discovered=true;
@@ -65,6 +65,17 @@ public class Location implements Thing {
                 }
                 this.addPassage(new Location(this));
             }
+
+            /* Monster Spawning */
+            if (Math.random() < 0.3) {
+                Monster m = Monster.getRandomMonster(player);
+                int amount = (int)(Math.random()*((10+player.level)/10)+1);
+                for (int i=0;i<amount;i++) {
+                    //Roomroot.pl("Spawning Monster: "+m); //debug
+                    this.entities.add(m);
+                }
+            }
+
         }
     }
     

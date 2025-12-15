@@ -24,7 +24,7 @@ public class Roomroot {
         pl(); pSep();
         /* Game Loop */
         while (inPlay) {
-            player.loc.visit();
+            player.loc.visit(player);
             pl("You are at "+player.loc+".");
             if (!player.loc.discovered) {
                 pl("You have discovered a new location!");
