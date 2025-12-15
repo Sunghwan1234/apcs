@@ -10,6 +10,8 @@ public class Player implements Entity {
     public int hp_max=100, hp=100, hp_level=0;
     public int mana_max=100, mana=100, magic_level=0;
     public Location loc;
+
+    public String status = "default";
     
 
     public Player(String name) {

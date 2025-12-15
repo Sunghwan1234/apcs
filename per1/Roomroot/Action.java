@@ -24,13 +24,19 @@ public class Action {
         this.target = target;
         this.executer = executer;
     }
-
+    /** ATTACK! */
+    public Action(ArrayList<Entity> targets) {
+        this.type = Action.ATT;
+        this.name = "Attack ("+targets.size()+" "+targets.get(0)+"(s))";
+    }
+    /** SUBACTIONS */
     public Action(ArrayList<Action> subactions, String name) {
         this.type = Action.SUBACTION;
         this.name = name;
         this.subactions = subactions;
         this.subactions.add(new Action(Action.BACK));
     }
+    /** SUBACTION */
     public Action(ArrayList<Action> subactions, String name, boolean canGoBack) {
         this.type = Action.SUBACTION;
         this.subactions = subactions;
@@ -39,7 +45,7 @@ public class Action {
             this.subactions.add(new Action(Action.BACK));
         }
     }
-
+    /** MOVE */
     public Action(Location loc) {
         this.type = Action.MOVE;
         this.target = loc;

@@ -24,13 +24,15 @@ public class Roomroot {
         pl(); pSep();
         /* Game Loop */
         while (inPlay) {
-            player.loc.visit(player);
-            pl("You are at "+player.loc+".");
-            if (!player.loc.discovered) {
-                pl("You have discovered a new location!");
-                player.loc.discovered=true;
+            if (player.status=="default") {
+                player.loc.visit(player);
+                pl("You are at "+player.loc+".");
+                if (!player.loc.discovered) {
+                    pl("You have discovered a new location!");
+                    player.loc.discovered=true;
+                }
+                pl(printDescription(player.loc.getDescription(), "\n", "\t"));
             }
-            pl(printDescription(player.loc.getDescription(), "\n", "\t"));
             pl();
             pl("Your Status:");
             pl(printStatus(player.getStatus()));

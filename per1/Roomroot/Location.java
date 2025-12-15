@@ -15,6 +15,7 @@ public class Location implements Thing {
     public boolean visible = true;
 
     public ArrayList<Entity> entities;
+    public ArrayList<Monster> monsters;
 
     public Location(String type) {
         map.add(this);
@@ -112,6 +113,10 @@ public class Location implements Thing {
             }
         }
         actions.add(new Action(moveActions, "Move"));
+
+        if (this.entities!=null) {
+            actions.add(new Action(this.entities));
+        }
         /* 
         for (int i=0;i<this.entities.length;i++) {
             if (entities[i].isAlive()) {
