@@ -11,8 +11,7 @@ public class Player implements Entity {
     public int mana_max=100, mana=100, magic_level=0;
     public Location loc;
 
-    public String status = "default";
-    
+    private ArrayList<Monster> targets;
 
     public Player(String name) {
         this.name = name;
@@ -23,6 +22,7 @@ public class Player implements Entity {
     public ArrayList<Action> getActions() {
         ArrayList<Action> actions = new ArrayList<>();
         actions.addAll(this.loc.getActions());
+        
         actions.add(new Action(-100));
 
         return actions;
@@ -46,6 +46,14 @@ public class Player implements Entity {
     public static void addLocationToPath(Location location) {
         Player.path.add(location);
     }
+
+    public void setTargets(ArrayList<Monster> targets) {
+        this.targets = targets;
+    }
+    public ArrayList<Monster> getTargets() {
+        return this.targets;
+    }
+
     public int getLevel() {
         return level;
     }

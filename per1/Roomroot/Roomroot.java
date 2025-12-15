@@ -3,8 +3,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Roomroot {
-
-    static boolean inPlay = true;
+    public static String status = "location";
+    private static boolean inPlay = true;
 
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
@@ -24,14 +24,26 @@ public class Roomroot {
         pl(); pSep();
         /* Game Loop */
         while (inPlay) {
-            if (player.status=="default") {
+            if (status=="location") {
                 player.loc.visit(player);
                 pl("You are at "+player.loc+".");
                 if (!player.loc.discovered) {
                     pl("You have discovered a new location!");
                     player.loc.discovered=true;
                 }
-                pl(printDescription(player.loc.getDescription(), "\n", "\t"));
+                pl(printDescriptions(player.loc.getDescription(), "\n", "\t"));
+            } else if (status=="combat") {
+                p("You are fighting: ");
+                pl(printDescriptions(Monster.getMonsterNames(player.getTargets()), ", ", ""));
+
+                for (int i=0;i<player.getTargets().size();i++) {
+                    Monster m = player.getTargets().get(i);
+                    if (m.isAlive()) {
+                        pl();
+                        pl(printStatus(m.getStatus()));
+                        
+                    }
+                }
             }
             pl();
             pl("Your Status:");
@@ -94,7 +106,7 @@ public class Roomroot {
         return status;
     }
 
-    public static String printDescription(ArrayList<String> arr, String sep, String tab) {
+    public static String printDescriptions(ArrayList<String> arr, String sep, String tab) {
         String list = "";
         for (int i=0;i<arr.size();i++) {
             if (i!=0) {list+=sep;}

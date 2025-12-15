@@ -73,7 +73,7 @@ public class Location implements Thing {
                 int amount = (int)(Math.random()*((10+player.level)/10)+1);
                 for (int i=0;i<amount;i++) {
                     //Roomroot.pl("Spawning Monster: "+m); //debug
-                    this.entities.add(m);
+                    this.monsters.add(m);
                 }
             }
 
@@ -114,8 +114,8 @@ public class Location implements Thing {
         }
         actions.add(new Action(moveActions, "Move"));
 
-        if (this.entities!=null) {
-            actions.add(new Action(this.entities));
+        if (this.monsters!=null) {
+            actions.add(new Action(this.monsters));
         }
         /* 
         for (int i=0;i<this.entities.length;i++) {

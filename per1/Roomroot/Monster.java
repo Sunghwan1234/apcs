@@ -10,6 +10,9 @@ public class Monster implements Entity {
     public String name, type;
     private int level;
     private int hp_max=100, hp=100, mana_max=0, mana=0, damage=10;
+    private ArrayList<Action> actions;
+
+    private Player target;
 
     public Monster(Player player) {
         setSelf(getRandomMonster(player));
@@ -44,7 +47,13 @@ public class Monster implements Entity {
 
     @Override
     public ArrayList<Action> getActions() {
-        return null;
+        if (this.actions==null) {
+            if (this.damage>0) {
+                ArrayList<Action> actions = new ArrayList<>();
+                actions.add(new Action(Action.ATT, this, null, null));
+            }
+        }
+        return this.actions;
     }
 
     @Override
@@ -59,8 +68,20 @@ public class Monster implements Entity {
         return statuses;
     }
 
+    public static ArrayList<String> getMonsterNames(ArrayList<Monster> monsters) {
+        ArrayList<String> names = new ArrayList<>();
+        for (int i=0;i<monsters.size();i++) {
+            names.add(monsters.get(i).toString());
+        }
+        return names;
+    }
+
+    public void setTarget(Player target) {
+        this.target = target;
+    }
+
     public String toString() {
-        return this.type;
+        return this.type+" (Level "+this.level+")";
     }
     
 }

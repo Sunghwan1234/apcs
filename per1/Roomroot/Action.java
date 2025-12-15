@@ -9,6 +9,7 @@ public class Action {
     public int type;
     public Object executer;
     public Object target;
+    public ArrayList<Monster> monsters;
     public ArrayList<Action> subactions;
 
     public String name;
@@ -19,15 +20,22 @@ public class Action {
         setName();
     }
 
+    /** Item Attack Action */
+    public Action(int type, Entity target) {
+        this.type = type;
+        this.target = target;
+    }
+
     public Action(int type, Entity target, Entity executer, ArrayList<Object> params) {
         this.type = type;
         this.target = target;
         this.executer = executer;
     }
     /** ATTACK! */
-    public Action(ArrayList<Entity> targets) {
+    public Action(ArrayList<Monster> monsters) {
         this.type = Action.ATT;
-        this.name = "Attack ("+targets.size()+" "+targets.get(0)+"(s))";
+        this.monsters = monsters;
+        this.name = "Attack ("+monsters.size()+" "+monsters.get(0)+"(s))";
     }
     /** SUBACTIONS */
     public Action(ArrayList<Action> subactions, String name) {
@@ -82,6 +90,13 @@ public class Action {
                     ((Player) executer).hp = -134340;
                     return "You have committed suicide.";
                 }
+            case ATT:
+                Roomroot.status = "combat";
+                ((Player) executer).setTargets(this.monsters);
+                for (Monster m : this.monsters) {
+                    m.setTarget((Player) executer);
+                }
+                return "You are now attacking the monsters!";
             default:
                 return "null";
         }
