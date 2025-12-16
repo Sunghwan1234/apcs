@@ -6,6 +6,8 @@ public class Roomroot {
     public static String status = "location";
     private static boolean inPlay = true;
 
+    private final static Monster MONSTER = new Monster();
+
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 

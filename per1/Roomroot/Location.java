@@ -69,11 +69,11 @@ public class Location implements Thing {
 
             /* Monster Spawning */
             if (Math.random() < 0.3) {
-                Monster m = Monster.getRandomMonster(player);
-                int amount = (int)(Math.random()*((10+player.level)/10)+1);
+                String type = Monster.getRandom(player);
+                int amount = (int)(Math.random()*((player.level)/10+3)+1);
                 for (int i=0;i<amount;i++) {
                     //Roomroot.pl("Spawning Monster: "+m); //debug
-                    this.monsters.add(m);
+                    this.monsters.add(Monster.getMonster(type));
                 }
             }
 
