@@ -14,7 +14,9 @@ public class Monster implements Entity {
 
     public String name, type;
     private int level;
-    private int hp_max=100, hp=100, mana_max=0, mana=0, damage=10;
+    private Max hp = new Max(100);
+    private Max mana = new Max(0);
+    private int damage = 10;
     private ArrayList<Action> actions;
 
     private Player target;
@@ -27,7 +29,11 @@ public class Monster implements Entity {
     }
 
     public Monster(Monster m) {
-        
+        this.type=m.type;
+        this.level=m.level;
+        this.hp=m.hp;
+        this.mana=m.mana;
+        this.damage=m.damage;
     }
 
     public Monster(String type, int level, int hp, int mana, int damage) {
@@ -36,8 +42,8 @@ public class Monster implements Entity {
     public void c_basic(String type, int level, int hp, int mana, int damage) {
         this.type=type;
         this.level=level;
-        this.hp=hp;
-        this.mana=mana;
+        this.hp.set(hp);
+        this.mana.set(mana);
         this.damage=damage;
     }
 
@@ -46,6 +52,7 @@ public class Monster implements Entity {
             String m_name = getRandomKey(MONSTERS);
             Monster m = MONSTERS.get(m_name);
             if (100*Math.random() < equalProbability + Math.abs(Math.pow(player.level-m.level,3))) {
+                //Roomroot.pl("GetRandom: "+m_name);
                 return m_name;
             }
         }
@@ -72,6 +79,9 @@ public class Monster implements Entity {
 
     @Override
     public ArrayList<Action> getActions() {
+
+        // TODO: make fight actions AND give player wand
+
         if (this.actions==null) {
             if (this.damage>0) {
                 ArrayList<Action> actions = new ArrayList<>();
@@ -82,13 +92,13 @@ public class Monster implements Entity {
     }
 
     @Override
-    public boolean isAlive() {return this.hp>0;}
+    public boolean isAlive() {return this.hp.v() > 0;}
     
     @Override
     public String[] getStatus() {
         String[] statuses = {
-            name+"'s Health: "+hp+"/"+hp_max,
-            name+"'s Mana: "+mana+"/"+mana_max
+            this+"'s Health: "+hp+"/"+hp.max,
+            this+"'s Mana: "+mana+"/"+mana.max
         };
         return statuses;
     }
@@ -106,7 +116,7 @@ public class Monster implements Entity {
     }
 
     public String toString() {
-        return this.type+" (Level "+this.level+")";
+        return this.type+" [Level "+this.level+"]";
     }
     
 }

@@ -3,7 +3,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Roomroot {
-    public static String status = "location";
+    public enum gs {
+        passive,
+        combat
+    }
+
+    public static gs status = gs.passive;
     private static boolean inPlay = true;
 
     private final static Monster MONSTER = new Monster();
@@ -26,7 +31,7 @@ public class Roomroot {
         pl(); pSep();
         /* Game Loop */
         while (inPlay) {
-            if (status=="location") {
+            if (status==gs.passive) {
                 player.loc.visit(player);
                 pl("You are at "+player.loc+".");
                 if (!player.loc.discovered) {
@@ -34,7 +39,7 @@ public class Roomroot {
                     player.loc.discovered=true;
                 }
                 pl(printDescriptions(player.loc.getDescription(), "\n", "\t"));
-            } else if (status=="combat") {
+            } else if (status==gs.combat) {
                 p("You are fighting: ");
                 pl(printDescriptions(Monster.getMonsterNames(player.getTargets()), ", ", ""));
 

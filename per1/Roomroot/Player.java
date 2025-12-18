@@ -7,8 +7,9 @@ public class Player implements Entity {
 
     private String name;
     public int level = 0;
-    public int hp_max=100, hp=100, hp_level=0;
-    public int mana_max=100, mana=100, magic_level=0;
+    public Max hp = new Max(100);
+    public Max mana = new Max(100);
+    public int con = 0, mag = 0;
     public Location loc;
 
     private ArrayList<Monster> targets;
@@ -30,15 +31,15 @@ public class Player implements Entity {
 
     @Override
     public boolean isAlive() {
-        return hp>0;
+        return hp.v()>0;
     }
 
 
     @Override
     public String[] getStatus() {
         String[] statuses = {
-            "Your Health: "+hp+"/"+hp_max,
-            "Your Mana: "+mana+"/"+mana_max
+            "Your Health: "+hp+"/"+hp.max,
+            "Your Mana: "+mana+"/"+mana.max
         };
         return statuses;
     }
@@ -60,6 +61,6 @@ public class Player implements Entity {
 
     @Override
     public String toString() {
-        return this.name;
+        return name+" [Lv"+level+"]";
     }
 }

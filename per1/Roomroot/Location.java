@@ -14,8 +14,8 @@ public class Location implements Thing {
     public boolean locked = false;
     public boolean visible = true;
 
-    public ArrayList<Entity> entities;
-    public ArrayList<Monster> monsters;
+    public ArrayList<Entity> entities = new ArrayList<>();
+    public ArrayList<Monster> monsters = new ArrayList<>();
 
     public Location(String type) {
         map.add(this);
@@ -106,15 +106,19 @@ public class Location implements Thing {
     public ArrayList<Action> getActions() {
         ArrayList<Action> actions = new ArrayList<>();
 
-        ArrayList<Action> moveActions = new ArrayList<>();
-        for (int i=0;i<passages.size();i++) {
-            if (passages.get(i).visible && !passages.get(i).locked) {
-                moveActions.add(new Action(passages.get(i)));
+        /* Movement */
+        if (Roomroot.status==Roomroot.gs.passive) {
+            ArrayList<Action> moveActions = new ArrayList<>();
+            for (int i=0;i<passages.size();i++) {
+                if (passages.get(i).visible && !passages.get(i).locked) {
+                    moveActions.add(new Action(passages.get(i)));
+                }
             }
+            actions.add(new Action(moveActions, "Move"));
         }
-        actions.add(new Action(moveActions, "Move"));
 
-        if (this.monsters!=null) {
+        
+        if (this.monsters.size()>0) {
             actions.add(new Action(this.monsters));
         }
         /* 

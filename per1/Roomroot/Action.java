@@ -33,9 +33,15 @@ public class Action {
     }
     /** ATTACK! */
     public Action(ArrayList<Monster> monsters) {
-        this.type = Action.ATT;
-        this.monsters = monsters;
-        this.name = "Attack ("+monsters.size()+" "+monsters.get(0)+"(s))";
+        if (Roomroot.status == Roomroot.gs.passive) {
+            this.type = Action.SUBACTION;
+            this.monsters = monsters;
+            this.name = "Attack";
+        } else {
+            this.type = Action.ATT;
+            this.monsters = monsters;
+            this.name = "Attack ("+monsters.size()+" "+monsters.get(0)+")";
+        }
     }
     /** SUBACTIONS */
     public Action(ArrayList<Action> subactions, String name) {
@@ -69,6 +75,8 @@ public class Action {
             case BACK:
                 this.name = "Back";
                 break;
+            case ATT: this.name = "Attack";
+                break;
             case -100:
                 this.name = "Suicide";
                 break;
@@ -87,11 +95,11 @@ public class Action {
                 }
             case -100:
                 if (executer instanceof Player) {
-                    ((Player) executer).hp = -134340;
+                    ((Player) executer).hp.inc(-134340);
                     return "You have committed suicide.";
                 }
             case ATT:
-                Roomroot.status = "combat";
+                Roomroot.status = Roomroot.gs.combat;
                 ((Player) executer).setTargets(this.monsters);
                 for (Monster m : this.monsters) {
                     m.setTarget((Player) executer);
