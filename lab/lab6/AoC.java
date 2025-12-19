@@ -14,11 +14,14 @@ public class AoC {
     }
 
     int c=0;
+    int j=0;
     
     for (int i=1;i<depths.length;i++) {
-      if (depths[i-1]>depths[i]) {c++;}
+      if (i==1999) {System.out.println("last one: "+depths[i]);}
+      if (depths[i-1]<depths[i]) {c++;}
+      j++;
     }
-    System.out.print(c);
+    System.out.print("Out of total "+j+" Inc: "+c);
   }
 }
 
