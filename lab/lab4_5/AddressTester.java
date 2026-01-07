@@ -1,4 +1,4 @@
-package lab.lab4_5;
+package lab4_5;
 
 /**
  * AddressTester contains a main method to test an Address object.

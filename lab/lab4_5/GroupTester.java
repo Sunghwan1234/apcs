@@ -1,4 +1,4 @@
-package lab.lab4_5;
+package lab4_5;
 
 /**
  * GroupTester contains a main method to test a Group object.

@@ -1,4 +1,4 @@
-package lab.lab4_5;
+package lab4_5;
 
 /**
  * A group is comprised of a pair of undergraduate students, who can be switched.

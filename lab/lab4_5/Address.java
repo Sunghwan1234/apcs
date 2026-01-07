@@ -1,4 +1,4 @@
-package lab.lab4_5;
+package lab4_5;
 
 public class Address {
   private String street;
