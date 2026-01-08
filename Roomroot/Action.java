@@ -31,12 +31,15 @@ public class Action {
         this.target = target;
         this.executer = executer;
     }
-    /** ATTACK! */
+    /** ATTACK a group of monsters */
     public Action(ArrayList<Monster> monsters) {
         if (Roomroot.status == Roomroot.gs.passive) {
             this.type = Action.SUBACTION;
             this.monsters = monsters;
-            this.name = "Attack";
+            this.name = "Attack ("+monsters.size()+" "+monsters.get(0)+")";
+
+            subactions = new ArrayList<Action>(); // TODO: finish subaction
+
         } else {
             this.type = Action.ATT;
             this.monsters = monsters;

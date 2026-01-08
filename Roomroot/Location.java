@@ -98,6 +98,10 @@ public class Location implements Thing {
         if (lockedCount>0) {
             things.add("There are also "+lockedCount+" locked passages.");
         }
+
+        if (monsters.size()>0) {
+            things.add("There are also "+monsters.size()+" monsters.");
+        }
         
 
         return things;
@@ -141,9 +145,13 @@ public class Location implements Thing {
     }
 
     public String toString() {
+        String extention = "";
         if (Player.path.size()>0 && Player.path.get(0)==this) {
-            return this.name+" (Home)";
+            extention+=" (Home)";
         }
-        return this.name;
+        if (!discovered) {
+            extention+=" (New)";
+        }
+        return this.name+extention;
     }
 }
