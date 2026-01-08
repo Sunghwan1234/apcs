@@ -1,4 +1,4 @@
-package note4_2;
+
 /**
  * StudentTester contains a main method to test a Student object.
  * 

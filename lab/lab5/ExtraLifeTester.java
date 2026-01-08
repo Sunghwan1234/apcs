@@ -1,4 +1,4 @@
-package lab.lab5;
+package lab5;
 
 /**
  * ExtraLifeTester contains a main method to test ExtraLife objects.

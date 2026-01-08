@@ -1,4 +1,4 @@
-package lab.lab4_5;
+package lab4_5;
 
 /**
  * An undergrad is a college student who has not yet completed a bachelor's degree.

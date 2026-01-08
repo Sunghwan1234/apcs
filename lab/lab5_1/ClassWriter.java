@@ -1,4 +1,4 @@
-package lab.lab5_1;
+package lab5_1;
 
 /**
  * ClassWriter contains class (static) methods to return code that writes

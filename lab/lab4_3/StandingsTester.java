@@ -1,4 +1,4 @@
-package lab.lab4_3;
+package lab4_3;
 
 /**
  * StandingsTester contains a main method to test Standings objects.

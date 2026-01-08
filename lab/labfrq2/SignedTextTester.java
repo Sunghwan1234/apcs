@@ -1,4 +1,4 @@
-package lab.labfrq2;
+package labfrq2;
 /**
  * SignedTextTester contains a main method to test SignedText objects.
  * 

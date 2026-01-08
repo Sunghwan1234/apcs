@@ -1,4 +1,4 @@
-package lab.lab4_3;
+package lab4_3;
 
 public class Netflix {
   private String title;

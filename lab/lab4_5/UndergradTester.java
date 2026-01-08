@@ -1,4 +1,4 @@
-package lab.lab4_5;
+package lab4_5;
 
 /**
  * UnderGradTester contains a main method to test UnderGrad objects.

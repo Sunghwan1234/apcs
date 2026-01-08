@@ -1,4 +1,4 @@
-package lab.lab5_1;
+package lab5_1;
 
 /**
  * An address is the mailing address, comprised of street, city, state, and zip

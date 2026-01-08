@@ -135,7 +135,7 @@ public class Villain implements Character, Comparable<Character> {
   public int compareTo(Character c) {
     if (this.strength < c.getStrength()) {
         return -1;
-    } else if (this.stength == c.getStrength()) {
+    } else if (this.strength == c.getStrength()) {
         return 0;
     } else {
         return 1;

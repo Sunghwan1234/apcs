@@ -1,4 +1,4 @@
-package lab.lab4_2p2;
+package lab4_2p2;
 
 public class CompoundWord {
   private String word1, word2;

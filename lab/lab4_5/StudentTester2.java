@@ -1,4 +1,4 @@
-package lab.lab4_5;
+package lab4_5;
 
 /**
  * StudentTester2 contains a main method to test a Student object that

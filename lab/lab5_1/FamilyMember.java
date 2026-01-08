@@ -1,4 +1,4 @@
-package lab.lab5_1;
+package lab5_1;
 
 /**
  * A family member has first and last name, an address, and access to a value

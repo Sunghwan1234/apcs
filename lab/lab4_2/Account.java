@@ -1,4 +1,4 @@
-package lab.lab4_2;
+package lab4_2;
 /**
  * An account is comprised of the rate, owner's name, account number, and
  * balance, which money can be deposited, earn interest, and be withdrawn.

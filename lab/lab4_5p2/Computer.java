@@ -1,4 +1,4 @@
-package lab.lab4_5p2;
+package lab4_5p2;
 
 /**
  * A computer has a processor and a hard drive.

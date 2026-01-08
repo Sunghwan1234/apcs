@@ -1,4 +1,4 @@
-package lab.lab5_1;
+package lab5_1;
 
 /**
  * ClassWriterTester contains a main method to test ClassWriter class (static) methods.

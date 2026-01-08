@@ -1,4 +1,4 @@
-package lab.lab4_3;
+package lab4_3;
 
 /**
  * ExtraLifeTester contains a main method to test ExtraLife objects.

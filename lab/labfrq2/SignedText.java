@@ -1,4 +1,4 @@
-package lab.labfrq2;
+package labfrq2;
 
 public class SignedText {
   String fn,ln;

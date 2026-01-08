@@ -1,4 +1,4 @@
-package note4_2;
+
 
 public class Student {
   String name, email;

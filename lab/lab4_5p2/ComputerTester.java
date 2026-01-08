@@ -1,4 +1,4 @@
-package lab.lab4_5p2;
+package lab4_5p2;
 
 /**
  * ComputerTester contains a main method to test Computer and HardDrive objects.

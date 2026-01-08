@@ -1,4 +1,4 @@
-package lab.lab4_5p2;
+package lab4_5p2;
 
 /**
  * A hard drive has a number of gigabytes of storage.
