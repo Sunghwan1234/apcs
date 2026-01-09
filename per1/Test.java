@@ -3,8 +3,9 @@ import java.lang.Math;
 
 public class Test {
     public static void main(String[] args) {
-      String w = "hello";
+      String w = args[0];
       pl(w.substring(w.length()-1));
+      
     }
     public static int reqI(Scanner scanner, String ask, int low) {
       int ret = low-1;
