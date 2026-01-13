@@ -1,11 +1,14 @@
 import java.util.Scanner; // Sunghwan In
 import java.lang.Math;
+import java.util.Arrays;
 
 public class Test {
     public static void main(String[] args) {
-      String w = args[0];
-      pl(w.substring(w.length()-1));
-      
+      int[] numbers = new int[4];
+
+      //numbers[3] = 40; for (int j = numbers.length - 1; j > 0; j--) { numbers[j - 1] = numbers[j] - 10; }
+      int x = 10; for (int value : numbers) { value++;}
+      pl(Arrays.toString(numbers));
     }
     public static int reqI(Scanner scanner, String ask, int low) {
       int ret = low-1;
