@@ -15,10 +15,17 @@ public class SelfDivisor {
    */
   public static boolean isSelfDivisor(int number)
   {
-    boolean result=false;
     for (int i=0;i<Math.log10(number);i++) {
-      
+      if ((int)(number/Math.pow(10,i))%10==0) {
+        return false;
+      }
+      if (number % ((int)(number/Math.pow(10,i))%10)==0) {
+
+      } else {
+        return false;
+      }
     }
+    return true;
   }
   
   
@@ -32,7 +39,19 @@ public class SelfDivisor {
    * @return an array containing the first num integers >= start that are self-divisors
    */
   public static int[] firstNumSelfDivisors(int start, int num)
-  {  /* to be implemented in part (b) */  }
+  {
+    int[] arr = new int[num];
+    int arrIndex = 0;
+    for (int i=start;arrIndex<num;i++) {
+      if (isSelfDivisor(i)) {
+        arr[arrIndex]=i;
+        arrIndex+=1;
+      }
+    }
+    return arr;
+  }
   
-  
+  public static int digit(int n, int digit) {
+      return (int)(n/Math.pow(10,digit))%10;
+  }
 }
