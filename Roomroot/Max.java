@@ -38,6 +38,10 @@ public class Max {
     return v;
   }
 
+  public boolean full() {
+    return this.v==this.max;
+  }
+
   @Override
   public String toString() {
     return v+"";

@@ -6,7 +6,9 @@ import java.util.ArrayList;
 public interface Entity extends Thing {
 
     public boolean isAlive();
-    /** Full Status */
+    /** Get a full list of Strings representing the entity's status. */
     public String[] getStatus();
     public String toString();
+    /** Set the target of the entity to another entity. */
+    public void setTarget(Entity target);
 }

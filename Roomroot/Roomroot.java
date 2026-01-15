@@ -3,15 +3,15 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Roomroot {
-    public enum gs {
+    public enum stat {
         passive,
         combat
     }
 
-    public static gs status = gs.passive;
+    public static stat status = stat.passive;
     private static boolean inPlay = true;
 
-    private final static Monster MONSTER = new Monster();
+    //private final static Monster MONSTER = new Monster(); // Required as Monster has init
 
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
@@ -31,7 +31,7 @@ public class Roomroot {
         pl(); pSep();
         /* Game Loop */
         while (inPlay) {
-            if (status==gs.passive) {
+            if (status==stat.passive) {
                 player.loc.visit(player);
                 pl("You are at "+player.loc+".");
                 if (!player.loc.discovered) {
@@ -39,16 +39,14 @@ public class Roomroot {
                     player.loc.discovered=true;
                 }
                 pl(printDescriptions(player.loc.getDescription(), "\n", "\t"));
-            } else if (status==gs.combat) {
-                p("You are fighting: ");
-                pl(printDescriptions(Monster.getMonsterNames(player.getTargets()), ", ", ""));
+            } else if (status==stat.combat) {
+                p("There are "+Monster.aggroGroup.size()+" Aggroed Monsters near you! ");
+                pl(printDescriptions(Monster.getMonsterNames(Monster.aggroGroup), ", ", ""));
 
-                for (int i=0;i<player.getTargets().size();i++) {
-                    Monster m = player.getTargets().get(i);
+                for (Monster m : Monster.aggroGroup) {
                     if (m.isAlive()) {
                         pl();
-                        pl(printStatus(m.getStatus()));
-                        
+                        pl(printStatus(m.getStatus())); // Get status of Monster
                     }
                 }
             }

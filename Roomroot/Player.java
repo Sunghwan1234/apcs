@@ -12,7 +12,7 @@ public class Player implements Entity {
     public int con = 0, mag = 0;
     public Location loc;
 
-    private ArrayList<Monster> targets;
+    public Entity target;
 
     public Player(String name) {
         this.name = name;
@@ -23,6 +23,12 @@ public class Player implements Entity {
     public ArrayList<Action> getActions() {
         ArrayList<Action> actions = new ArrayList<>();
         actions.addAll(this.loc.getActions());
+
+        if (Roomroot.status == Roomroot.stat.combat) {
+            for (Monster m : Monster.aggroGroup) {
+                actions.add(new Action(m, Monster.aggroGroup));
+            }
+        }
         
         actions.add(new Action(-100));
 
@@ -48,11 +54,11 @@ public class Player implements Entity {
         Player.path.add(location);
     }
 
-    public void setTargets(ArrayList<Monster> targets) {
-        this.targets = targets;
+    public void setTarget(Entity target) {
+        this.target = target;
     }
-    public ArrayList<Monster> getTargets() {
-        return this.targets;
+    public Entity getTarget() {
+        return this.target;
     }
 
     public int getLevel() {

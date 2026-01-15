@@ -111,7 +111,7 @@ public class Location implements Thing {
         ArrayList<Action> actions = new ArrayList<>();
 
         /* Movement */
-        if (Roomroot.status==Roomroot.gs.passive) {
+        if (Roomroot.status==Roomroot.stat.passive) {
             ArrayList<Action> moveActions = new ArrayList<>();
             for (int i=0;i<passages.size();i++) {
                 if (passages.get(i).visible && !passages.get(i).locked) {
