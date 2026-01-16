@@ -19,11 +19,11 @@ public class Max {
   }
 
   public int inc(int i) {
-    this.v = Math.clamp(v+=i, 0, max);
+    this.v = Math.max(0, Math.min(this.v + i, this.max));
     return v;
   }
   public int dec(int i) {
-    this.v = Math.clamp(v-=i, 0, max);
+    this.v = Math.max(0, Math.min(this.v - i, this.max));
     return v;
   }
 

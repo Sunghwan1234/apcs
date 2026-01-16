@@ -23,9 +23,9 @@ public class Monster implements Entity {
     public static ArrayList<Monster> aggroGroup;
 
     public String name, type;
-    private int level;
-    private Max hp = new Max(100);
-    private Max mana = new Max(0);
+    private int level = 0;
+    public Max hp = new Max(100);
+    public Max mana = new Max(0);
     private int damage = 10;
     private ArrayList<Action> actions;
 
@@ -96,9 +96,12 @@ public class Monster implements Entity {
     
     @Override
     public String[] getStatus() {
+        String line1 = this.getSimpleString()+"'s Health: "+hp+"/"+hp.max;
+        if (this.mana.max>0) {
+            line1 += " | Mana: "+mana+"/"+mana.max;
+        }
         String[] statuses = {
-            this+"'s Health: "+hp+"/"+hp.max,
-            this+"'s Mana: "+mana+"/"+mana.max
+            line1
         };
         return statuses;
     }
@@ -115,10 +118,14 @@ public class Monster implements Entity {
         this.target = target;
     }
 
+    public String getSimpleString() {
+        return this.type+" [Level "+this.level+"]";
+    }
+
     public String toString() {
         String str = this.type+" [Level "+this.level+"]";
-        if (this.hp.full()) {
-            str += "("+hp.v()+"/"+hp.max+")";
+        if (!this.hp.full()) {
+            str += " ("+hp.v()+"/"+hp.max+")";
         }
         return str;
     }

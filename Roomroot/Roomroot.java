@@ -71,13 +71,25 @@ public class Roomroot {
 
             pSep(); pl();
             pl(playerAction.execute(player));
-            pl(); pSep();
 
+            // TODO: Monster Actions
+            if (status==stat.combat) {
+                for (Monster m : Monster.aggroGroup) {
+                    if (m.isAlive()) {
+                        
+                    }
+                }
+            }
+
+            pl(); pSep();
 
             if (!player.isAlive()) {
                 pl(); pSepL("You have died.");
                 inPlay=false;
             }
+
+            p("Continue"); input.nextLine();
+            pSep();
         }
         input.close();
     }

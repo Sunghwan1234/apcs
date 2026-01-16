@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /** Base of all actions. */
 public class Action {
-    public static final int MOVE=0, ATTACK=1, USE=2, SUBACTION=-1, BACK=-2;
+    public static final int MOVE=0, ATTACK=1, USE=2, DAMAGE=3, HEAL=4, HEALMANA=5, DAMAGEMANA=6, SUBACTION=-1, BACK=-2;
 
     public int type;
     public Thing executer;
@@ -13,6 +13,7 @@ public class Action {
     public ArrayList<Action> subactions;
 
     public String name;
+    public int toTarget, toExecuter;
 
     public Action(int type) {
         this.type = type;
@@ -20,10 +21,26 @@ public class Action {
         setName();
     }
 
-    /** Item Attack Action */
+    
     public Action(int type, Thing target) {
         this.type = type;
         this.target = target;
+    }
+    /** Item Damaging Action */
+    public Action(String name, String description, int type, int toTarget, int toExecuter) {
+        this.type = type;
+        this.name = name;
+        this.toTarget = toTarget;
+        this.toExecuter = toExecuter;
+    }
+    /** Item Attack Action */
+    public Action(Item item, Thing executer, Thing target) {
+        this.type = Action.SUBACTION;
+        this.target = target;
+        this.executer = executer;
+        this.name = "Use "+item+" on "+target;
+
+        this.subactions = item.actions;
     }
 
     public Action(int type, Thing target, Thing executer, ArrayList<Object> params) {
@@ -50,10 +67,18 @@ public class Action {
     }
     /** ATTACK one Monster within a MonsterGroup */
     public Action(Monster monster, ArrayList<Monster> monsterGroup) {
-        this.type = Action.ATTACK;
-        this.target = monster;
-        this.name = "Attack "+monster+"";
-        this.monsterGroup = monsterGroup;
+        if (Roomroot.status == Roomroot.stat.combat) {
+            this.type = Action.SUBACTION;
+            this.name = "Attack "+monster+""; // TODO: Finish subaction
+
+            subactions = new ArrayList<Action>();
+            subactions.add(new Action(monster, monsterGroup));
+        } else {
+            this.type = Action.ATTACK;
+            this.target = monster;
+            this.name = "Attack "+monster+"";
+            this.monsterGroup = monsterGroup;
+        }
     }
     /** SUBACTIONS */
     public Action(ArrayList<Action> subactions, String name) {
@@ -118,6 +143,21 @@ public class Action {
                 }
                 Monster.aggroGroup = this.monsterGroup;
                 return "You are now attacking the monsters!";
+            case DAMAGE:
+                if (executer instanceof Player) {
+                    ((Monster)target).hp.dec(this.toTarget);
+                    return "dealt "+this.toTarget+" damage to "+this.target;
+                }
+            case HEAL:
+                if (executer instanceof Player) {
+                    ((Player) executer).hp.inc(this.toTarget);
+                    return "You healed "+this.toTarget+" health.";
+                }
+            case HEALMANA:
+                if (executer instanceof Player) {
+                    ((Player) executer).mp.inc(this.toTarget);
+                    return "You restored "+this.toTarget+" mana.";
+                }
             default:
                 return "null";
         }

@@ -22,12 +22,12 @@ public class Player implements Entity {
     @Override
     public ArrayList<Action> getActions() {
         ArrayList<Action> actions = new ArrayList<>();
-        actions.addAll(this.loc.getActions());
+        if (Roomroot.status == Roomroot.stat.passive) {
+            actions.addAll(this.loc.getActions());
+        }
 
         if (Roomroot.status == Roomroot.stat.combat) {
-            for (Monster m : Monster.aggroGroup) {
-                actions.add(new Action(m, Monster.aggroGroup));
-            }
+            actions.add(new Action(Monster.aggroGroup));
         }
         
         actions.add(new Action(-100));

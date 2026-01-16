@@ -1,13 +1,14 @@
 package Roomroot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /** All rooms in the game Roomroot. */
 public class Location implements Thing {
     public static ArrayList<Location> map = new ArrayList<>();
     public static int discoveredLocations = 0;
 
-
+    private String type = "Default";
     private String name;
     private ArrayList<Location> passages = new ArrayList<>();
     public boolean discovered = false;
@@ -20,7 +21,9 @@ public class Location implements Thing {
     public Location(String type) {
         map.add(this);
 
-        String[] sl = {"ael","nuo","bel","cao","bun","pho","ghi","ard","fri","sin","gho","who","cry","jan","las","vei","kos","qou","za","xu","yi","fu","bi","ne","lly"};
+        this.type = type;
+
+        String[] sl = {"ael","nuo","bel","cao","bun","pho","ghi","ard","fri","sin","gho","who","cry","jan","las","vei","kos","qou","za","xu","yi","fu","bi","ne","la","ra","ze","lu","do","mo","te","ve"};
         int r = (int)(Math.random()*3+2);
         this.name = "";
         for (int i=0;i<r;i++) {
@@ -47,18 +50,34 @@ public class Location implements Thing {
      */
     public void visit(Player player) {
         if (!this.discovered) {
-            //Roomroot.p("Visiting Location "+name); //debug
             this.discovered=true;
             discoveredLocations++;
             Player.addLocationToPath(this);
 
-            int passageCount = (int)(Math.random()*4+1);
+            int passageCount;
+            boolean spawnMonsters;
+
+            switch (this.type) {
+                case "Spawn":
+                    passageCount = 4;
+                    spawnMonsters = false;
+                    break;
+                default:
+                    passageCount = (int)(Math.random()*4+1);
+                    spawnMonsters = true;
+                    break;
+            }
+            //Roomroot.p("Visiting Location "+name); //debug
+            
+
+            
+            
             //Roomroot.pl(" | With Passages: "+passageCount); //debug
             for (int i=0;i<passageCount;i++) {
-                if (Math.random()<0.25 && map.size()>3) {
+                if ((Math.random()<0.25 && map.size()>3)) {
                     Location Existingloc = map.get((int) (Math.random()*map.size()));
                     this.addPassage(Existingloc);
-                    if (Math.random()<0.9) {
+                    if (Math.random()<0.9) { // 90% chance to add the destination back to the source
                         //Roomroot.p(">> ");
                         Existingloc.addPassage(this);
                     }
@@ -67,16 +86,17 @@ public class Location implements Thing {
                 this.addPassage(new Location(this));
             }
 
-            /* Monster Spawning */
-            if (Math.random() < 0.3) {
-                String type = Monster.getRandom(player);
-                int amount = (int)(Math.random()*((player.level)/10+3)+1);
-                for (int i=0;i<amount;i++) {
-                    //Roomroot.pl("Spawning Monster: "+m); //debug
-                    this.monsters.add(Monster.getMonster(type));
+            if (spawnMonsters) {
+                /* Monster Spawning */
+                if (Math.random() < 0.3) {
+                    String type = Monster.getRandom(player);
+                    int amount = (int)(Math.random()*((player.level)/10+3)+1);
+                    for (int i=0;i<amount;i++) {
+                        //Roomroot.pl("Spawning Monster: "+m); //debug
+                        this.monsters.add(Monster.getMonster(type));
+                    }
                 }
             }
-
         }
     }
     
