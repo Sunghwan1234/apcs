@@ -8,7 +8,7 @@ public class Player implements Entity {
     private String name;
     public int level = 0;
     public Max hp = new Max(100);
-    public Max mana = new Max(100);
+    public Max mp = new Max(100);
     public int con = 0, mag = 0;
     public Location loc;
 
@@ -45,7 +45,7 @@ public class Player implements Entity {
     public String[] getStatus() {
         String[] statuses = {
             "Your Health: "+hp+"/"+hp.max,
-            "Your Mana: "+mana+"/"+mana.max
+            "Your Mana: "+mp+"/"+mp.max
         };
         return statuses;
     }
