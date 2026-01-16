@@ -34,14 +34,17 @@ public class Action {
         this.toExecuter = toExecuter;
     }
     /** Item Attack Action */
-    public Action(Item item, Thing executer, Thing target) {
+    public Action(Item item, Thing executer, ArrayList<Monster> monsterGroup) {
         this.type = Action.SUBACTION;
-        this.target = target;
+        this.monsterGroup = monsterGroup;
         this.executer = executer;
-        this.name = "Use "+item+" on "+target;
+        this.name = "Use "+item;
 
-        this.subactions = item.actions;
+        for (Action a : item.actions) {
+            this.subactions.add(new Action(a, monsterGroup))
+        }
     }
+    //TODO: make item actually damage monsters with subaction monster & subaction item actions
 
     public Action(int type, Thing target, Thing executer, ArrayList<Object> params) {
         this.type = type;

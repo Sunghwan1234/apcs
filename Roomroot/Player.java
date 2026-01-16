@@ -12,6 +12,8 @@ public class Player implements Entity {
     public int con = 0, mag = 0;
     public Location loc;
 
+    public ArrayList<Item> inventory = new ArrayList<>();
+
     public Entity target;
 
     public Player(String name) {
@@ -27,7 +29,9 @@ public class Player implements Entity {
         }
 
         if (Roomroot.status == Roomroot.stat.combat) {
-            actions.add(new Action(Monster.aggroGroup));
+            for (Item i : inventory) {
+                actions.add(new Action(i, this, Monster.aggroGroup));
+            }
         }
         
         actions.add(new Action(-100));

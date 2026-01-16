@@ -26,6 +26,7 @@ public class Roomroot {
         newLines(10);
 
         player.loc = new Location("Spawn");
+        player.inventory.add(Item.ITEMS.get("Wand"));
 
         pl("You have arrived at "+player.loc+".");
         pl(); pSep();
