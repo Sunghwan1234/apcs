@@ -143,7 +143,7 @@ public class Location implements Thing {
 
         
         if (this.monsters.size()>0) {
-            actions.add(new Action(this.monsters));
+            actions.add(Action.attackGroup(this.monsters));
         }
         /* 
         for (int i=0;i<this.entities.length;i++) {

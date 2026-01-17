@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 /** Base of all actions. */
 public class Action {
-    public static final int MOVE=0, ATTACK=1, USE=2, DAMAGE=3, HEAL=4, HEALMANA=5, DAMAGEMANA=6, SUBACTION=-1, BACK=-2, INV=-3;
+    public static final int MOVE=0, ATTACK=1, USE=2, DAMAGE=3, HEAL=4, HEALMANA=5, DAMAGEMANA=6, SUBACTION=-1, BACK=-2, INV=-3, EQUIP=-4;
+    
 
     public int type;
     public Thing executer;
@@ -19,6 +20,13 @@ public class Action {
         this.type = type;
 
         setName();
+    }
+    public Action(int type, String name) {
+        this.type = type;
+
+        setName();
+        
+        this.name = name;
     }
 
     
@@ -76,23 +84,23 @@ public class Action {
         this.target = target;
         this.executer = executer;
     }
-    /** ATTACK a group of monsters */
-    public Action(ArrayList<Monster> monsters) {
-        //if (Roomroot.status == Roomroot.stat.passive) {
-            this.type = Action.SUBACTION;
-            this.name = "Attack ("+monsters.size()+" "+monsters.get(0)+")";
+    /** ATTACK a group of monsters DEPRICATED. */
+    // public Action(ArrayList<Monster> monsters) {
+    //     //if (Roomroot.status == Roomroot.stat.passive) {
+    //         this.type = Action.SUBACTION;
+    //         this.name = "Attack ("+monsters.size()+" "+monsters.get(0)+")";
 
-            subactions = new ArrayList<Action>();
-            for (Monster m : monsters) {
-                subactions.add(new Action(m, monsters));
-            }
+    //         subactions = new ArrayList<Action>();
+    //         for (Monster m : monsters) {
+    //             subactions.add(new Action(m, monsters));
+    //         }
 
-        // } else {
-        //     this.type = Action.ATTACK;
-        //     this.monsters = monsters;
-        //     this.name = "Attack ("+monsters.size()+" "+monsters.get(0)+")";
-        // }
-    }
+    //     // } else {
+    //     //     this.type = Action.ATTACK;
+    //     //     this.monsters = monsters;
+    //     //     this.name = "Attack ("+monsters.size()+" "+monsters.get(0)+")";
+    //     // }
+    // }
     /** ATTACK one Monster within a MonsterGroup */
     public Action(Monster monster, ArrayList<Monster> monsterGroup) {
         if (Roomroot.status == Roomroot.stat.combat) {
@@ -108,14 +116,14 @@ public class Action {
             this.monsterGroup = monsterGroup;
         }
     }
-    /** SUBACTIONS */
+    /** Create a new SUBACTION Action with a list of subactions and a name */
     public Action(ArrayList<Action> subactions, String name) {
         this.type = Action.SUBACTION;
         this.name = name;
         this.subactions = subactions;
         this.subactions.add(new Action(Action.BACK));
     }
-    /** SUBACTION */
+    /** Create a new SUBACTION Action with a list of subactions and a name, Can also set if you can go back. */
     public Action(ArrayList<Action> subactions, String name, boolean canGoBack) {
         this.type = Action.SUBACTION;
         this.subactions = subactions;
@@ -124,12 +132,21 @@ public class Action {
             this.subactions.add(new Action(Action.BACK));
         }
     }
-    /** MOVE */
+    /** MOVE to a Location */
     public Action(Location loc) {
         this.type = Action.MOVE;
         this.target = loc;
+        this.setName();
+    }
 
-        setName();
+    public static Action attackGroup(ArrayList<Monster> monsterGroup) {
+        ArrayList<Action> subactions = new ArrayList<>();
+        for (Monster m : monsterGroup) {
+            if (m.isAlive()) {
+                subactions.add(new Action(m, monsterGroup));
+            }
+        }
+        return new Action(subactions, "Attack ("+monsterGroup.size()+" "+monsterGroup.get(0)+")");
     }
 
     private void setName() {
@@ -144,6 +161,8 @@ public class Action {
                 break;
             case INV:
                 this.name = "View Inventory";
+                this.subactions.add(new Action(Action.EQUIP));
+                //this.subactions.add(new Action(Action.HEAL, "Quick Heal"));
                 break;
             case -100:
                 this.name = "Suicide";
@@ -155,22 +174,21 @@ public class Action {
     }
 
     public String execute(Entity executer) {
+        Player player = (Player) executer;
+        
         switch (this.type) {
             case MOVE:
-                if (executer instanceof Player) {
-                    ((Player) executer).loc = (Location)this.target;
-                    return "You moved to "+((Location)this.target)+".";
-                }
+                player.loc = (Location)this.target;
+                return "You moved to "+((Location)this.target)+".";
+                
             case -100:
-                if (executer instanceof Player) {
-                    ((Player) executer).hp.inc(-134340);
-                    return "You have committed suicide.";
-                }
+                player.hp.inc(-134340);
+                return "You have committed suicide.";
             case ATTACK:
                 Roomroot.status = Roomroot.stat.combat;
                 executer.setTarget((Entity) this.target);
                 for (Monster m : this.monsterGroup) {
-                    m.setTarget((Player) executer);
+                    m.setTarget((Entity) executer);
                 }
                 Monster.aggroGroup = this.monsterGroup;
                 return "You are now attacking the monsters!";
@@ -181,19 +199,19 @@ public class Action {
                 }
             case HEAL:
                 if (executer instanceof Player) {
-                    ((Player) executer).hp.inc(this.valToTarget);
+                    player.hp.inc(this.valToTarget);
                     return "You healed "+this.valToTarget+" health.";
                 }
             case HEALMANA:
                 if (executer instanceof Player) {
-                    ((Player) executer).mp.inc(this.valToTarget);
-                    return "You restored "+this.valToTarget+" mana.";
+                    player.mp.inc(this.valToTarget);
+                    return executer+" restored "+this.valToTarget+" mana.";
                 }
             case INV:
                 Roomroot.pl("---- Your Inventory ----");
-                for (int i = 0; i < ((Player) executer).inventory.size(); i++) { //TODO: finish inventory view with subactions for each item
-                    Item item = ((Player) executer).inventory.get(i);
-                    Roomroot.pl((i+1)+". "+item);
+                for (int i = 0; i < player.inventory.size(); i++) { //TODO: finish inventory view with subactions for each item
+                    Item item = player.inventory.get(i);
+                    Roomroot.p("("+(i+1)+")\t "+item+" : "+item.description);
                 }
                 return "Subaction Finished.";
             default:

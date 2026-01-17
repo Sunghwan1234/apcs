@@ -1,5 +1,6 @@
 package Roomroot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Player implements Entity {
@@ -30,12 +31,10 @@ public class Player implements Entity {
         }
 
         if (Roomroot.status == Roomroot.stat.combat) {
-            for (Monster m : Monster.aggroGroup) {
-                actions.add(new Action(m, Monster.aggroGroup));
-            }
+            actions.add(Action.attackGroup(Monster.aggroGroup));
         }
 
-        actions.add(new Action(Action.INV));
+        actions.add(new Action(Action.INV)) ;
         
         actions.add(new Action(-100));
 
@@ -80,6 +79,7 @@ public class Player implements Entity {
 
     @Override
     public String toString() {
-        return name+" [Lv"+level+"]";
+        //return name+" [Lv"+level+"]";
+        return "You";
     }
 }

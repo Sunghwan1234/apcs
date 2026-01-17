@@ -69,8 +69,9 @@ public class Roomroot {
                     playerAction = subAction;
                 }
                 while (playerAction.type==Action.INV) {
-                    pl(playerAction.execute(player));
+                    playerAction.execute(player);
                     Action invAction = chooseAction(playerAction.subactions, input, "Inventory Actions:\n", "\n", "\t");
+                    playerAction = invAction;
                 }
                 if (playerAction.type!=Action.BACK) {choseFinalAction=true;}
             }

@@ -25,7 +25,7 @@ public class Monster implements Entity {
     public String name, type;
     private int level = 0;
     public Max hp = new Max(100);
-    public Max mana = new Max(0);
+    public Max mp = new Max(0);
     private int damage = 10;
     private ArrayList<Action> actions;
 
@@ -37,7 +37,7 @@ public class Monster implements Entity {
         this.type=m.type;
         this.level=m.level;
         this.hp=m.hp;
-        this.mana=m.mana;
+        this.mp=m.mp;
         this.damage=m.damage;
     }
 
@@ -48,7 +48,7 @@ public class Monster implements Entity {
         this.type=type;
         this.level=level;
         this.hp.set(hp);
-        this.mana.set(mana);
+        this.mp.set(mana);
         this.damage=damage;
     }
 
@@ -97,8 +97,8 @@ public class Monster implements Entity {
     @Override
     public String[] getStatus() {
         String line1 = this.getSimpleString()+"'s Health: "+hp+"/"+hp.max;
-        if (this.mana.max>0) {
-            line1 += " | Mana: "+mana+"/"+mana.max;
+        if (this.mp.max>0) {
+            line1 += " | Mana: "+mp+"/"+mp.max;
         }
         String[] statuses = {
             line1
