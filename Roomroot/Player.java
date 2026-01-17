@@ -13,6 +13,7 @@ public class Player implements Entity {
     public Location loc;
 
     public ArrayList<Item> inventory = new ArrayList<>();
+    private Item weapon = null;
 
     public Entity target;
 
@@ -29,10 +30,12 @@ public class Player implements Entity {
         }
 
         if (Roomroot.status == Roomroot.stat.combat) {
-            for (Item i : inventory) {
-                actions.add(new Action(i, this, Monster.aggroGroup));
+            for (Monster m : Monster.aggroGroup) {
+                actions.add(new Action(m, Monster.aggroGroup));
             }
         }
+
+        actions.add(new Action(Action.INV));
         
         actions.add(new Action(-100));
 
@@ -67,6 +70,12 @@ public class Player implements Entity {
 
     public int getLevel() {
         return level;
+    }
+
+    public void equip(int index) {
+        if (index < inventory.size()) {
+            this.weapon = inventory.get(index);
+        }
     }
 
     @Override

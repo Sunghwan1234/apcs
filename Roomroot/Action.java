@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /** Base of all actions. */
 public class Action {
-    public static final int MOVE=0, ATTACK=1, USE=2, DAMAGE=3, HEAL=4, HEALMANA=5, DAMAGEMANA=6, SUBACTION=-1, BACK=-2;
+    public static final int MOVE=0, ATTACK=1, USE=2, DAMAGE=3, HEAL=4, HEALMANA=5, DAMAGEMANA=6, SUBACTION=-1, BACK=-2, INV=-3;
 
     public int type;
     public Thing executer;
@@ -13,7 +13,7 @@ public class Action {
     public ArrayList<Action> subactions;
 
     public String name;
-    public int toTarget, toExecuter;
+    public int valToTarget, valToExecuter;
 
     public Action(int type) {
         this.type = type;
@@ -26,25 +26,50 @@ public class Action {
         this.type = type;
         this.target = target;
     }
-    /** Item Damaging Action */
+    /** Indivisual Actions in an Item */
     public Action(String name, String description, int type, int toTarget, int toExecuter) {
         this.type = type;
         this.name = name;
-        this.toTarget = toTarget;
-        this.toExecuter = toExecuter;
+        this.valToTarget = toTarget;
+        this.valToExecuter = toExecuter;
     }
-    /** Item Attack Action */
+    /** With an Item, Attack a monsterGroup */
     public Action(Item item, Thing executer, ArrayList<Monster> monsterGroup) {
         this.type = Action.SUBACTION;
-        this.monsterGroup = monsterGroup;
-        this.executer = executer;
-        this.name = "Use "+item;
 
-        for (Action a : item.actions) {
-            this.subactions.add(new Action(a, monsterGroup))
+        if (item.actions.size() == 1) {
+            this.name = "Use "+item+" ("+item.actions.get(0)+")";
+
+            for (Monster m : monsterGroup) {
+            this.subactions.add(new Action(item.actions.get(0), m, monsterGroup));
         }
+        } else {
+            this.name = "Use "+item;
+
+            for (Action a : item.actions) {
+                this.subactions.add(new Action(a, monsterGroup));   
+            }
+        }
+
+        
     }
     //TODO: make item actually damage monsters with subaction monster & subaction item actions
+    /** With an Item Action, Target a monster in a monsterGroup */
+    public Action(Action action, ArrayList<Monster> monsterGroup) {
+        this.type = Action.SUBACTION;
+        this.name = "Use  "+action.name;
+        for (Monster m : monsterGroup) {
+            this.subactions.add(new Action(action, m, monsterGroup));
+        }
+    }
+    /** With an Item Action and a monster in a monsterGroup, Use the Item Action. */
+    public Action(Action action, Monster monster, ArrayList<Monster> monsterGroup) {
+        this.type = Action.USE;
+        this.name = "Use "+action.name+" on "+monster;
+        this.valToTarget = action.valToTarget;
+        this.valToExecuter = action.valToExecuter;
+        this.monsterGroup = monsterGroup;
+    }
 
     public Action(int type, Thing target, Thing executer, ArrayList<Object> params) {
         this.type = type;
@@ -117,6 +142,9 @@ public class Action {
                 break;
             case ATTACK: this.name = "Attack";
                 break;
+            case INV:
+                this.name = "View Inventory";
+                break;
             case -100:
                 this.name = "Suicide";
                 break;
@@ -148,19 +176,26 @@ public class Action {
                 return "You are now attacking the monsters!";
             case DAMAGE:
                 if (executer instanceof Player) {
-                    ((Monster)target).hp.dec(this.toTarget);
-                    return "dealt "+this.toTarget+" damage to "+this.target;
+                    ((Monster)target).hp.dec(this.valToTarget);
+                    return "dealt "+this.valToTarget+" damage to "+this.target;
                 }
             case HEAL:
                 if (executer instanceof Player) {
-                    ((Player) executer).hp.inc(this.toTarget);
-                    return "You healed "+this.toTarget+" health.";
+                    ((Player) executer).hp.inc(this.valToTarget);
+                    return "You healed "+this.valToTarget+" health.";
                 }
             case HEALMANA:
                 if (executer instanceof Player) {
-                    ((Player) executer).mp.inc(this.toTarget);
-                    return "You restored "+this.toTarget+" mana.";
+                    ((Player) executer).mp.inc(this.valToTarget);
+                    return "You restored "+this.valToTarget+" mana.";
                 }
+            case INV:
+                Roomroot.pl("---- Your Inventory ----");
+                for (int i = 0; i < ((Player) executer).inventory.size(); i++) { //TODO: finish inventory view with subactions for each item
+                    Item item = ((Player) executer).inventory.get(i);
+                    Roomroot.pl((i+1)+". "+item);
+                }
+                return "Subaction Finished.";
             default:
                 return "null";
         }

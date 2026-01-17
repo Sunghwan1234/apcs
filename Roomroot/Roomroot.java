@@ -27,6 +27,7 @@ public class Roomroot {
 
         player.loc = new Location("Spawn");
         player.inventory.add(Item.ITEMS.get("Wand"));
+        player.equip(0);
 
         pl("You have arrived at "+player.loc+".");
         pl(); pSep();
@@ -66,6 +67,10 @@ public class Roomroot {
                 while (playerAction.type==Action.SUBACTION) {
                     Action subAction = chooseAction(playerAction.subactions, input, "Your Subactions for "+playerAction+":\n", "\n", "\t");
                     playerAction = subAction;
+                }
+                while (playerAction.type==Action.INV) {
+                    pl(playerAction.execute(player));
+                    Action invAction = chooseAction(playerAction.subactions, input, "Inventory Actions:\n", "\n", "\t");
                 }
                 if (playerAction.type!=Action.BACK) {choseFinalAction=true;}
             }

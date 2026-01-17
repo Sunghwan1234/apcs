@@ -44,6 +44,10 @@ public class Item implements Thing {
     }
 
     public String toString() {
-        return this.name;
+        String s = this.name;
+        if (this.level != 0) {
+            s += " [Level "+this.level+"]";
+        }
+        return s;
     }
 }
