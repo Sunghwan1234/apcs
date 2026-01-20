@@ -1,4 +1,4 @@
-package AP.apline;
+package AP.Sem1.apline;
 
 /**
  * APLineTester contains a main method to test APLine objects.

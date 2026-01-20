@@ -1,4 +1,4 @@
-package AP.apline;
+package AP.Sem1.apline;
 
 public class APLine {
     double a,b,c;
