@@ -1,0 +1,28 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "SortVisualizer.Main",
+      "projectName": "apcs_4a2eeb40"
+    },
+    {
+      "type": "java",
+      "name": "SearchSortTimer",
+      "request": "launch",
+      "mainClass": "note.note6_4.SearchSortTimer",
+      "projectName": "apcs_4a2eeb40"
+    },
+    {
+      "type": "java",
+      "name": "Current File",
+      "request": "launch",
+      "mainClass": "${file}"
+    }
+  ]
+}
