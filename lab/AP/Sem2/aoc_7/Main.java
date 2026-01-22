@@ -11,14 +11,19 @@ public class Main {
       intArray[i]=Integer.valueOf(array[i]);
     }
     Arrays.sort(intArray);
-    int median=9;
-    if (array.length%2==1) {
-      median = ((intArray[intArray.length/2])+(intArray[(intArray.length+1)/2]))/2;
-    } 
-    int total=0;
-    for (int i : intArray) {
-      total+=Math.abs(i-median);
+    System.out.println(Arrays.toString(intArray));
+    
+    int lowestCost=999999, lowestCostIndex=0;
+    for (int i=intArray[0]; i<intArray[intArray.length-1]; i++) {
+      int total=0;
+      for (int n : intArray) {
+        total+=Math.abs(n-i);
+      }
+      if (total<lowestCost) {
+        lowestCost = total;
+        lowestCostIndex = i;
+      }
     }
-    while ()
+    System.out.println(lowestCost);
   }
 }
