@@ -12,7 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
-public class Main  {
+public class Main {
   public static final int FRAME_WIDTH = 500, FRAME_HEIGHT = 500;
 
   public static JFrame frame = new JFrame("JFrame");
@@ -21,6 +21,8 @@ public class Main  {
   public static ActionListener actionListener;
 
   public static Point mouse = new Point(0, 10);
+
+  public static int[] array = {4,3,7,8,2,9,1,5,6,0};
 
   public static void main(String[] args) {
     frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
@@ -35,21 +37,32 @@ public class Main  {
     };
 
     panel = new JPanel() {
-      @Override
-      public void paint(Graphics g) {
-        g.setColor(Color.LIGHT_GRAY); g.fillRect(0, 0, FRAME_WIDTH, FRAME_HEIGHT);
+      // @Override
+      // public void paintComponent(Graphics g) {
+      //   //g.setColor(Color.LIGHT_GRAY); g.fillRect(0, 0, FRAME_WIDTH, FRAME_HEIGHT);
         
-        g.setColor(Color.black);
-        g.drawRect(mouse.x, mouse.y, 10, 10);
+      //   g.setColor(Color.black);
+      //   //g.drawRect(mouse.x, mouse.y, 10, 10);
 
-        g.dispose();
-      }
+      //   g.dispose();
+      // }
     };
+
+    JButton button = new JButton("Click Me!");
+    button.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("Button clicked!");
+        }
+    });
 
     timer = new Timer(1, actionListener);
     // End of initialization.
+    panel.add(button);
     frame.add(panel);
     frame.setVisible(true);
     timer.start();
   }
+
+
 }

@@ -6,6 +6,20 @@
   "configurations": [
     {
       "type": "java",
+      "name": "TrailTester",
+      "request": "launch",
+      "mainClass": "AP.Sem2.Trail.TrailTester",
+      "projectName": "apcs_4a2eeb40"
+    },
+    {
+      "type": "java",
+      "name": "SoundTester",
+      "request": "launch",
+      "mainClass": "AP.Sem2.Sound.SoundTester",
+      "projectName": "apcs_4a2eeb40"
+    },
+    {
+      "type": "java",
       "name": "Main",
       "request": "launch",
       "mainClass": "SortVisualizer.Main",
