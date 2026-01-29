@@ -30,6 +30,20 @@ public class Block {
     blockArray[index1].animateTo(blockArray[index2].index);
     blockArray[index2].animateTo(tempIndex);
   }
+  public static void push(int index, int toIndex) {
+    Block value = blockArray[index];
+    int i=index;
+    boolean c=true;
+    while (c) {
+      blockArray[i]=blockArray[i+index>toIndex?1:-1];
+      blockArray[i].animateTo(i);
+      
+      i+=index>toIndex?1:-1;
+      c=index>toIndex? i<toIndex : i>toIndex;
+    }
+    blockArray[toIndex]=value;
+    blockArray[toIndex].animateTo(toIndex);
+  }
 
   private void animateTo(int newIndex) {
     this.index = newIndex;
