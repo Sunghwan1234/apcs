@@ -10,9 +10,11 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
-public class Main {
+public class Render {
   public static final int FRAME_WIDTH = 500, FRAME_HEIGHT = 500;
+  public static final int PANEL_HEIGHT = FRAME_HEIGHT-60;
 
   public static final JFrame frame = new JFrame("JFrame");
   public static final JPanel panel = new JPanel() {
@@ -28,8 +30,11 @@ public class Main {
           b.paint(g);
         }
 
-        if (pointer!=-1) {
-          g.drawString("^", Block.getXAt(pointer), FRAME_HEIGHT-50);
+        if (pointerX!=-1) {
+          g.setColor(Color.RED);
+          g.drawString("^", Block.getXAt(pointerX)+5, FRAME_HEIGHT-75);
+          g.setColor(Color.BLUE);
+          g.drawString("^", Block.getXAt(pointerX+1)+5, FRAME_HEIGHT-75);
         }
 
       }
@@ -50,7 +55,7 @@ public class Main {
 
   public static int[] array = {4,3,7,8,2,9,1,5,6,0};
 
-  public static int pointer = 0;
+  public static int pointerX = 0;
 
   public static void main(String[] args) {
     frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
@@ -70,6 +75,7 @@ public class Main {
     for (int i=0;i<array.length;i++) {
       Block.blockArray[i] = new Block(i,array[i]);
     }
+    Sorter.array = array;
 
     panel.add(controlPanel, BorderLayout.SOUTH);
     panel.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
@@ -79,18 +85,23 @@ public class Main {
   }
 
   public static void startAnimation() {
-    int pointer = 0;
-
+    Sorter sort = new Sorter(1);
     ticks = 0;
-    timer = new Timer(1000, new ActionListener() {
+    timer = new Timer(500, new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         System.out.println(">> Tick "+ticks);
-        if (pointer+1<array.length) {
+        if (sort.sortWhile()) { // Loop
           ticks++;
-          doOneSortStep(pointer);
+
+          sort.step();
+
+          pointerX = sort.pointer;
+
         } else {
           timer.stop();
+          System.out.println("Stopping Timer.");
+          System.out.println("Sort has finished in "+ticks+" Ticks.");
         }
       }
     });
@@ -98,21 +109,7 @@ public class Main {
     System.out.println("Timer Started.");
   }
 
-  public static void doOneSortStep(int pointer) {
-    if (array[pointer]>array[pointer+1]) {
-      // swap here
-        doOneSwap(pointer, pointer+1);
-        if (pointer>0) {pointer--;} else {pointer++;}
-      } else {
-        pointer++;
-      }
-  }
-
-  public static void doOneSwap(int index1, int index2) {
-    int temp=array[index1];
-    array[index1]=array[index2];
-    array[index2]=temp;
-    
-    Block.swap(index1,index2);
+  public static void setDrawingPointer(int pointer) {
+    pointerX = pointer;
   }
 }

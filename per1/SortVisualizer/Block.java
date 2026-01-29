@@ -4,12 +4,12 @@ import java.awt.Graphics;
 import java.awt.Color;
 
 public class Block {
-  public static Block[] blockArray = new Block[Main.array.length];
+  public static Block[] blockArray = new Block[Render.array.length];
 
   private int width = 20, height;
   public int value, index;
-  private int x, y;
-  private int goalX;
+  private double x, y;
+  private double goalX;
   
   public Block(int index, int value) {
     this.index=index;
@@ -18,7 +18,7 @@ public class Block {
 
     this.x = getXAt(index);
     this.goalX = x;
-    this.y = Main.FRAME_HEIGHT-height-100;
+    this.y = Render.FRAME_HEIGHT-height-100;
   }
 
   public static void swap(int index1, int index2) {
@@ -37,17 +37,18 @@ public class Block {
   }
 
   public static int getXAt(int index) {
-    return 10+index*(Main.FRAME_WIDTH-10)/Block.blockArray.length;
+    return (index+1)*(Render.FRAME_WIDTH)/(Block.blockArray.length+1);
+    //return (index-(Block.blockArray.length-1)/2)
   }
 
   public void paint(Graphics g) {
-    x += (goalX-x)/10;
+    x += (goalX-x)/5;
 
     g.setColor(Color.WHITE);
-    g.fillRect(x, y, width, height);
+    g.fillRect((int)x, (int)y, width, height);
     g.setColor(Color.GRAY);
-    g.drawRect(x, y, width, height);
-    g.drawString(value+"", x+7, y+height+15);
+    g.drawRect((int)x, (int)y, width, height);
+    g.drawString(value+"", (int)x+7, (int)y+height+15);
   }
 
   public String toString() {

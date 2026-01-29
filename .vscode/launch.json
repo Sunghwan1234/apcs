@@ -6,6 +6,20 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Render",
+      "request": "launch",
+      "mainClass": "SortVisualizer.Render",
+      "projectName": "apcs_ce6823d2"
+    },
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "SortVisualizer.Main",
+      "projectName": "apcs_ce6823d2"
+    },
+    {
+      "type": "java",
       "name": "DataTester",
       "request": "launch",
       "mainClass": "AP.Sem2.Data.DataTester",
