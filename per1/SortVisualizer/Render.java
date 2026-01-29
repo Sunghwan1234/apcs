@@ -1,4 +1,4 @@
-package SortVisualizer;
+
 
 import javax.swing.*;
 
@@ -32,9 +32,9 @@ public class Render {
 
         if (pointerX!=-1) {
           g.setColor(Color.RED);
-          g.drawString("^", Block.getXAt(pointerX)+5, FRAME_HEIGHT-75);
+          g.drawString("/\\", Block.getXAt(pointerX)+5, FRAME_HEIGHT-75);
           g.setColor(Color.BLUE);
-          g.drawString("^", Block.getXAt(pointerX+1)+5, FRAME_HEIGHT-75);
+          g.drawString("/\\", Block.getXAt(pointerX+1)+5, FRAME_HEIGHT-75);
         }
 
       }

@@ -6,6 +6,20 @@
   "configurations": [
     {
       "type": "java",
+      "name": "GameOfLife",
+      "request": "launch",
+      "mainClass": "lab.lab.lab6_6p2_GOL.GameOfLife",
+      "projectName": "apcs_4a2eeb40"
+    },
+    {
+      "type": "java",
+      "name": "Render",
+      "request": "launch",
+      "mainClass": "Render",
+      "projectName": "apcs_4a2eeb40"
+    },
+    {
+      "type": "java",
       "name": "Render",
       "request": "launch",
       "mainClass": "SortVisualizer.Render",

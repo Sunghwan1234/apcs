@@ -1,4 +1,4 @@
-package SortVisualizer;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -48,28 +48,8 @@ public class Sorter {
     }
   }
 
+  /** Inserstion Sort */
   public void sort2() {
-    int min=array[0], max=array[0];
-    int i=1;
-    while (i<array.length) {
-      boolean ii=true;
-      if (array[i]<min) { // New Min?
-        min=array[i];
-        push(i, 0);
-        ii=false;
-      }
-      if (array[i]>max) {
-        max=array[i];
-        push(i, array.length-1);
-        ii=false;
-      }
-      if (array[i-1]>array[i]) {
-        swapIndex(i-1, i);
-        ii=false;
-      }
-      if (ii) {i++;}
-    }
-    
     
   }
 
