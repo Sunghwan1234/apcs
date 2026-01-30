@@ -6,6 +6,20 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Render",
+      "request": "launch",
+      "mainClass": "Render",
+      "projectName": "apcs_ce6823d2"
+    },
+    {
+      "type": "java",
+      "name": "Sorttester",
+      "request": "launch",
+      "mainClass": "Sorttester",
+      "projectName": "apcs_ce6823d2"
+    },
+    {
+      "type": "java",
       "name": "GameOfLife",
       "request": "launch",
       "mainClass": "lab.lab.lab6_6p2_GOL.GameOfLife",

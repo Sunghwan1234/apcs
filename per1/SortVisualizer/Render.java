@@ -16,8 +16,8 @@ public class Render {
   public static final int FRAME_WIDTH = 500, FRAME_HEIGHT = 500;
   public static final int PANEL_HEIGHT = FRAME_HEIGHT-60;
 
-  public static final JFrame frame = new JFrame("JFrame");
-  public static final JPanel panel = new JPanel() {
+  private static final JFrame frame = new JFrame("JFrame");
+  private static final JPanel panel = new JPanel() {
       @Override
       public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -30,11 +30,11 @@ public class Render {
           b.paint(g);
         }
 
-        if (pointerX!=-1) {
-          g.setColor(Color.RED);
-          g.drawString("/\\", Block.getXAt(pointerX)+5, FRAME_HEIGHT-75);
-          g.setColor(Color.BLUE);
-          g.drawString("/\\", Block.getXAt(pointerX+1)+5, FRAME_HEIGHT-75);
+        if (currentSort!=null && ticks>-1) {
+          for (int i=0;i<getCVArray().length;i++) {
+            g.setColor(Color.getHSBColor((float)i/getCVArray().length, 1, 1));
+            g.drawString(currentSort.getTypes()[i], Block.getXAt((int)getCVArray()[i]), FRAME_HEIGHT-75);
+          }
         }
 
       }
@@ -47,13 +47,13 @@ public class Render {
       }
     });;
 
-  public static Timer timer;
-  public static int ticks = 0;
+  private static Timer timer;
+  public static int ticks = -1;
+  private static Sort currentSort;
 
   public static Point mouse = new Point(0, 10);
-  public static final JButton button = new JButton("Run");
 
-  public static int[] array = {4,3,7,8,2,9,1,5,6,0};
+  static int[] array = {4,3,7,8,2,9,1,5,6,0};
 
   public static int pointerX = 0;
 
@@ -61,6 +61,7 @@ public class Render {
     frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     panel.setLayout(new BorderLayout());
+    JButton button = new JButton("Run");
     button.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -75,7 +76,6 @@ public class Render {
     for (int i=0;i<array.length;i++) {
       Block.blockArray[i] = new Block(i,array[i]);
     }
-    Sorter.array = array;
 
     panel.add(controlPanel, BorderLayout.SOUTH);
     panel.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
@@ -85,23 +85,21 @@ public class Render {
   }
 
   public static void startAnimation() {
-    Sorter sort = new Sorter(1);
+    Sort sort = new Sort(array, 0);
+    System.out.println(sort);
+    currentSort = sort;
     ticks = 0;
     timer = new Timer(500, new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         System.out.println(">> Tick "+ticks);
-        if (sort.sortWhile()) { // Loop
-          ticks++;
-
-          sort.step();
-
-          pointerX = sort.pointer;
-
-        } else {
+        if (ticks>=sort.getLogLength()) { // Loop
           timer.stop();
           System.out.println("Stopping Timer.");
           System.out.println("Sort has finished in "+ticks+" Ticks.");
+          ticks = -1;
+        } else {
+          ticks++;
         }
       }
     });
@@ -109,7 +107,7 @@ public class Render {
     System.out.println("Timer Started.");
   }
 
-  public static void setDrawingPointer(int pointer) {
-    pointerX = pointer;
-  }
+  /** Get Current Tick Array */
+  public static int[] getCTArray() {return currentSort.getArray(ticks);}
+  public static Object[] getCVArray() {return currentSort.getVars(ticks);}
 }

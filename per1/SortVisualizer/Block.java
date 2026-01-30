@@ -21,34 +21,33 @@ public class Block {
     this.y = Render.FRAME_HEIGHT-height-100;
   }
 
-  public static void swap(int index1, int index2) {
-    Block temp=blockArray[index1];
-    blockArray[index1]=blockArray[index2];
-    blockArray[index2]=temp;
+  // public static void swap(int index1, int index2) {
+  //   Block temp=blockArray[index1];
+  //   blockArray[index1]=blockArray[index2];
+  //   blockArray[index2]=temp;
 
-    int tempIndex = blockArray[index1].index;
-    blockArray[index1].animateTo(blockArray[index2].index);
-    blockArray[index2].animateTo(tempIndex);
-  }
-  public static void push(int index, int toIndex) {
-    Block value = blockArray[index];
-    int i=index;
-    boolean c=true;
-    while (c) {
-      blockArray[i]=blockArray[i+index>toIndex?1:-1];
-      blockArray[i].animateTo(i);
+  //   int tempIndex = blockArray[index1].index;
+  //   blockArray[index1].animateTo(blockArray[index2].index);
+  //   blockArray[index2].animateTo(tempIndex);
+  // }
+  // public static void push(int index, int toIndex) {
+  //   Block value = blockArray[index];
+  //   int i=index;
+  //   boolean c=true;
+  //   while (c) {
+  //     blockArray[i]=blockArray[i+index>toIndex?1:-1];
+  //     blockArray[i].animateTo(i);
       
-      i+=index>toIndex?1:-1;
-      c=index>toIndex? i<toIndex : i>toIndex;
-    }
-    blockArray[toIndex]=value;
-    blockArray[toIndex].animateTo(toIndex);
-  }
-
-  private void animateTo(int newIndex) {
-    this.index = newIndex;
-    this.goalX = getXAt(index);
-  }
+  //     i+=index>toIndex?1:-1;
+  //     c=index>toIndex? i<toIndex : i>toIndex;
+  //   }
+  //   blockArray[toIndex]=value;
+  //   blockArray[toIndex].animateTo(toIndex);
+  // }
+  // private void animateTo(int newIndex) {
+  //   this.index = newIndex;
+  //   this.goalX = getXAt(index);
+  // }
 
   public static int getXAt(int index) {
     return (index+1)*(Render.FRAME_WIDTH)/(Block.blockArray.length+1);
@@ -56,6 +55,18 @@ public class Block {
   }
 
   public void paint(Graphics g) {
+
+    // Follow the value in the array around
+    if (Render.ticks>-1) {
+      for (int i=0;i<Render.getCTArray().length;i++) {
+        if (Render.getCTArray()[i]==value) {
+          this.index = i;
+          this.goalX = getXAt(i);
+          break;
+        }
+      }
+    }
+
     x += (goalX-x)/5;
 
     g.setColor(Color.WHITE);
