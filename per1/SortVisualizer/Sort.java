@@ -14,14 +14,39 @@ public class Sort {
     this.array = array;
 
     switch (type) {
+      case 2: sort2(); break;
+      case 1: sort1(); break;
       default: sort1(); break;
     }
   }
 
-  /** Inserstion Sort */
+  /** Teleporting Insertion Sort */
   public void sort2() {
-    for (int i=0; i<array.length; i++) {
-      swapIndices(1, 2);
+    setLogVarTypes(new String[] {"p", "p+1", "s"});
+
+    int pointer = 0;
+    int save = -1;
+    while (pointer+1<array.length) {
+      if (array[pointer]>array[pointer+1]) {
+        if (save==-1) {save=pointer;}
+        swapIndices(pointer, pointer+1);
+        if (pointer>0) {pointer--;} else {
+          if (save>-1) {
+            pointer = save;
+            save = -1;
+          } else {
+            pointer++;
+          }}
+      } else {
+        if (save>-1) {
+          pointer = save;
+          save = -1;
+        } else {
+          pointer++;
+        }
+      }
+
+      logVars(array, new Object[] {pointer, pointer+1, save});
     }
   }
 

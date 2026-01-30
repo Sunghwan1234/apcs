@@ -6,6 +6,20 @@
   "configurations": [
     {
       "type": "java",
+      "name": "GridPathTester",
+      "request": "launch",
+      "mainClass": "lab.AP.Sem2.GridPath.GridPathTester",
+      "projectName": "apcs_4a2eeb40"
+    },
+    {
+      "type": "java",
+      "name": "SumOrSameGameTester",
+      "request": "launch",
+      "mainClass": "lab.AP.Sem2.SumOrSame.SumOrSameGameTester",
+      "projectName": "apcs_4a2eeb40"
+    },
+    {
+      "type": "java",
       "name": "Render",
       "request": "launch",
       "mainClass": "Render",

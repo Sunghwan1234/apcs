@@ -30,10 +30,10 @@ public class Render {
           b.paint(g);
         }
 
-        if (currentSort!=null && ticks>-1) {
+        if (sort!=null && ticks>-1) {
           for (int i=0;i<getCVArray().length;i++) {
             g.setColor(Color.getHSBColor((float)i/getCVArray().length, 1, 1));
-            g.drawString(currentSort.getTypes()[i], Block.getXAt((int)getCVArray()[i]), FRAME_HEIGHT-75);
+            g.drawString(sort.getTypes()[i], Block.getXAt((int)getCVArray()[i]), FRAME_HEIGHT-75);
           }
         }
 
@@ -49,7 +49,7 @@ public class Render {
 
   private static Timer timer;
   public static int ticks = -1;
-  private static Sort currentSort;
+  private static Sort sort;
 
   public static Point mouse = new Point(0, 10);
 
@@ -85,29 +85,32 @@ public class Render {
   }
 
   public static void startAnimation() {
-    Sort sort = new Sort(array, 0);
+    sort = new Sort(array, 2);
     System.out.println(sort);
-    currentSort = sort;
     ticks = 0;
     timer = new Timer(500, new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        System.out.println(">> Tick "+ticks);
-        if (ticks>=sort.getLogLength()) { // Loop
-          timer.stop();
-          System.out.println("Stopping Timer.");
-          System.out.println("Sort has finished in "+ticks+" Ticks.");
-          ticks = -1;
-        } else {
-          ticks++;
-        }
+        animateTick();
       }
     });
     timer.start();
     System.out.println("Timer Started.");
   }
 
+  public static void animateTick() {
+    System.out.println(">> Tick "+ticks);
+    if (ticks+1>=sort.getLogLength()) { // Loop
+      timer.stop();
+      System.out.println("Stopping Timer.");
+      System.out.println("Sort has finished in "+ticks+" Ticks.");
+      ticks = -1;
+    } else {
+      ticks++;
+    } 
+  }
+
   /** Get Current Tick Array */
-  public static int[] getCTArray() {return currentSort.getArray(ticks);}
-  public static Object[] getCVArray() {return currentSort.getVars(ticks);}
+  public static int[] getCTArray() {return sort.getArray(ticks);}
+  public static Object[] getCVArray() {return sort.getVars(ticks);}
 }
