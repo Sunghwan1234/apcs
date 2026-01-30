@@ -20,7 +20,7 @@ public class Sort {
     }
   }
 
-  /** Teleporting Insertion Sort */
+  /** Teleporting Insertion Sort: Super Efficient */
   public void sort2() {
     setLogVarTypes(new String[] {"p", "p+1", "s"});
 
@@ -28,15 +28,17 @@ public class Sort {
     int save = -1;
     while (pointer+1<array.length) {
       if (array[pointer]>array[pointer+1]) {
-        if (save==-1) {save=pointer;}
+        if (save==-1) {save=pointer+1;}
         swapIndices(pointer, pointer+1);
+
         if (pointer>0) {pointer--;} else {
           if (save>-1) {
             pointer = save;
             save = -1;
           } else {
             pointer++;
-          }}
+          }
+        }
       } else {
         if (save>-1) {
           pointer = save;

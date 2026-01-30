@@ -18,7 +18,7 @@ public class Block {
 
     this.x = getXAt(index);
     this.goalX = x;
-    this.y = Render.FRAME_HEIGHT-height-100;
+    this.y = Render.FRAME_HEIGHT-height-120;
   }
 
   // public static void swap(int index1, int index2) {

@@ -33,7 +33,7 @@ public class Render {
         if (sort!=null && ticks>-1) {
           for (int i=0;i<getCVArray().length;i++) {
             g.setColor(Color.getHSBColor((float)i/getCVArray().length, 1, 1));
-            g.drawString(sort.getTypes()[i], Block.getXAt((int)getCVArray()[i]), FRAME_HEIGHT-75);
+            g.drawString(sort.getTypes()[i], Block.getXAt((int)getCVArray()[i]), FRAME_HEIGHT-80);
           }
         }
 
