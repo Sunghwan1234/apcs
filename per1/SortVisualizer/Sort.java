@@ -1,7 +1,6 @@
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
 public class Sort {
   private int[] array = {4,3,7,8,2,9,1,5,6,0};
