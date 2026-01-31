@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Roomroot",
+      "request": "launch",
+      "mainClass": "Roomroot.Roomroot",
+      "projectName": "apcs_ce6823d2"
+    },
+    {
+      "type": "java",
       "name": "GridPathTester",
       "request": "launch",
       "mainClass": "lab.AP.Sem2.GridPath.GridPathTester",

@@ -1,7 +1,8 @@
 package Roomroot;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+
+import Roomroot.Action.Type;
 
 public class Player implements Entity {
     public static ArrayList<Location> path = new ArrayList<>();
@@ -31,12 +32,12 @@ public class Player implements Entity {
         }
 
         if (Roomroot.status == Roomroot.stat.combat) {
-            actions.add(Action.attackGroup(Monster.aggroGroup));
+            actions.add(Action.attackGroup(Monster.aggroGroup)); // TODO: make this work ig
         }
 
-        actions.add(new Action(Action.INV)) ;
+        actions.add(new Action(Type.INV)) ;
         
-        actions.add(new Action(-100));
+        actions.add(new Action(Type.INSTAKILL));
 
         return actions;
     }
@@ -71,10 +72,15 @@ public class Player implements Entity {
         return level;
     }
 
-    public void equip(int index) {
-        if (index < inventory.size()) {
-            this.weapon = inventory.get(index);
+    public void equip(Item weapon) {
+        for (Item i : inventory) {
+            if (i==weapon) {
+                this.weapon = weapon;
+            }
         }
+    }
+    public Item getWeapon() {
+        return weapon;
     }
 
     @Override

@@ -139,19 +139,12 @@ public class Location implements Thing {
                 }
             }
             actions.add(new Action(moveActions, "Move"));
-        }
 
-        
-        if (this.monsters.size()>0) {
-            actions.add(Action.attackGroup(this.monsters));
-        }
-        /* 
-        for (int i=0;i<this.entities.length;i++) {
-            if (entities[i].isAlive()) {
-                actions.addAll(entities[i].getActions());
+            if (this.monsters.size()>0) {
+                actions.add(Action.attackGroup(this.monsters));
             }
         }
-        */
+
         return actions;
     }
 

@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+
+import Roomroot.Action.Type;
+
 import java.util.List;
 
 public class Monster implements Entity {
@@ -80,12 +83,12 @@ public class Monster implements Entity {
     @Override
     public ArrayList<Action> getActions() {
 
-        // TODO: make fight actions AND give player wand
+        // TODO: make fight actions
 
         if (this.actions==null) {
             if (this.damage>0) {
                 ArrayList<Action> actions = new ArrayList<>();
-                actions.add(new Action(Action.ATTACK, target, this, null));
+                actions.add(new Action(Type.ATTACKGROUP, target, this, null));
             }
         }
         return this.actions;
