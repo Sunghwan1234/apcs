@@ -19,6 +19,28 @@ public class Sort {
     }
   }
 
+  /** Back-Tracing Insertion Sort */
+  public void sort3() {
+    int pointer = 0;
+    int pointer2 = 0;
+
+    setLogVarTypes(new String[] {"p", "p+1", "p2"});
+
+    while (pointer+1<array.length) {
+      if (array[pointer]>array[pointer+1]) {
+        swapIndices(pointer, pointer+1);
+
+        if (pointer>0) {pointer--;} else {
+          pointer++;
+        }
+      } else {
+        pointer++;
+      }
+
+      logVars(array, new Object[] {pointer, pointer+1, pointer2});
+    }
+  }
+
   /** Teleporting Insertion Sort: Super Efficient */
   public void sort2() {
     setLogVarTypes(new String[] {"p", "p+1", "s"});
@@ -79,6 +101,7 @@ public class Sort {
     array[index2]=temp;
   }
 
+  /** Efficient Push */
   private void push(int index, int toIndex) {
     int value = array[index];
     int i=index;
