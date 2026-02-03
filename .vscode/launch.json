@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "IntArrayWorkerTester",
+      "request": "launch",
+      "mainClass": "lab6_B.IntArrayWorkerTester",
+      "projectName": "apcs_4a2eeb40"
+    },
+    {
+      "type": "java",
       "name": "ColorChooser",
       "request": "launch",
       "mainClass": "ColorChooser",
