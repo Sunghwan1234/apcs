@@ -50,7 +50,6 @@ public class Roomroot {
 
                 for (Monster m : Monster.aggroGroup) {
                     if (m.isAlive()) {
-                        pl();
                         pl(printStatus(m.getStatus())); // Get status of Monster
                     }
                 }
