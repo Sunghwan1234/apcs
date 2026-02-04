@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "PictureTester",
+      "request": "launch",
+      "mainClass": "PictureTester",
+      "projectName": "apcs_4a2eeb40"
+    },
+    {
+      "type": "java",
       "name": "Roomroot",
       "request": "launch",
       "mainClass": "Roomroot.Roomroot",

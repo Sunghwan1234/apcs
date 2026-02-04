@@ -126,7 +126,13 @@ public class Picture extends SimplePicture {
    * Sets the red and green values of each pixel to 0.
    */
   public void keepOnlyBlue() {
-    /* to be implemented in 6.C Lab, part (a) */
+    Pixel[][] pixels = this.getPixels2D();
+    for (Pixel[] rowArray : pixels) {
+      for (Pixel pixelObj : rowArray) {
+        pixelObj.setRed(0);
+        pixelObj.setGreen(0);
+      }
+    }
   }
   
   
@@ -134,7 +140,14 @@ public class Picture extends SimplePicture {
    * Sets all red, green, and blue values of each pixel to 255 - current value.
    */
   public void negate() {
-    /* to be implemented in 6.C Lab, part (b) */
+    Pixel[][] pixels = this.getPixels2D();
+    for (Pixel[] rowArray : pixels) {
+      for (Pixel pixelObj : rowArray) {
+        pixelObj.setRed(255-pixelObj.getRed());
+        pixelObj.setGreen(255-pixelObj.getGreen());
+        pixelObj.setBlue(255-pixelObj.getBlue());
+      }
+    }
   }
   
   
@@ -142,7 +155,15 @@ public class Picture extends SimplePicture {
    * Sets all red, green, and blue values of each pixel to the average of the current values.
    */
   public void grayscale() {
-    /* to be implemented in 6.C Lab, part (c) */
+    Pixel[][] pixels = this.getPixels2D();
+    for (Pixel[] rowArray : pixels) {
+      for (Pixel pixelObj : rowArray) {
+        int av = (pixelObj.getRed()+pixelObj.getGreen()+pixelObj.getBlue())/3;
+        pixelObj.setRed(av);
+        pixelObj.setGreen(av);
+        pixelObj.setBlue(av);
+      }
+    }
   }
   
   
@@ -150,7 +171,37 @@ public class Picture extends SimplePicture {
    * Enhances the pixels that are the least like water.
    */
   public void fixUnderwater() {
-    /* to be implemented in 6.C Lab, part (d) */
+    Pixel[][] pixels = this.getPixels2D();
+    int[] sums = new int[3];
+    for (int row = 0; row<pixels.length; row++) {
+      for (int col=0;col<pixels[row].length;col++) {
+        Pixel p = pixels[row][col];
+        sums[0] += p.getRed()/Math.max(p.getGreen(),1);
+        sums[1] += p.getGreen()/Math.max(p.getBlue(), 1);
+        sums[2] += p.getBlue()/Math.max(p.getRed(),1);
+      }
+    }
+    sums[0]/=pixels.length*pixels[0].length;
+    sums[1]/=pixels.length*pixels[0].length;
+    sums[2]/=pixels.length*pixels[0].length;
+
+    for (Pixel[] rowArray : pixels) {
+      for (Pixel p : rowArray) {
+        double c = 1;
+        try {
+          c = 0.5+(0.5*2*Math.atan(((
+            Math.abs(sums[0] - p.getRed()/Math.max(p.getGreen(),1)) +
+            Math.abs(sums[1] - p.getGreen()/Math.max(p.getBlue(), 1)) +
+            Math.abs(sums[2] - p.getBlue()/Math.max(p.getRed(),1))
+          )/3)*0.8)/Math.PI);
+        } catch (Exception e) {
+        }
+        p.setRed((int) (p.getRed()*c));
+        p.setGreen((int)(p.getGreen()*c));
+        p.setBlue((int)(p.getBlue()*c));
+
+      }
+    }
   }
   
 
