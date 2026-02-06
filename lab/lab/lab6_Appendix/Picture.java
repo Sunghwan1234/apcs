@@ -316,7 +316,8 @@ public class Picture extends SimplePicture {
    * Mirrors just part of a picture of a snowman.
    */
   public void mirrorArms() {
-    /* to be implemented in 6.E Lab, part (a) */
+    mirrorOppositeBound(155, 239, 200, 300, 191, 2);
+    mirrorOppositeBound(155, 103, 191, 169, 191, 2);
   }
   
   
@@ -324,9 +325,79 @@ public class Picture extends SimplePicture {
    * Mirrors just part of a picture of a swan.
    */
   public void mirrorSwan() {
-    /* to be implemented in 6.E Lab, part (b) */
+    mirrorOppositeBound(68, 220, 300, 450, 220, 1);
+    mirrorOppositeBound(66, 315, 180, 391, 280, 1);
   }
 
+  public void mirrorOppositeBound(int r, int c, int r2, int c2, int rl, int t) {
+    Pixel[][] pixels = this.getPixels2D();
+    int height = pixels.length;
+    int width = pixels[0].length;
+    if (rl==-1) {
+      if (t==1) {
+        rl=width/2;
+      } else {
+        rl=height/2;
+      }
+    }
+
+    for (int row = r; row <= r2; row++) {
+      for (int col = c; col <= c2; col++) {
+        try {
+          if (t==1) {
+            Pixel cPixel = pixels[row][col];
+            Pixel fPixel = pixels[row][rl+(rl-col)];
+            fPixel.setColor(cPixel.getColor());
+          } else {
+            Pixel cPixel = pixels[row][col];
+            Pixel fPixel = pixels[rl+(rl-row)][col];
+            fPixel.setColor(cPixel.getColor());
+          }
+        } catch (Exception e) {
+          continue;
+        }
+      }
+    }
+  }
+
+  /** Mirrors a Rectangle within a line */
+  public void mirrorPreciseBound(int r, int c, int r2, int c2, int rl, int t) {
+    Pixel[][] pixels = this.getPixels2D();
+    int height = pixels.length;
+    int width = pixels[0].length;
+    if (rl==-1) {
+      if (t==1) {
+        rl=width/2;
+      } else {
+        rl=height/2;
+      }
+    }
+
+    for (int row = r; row <= r2; row++) {
+      for (int col = c; col <= c2; col++) {
+        if (t==1) {
+          Pixel cPixel = pixels[row][col];
+          Pixel fPixel = pixels[row][rl+(rl-col)];
+          cPixel.setColor(fPixel.getColor());
+        } else {
+          Pixel cPixel = pixels[row][col];
+          Pixel fPixel = pixels[rl+(rl-row)][col];
+          cPixel.setColor(fPixel.getColor());
+        }
+      }
+    }
+  }
+
+  /** Mirrors an rectangle. Types:
+   * 1. L/R
+   * 2. T/B
+  */
+  public void mirrorRect(int r, int c, int h, int w, int t) {
+    mirrorPreciseBound(r, c, r+h, c+w, -1, t);
+  }
+  public void mirrorBound(int r, int c, int r2, int c2, int t) {
+    mirrorRect(r, c, r2-r, c2-c, t);
+  }
 
   /************************************ 6.F Lab ************************************/
   

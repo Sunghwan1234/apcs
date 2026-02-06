@@ -25,12 +25,12 @@ public class PictureTester {
 //    testMirrorVerticalRightToLeft();
    // testMirrorHorizontalTopToBottom();
 //    testMirrorHorizontalBottomToTop();
-    testMirrorDiagonal();
+    //testMirrorDiagonal();
     
     /************************************ 6.E Lab ************************************/
 
-//    testMirrorTemple();
-//    testMirrorArms();
+//testMirrorTemple();
+    testMirrorArms();
 //    testMirrorSwan();
     
     /************************************ 6.F Lab ************************************/
