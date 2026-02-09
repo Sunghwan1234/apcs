@@ -30,12 +30,12 @@ public class PictureTester {
     /************************************ 6.E Lab ************************************/
 
 //testMirrorTemple();
-    testMirrorArms();
+//    testMirrorArms();
 //    testMirrorSwan();
     
     /************************************ 6.F Lab ************************************/
     
-//    testChange1();
+    testChange1();
 //    testChange2();
     
   }
@@ -190,11 +190,11 @@ public class PictureTester {
   private static void testChange1() {
     Picture pic = new Picture("lab/lab/lab6_Appendix/images/beach.jpg");
     pic.explore();
-    pic.change1();
+    pic.rotateCenter(90);
     pic.explore();
     pic = new Picture("lab/lab/lab6_Appendix/images/koala.jpg");
     pic.explore();
-    pic.change1();
+    pic.rotateCenter(-30);
     pic.explore();
   }
   

@@ -1,3 +1,5 @@
+import java.awt.Color;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 /**
@@ -404,9 +406,25 @@ public class Picture extends SimplePicture {
   /**
    * Method to _________________________________
    */
-  public void change1() {
-    /* to be implemented in 6 Appendix Project */
-       
+  public void rotateCenter(int degrees) {
+    double rad = Math.toRadians(degrees);
+    Pixel[][] pixels = this.getPixels2D();
+    int width = pixels[0].length;
+
+    Point center = new Point(width/2, pixels.length/2);
+    for (int row=0;row<pixels.length;row++) {
+      for (int col=0;col<pixels[row].length;col++) {
+        Point relativePoint = new Point(col-center.x,row-center.y);
+        double distance = Math.sqrt(Math.pow(relativePoint.x,2)+Math.pow(relativePoint.y,2));
+        double angle = Math.atan2(relativePoint.y,relativePoint.x);
+        Point newPoint = new Point((int)(center.x+distance*Math.cos(angle+rad)),(int)(center.y+distance*Math.sin(angle+rad)));
+        if (newPoint.y<0||newPoint.y>=pixels.length||newPoint.x<0||newPoint.x>=width) {continue;}
+        Color thisPixelColor = pixels[row][col].getColor();
+        Color newPixelColor = pixels[newPoint.y][newPoint.x].getColor();
+        pixels[newPoint.y][newPoint.x].setColor(thisPixelColor);
+        pixels[row][col].setColor(newPixelColor);
+      }
+    }
   }
   
   
