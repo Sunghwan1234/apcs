@@ -411,28 +411,110 @@ public class Picture extends SimplePicture {
     Pixel[][] pixels = this.getPixels2D();
     int width = pixels[0].length;
 
+    // Save Previous Colors
+    Color[][] colors = new Color[pixels.length][width];
+    /** Save all pixels to a color grid. */
+    for (int row=0;row<pixels.length;row++) {
+      for (int col=0;col<pixels[row].length;col++) {
+        colors[row][col] = pixels[row][col].getColor();
+      }
+    }
+
     Point center = new Point(width/2, pixels.length/2);
     for (int row=0;row<pixels.length;row++) {
       for (int col=0;col<pixels[row].length;col++) {
+        // Rotate Pixel
         Point relativePoint = new Point(col-center.x,row-center.y);
         double distance = Math.sqrt(Math.pow(relativePoint.x,2)+Math.pow(relativePoint.y,2));
         double angle = Math.atan2(relativePoint.y,relativePoint.x);
         Point newPoint = new Point((int)(center.x+distance*Math.cos(angle+rad)),(int)(center.y+distance*Math.sin(angle+rad)));
-        if (newPoint.y<0||newPoint.y>=pixels.length||newPoint.x<0||newPoint.x>=width) {continue;}
-        Color thisPixelColor = pixels[row][col].getColor();
-        Color newPixelColor = pixels[newPoint.y][newPoint.x].getColor();
-        pixels[newPoint.y][newPoint.x].setColor(thisPixelColor);
-        pixels[row][col].setColor(newPixelColor);
+        if (newPoint.y<0||newPoint.y>=pixels.length||newPoint.x<0||newPoint.x>=width) {
+          pixels[row][col].setColor(Color.BLACK);
+          continue;
+        }
+
+        Color rotatedPixel = colors[newPoint.y][newPoint.x];
+
+        pixels[row][col].setColor(rotatedPixel);
+      }
+    }
+  }
+
+  /**
+   * Rotate around a custom point
+   * @param degrees
+   */
+  public void rotatePoint(int cx, int cy, int degrees) {
+    double rad = Math.toRadians(degrees);
+    Pixel[][] pixels = this.getPixels2D();
+    int width = pixels[0].length;
+
+    // Save Previous Colors
+    Color[][] colors = new Color[pixels.length][width];
+    /** Save all pixels to a color grid. */
+    for (int row=0;row<pixels.length;row++) {
+      for (int col=0;col<pixels[row].length;col++) {
+        colors[row][col] = pixels[row][col].getColor();
+      }
+    }
+
+    Point center = new Point(cx, cy);
+    for (int row=0;row<pixels.length;row++) {
+      for (int col=0;col<pixels[row].length;col++) {
+        // Rotate Pixel
+        Point relativePoint = new Point(col-center.x,row-center.y);
+        double distance = Math.sqrt(Math.pow(relativePoint.x,2)+Math.pow(relativePoint.y,2));
+        double angle = Math.atan2(relativePoint.y,relativePoint.x);
+        Point newPoint = new Point((int)(center.x+distance*Math.cos(angle+rad)),(int)(center.y+distance*Math.sin(angle+rad)));
+        if (newPoint.y<0||newPoint.y>=pixels.length||newPoint.x<0||newPoint.x>=width) {
+          pixels[row][col].setColor(Color.BLACK);
+          continue;
+        }
+
+        Color rotatedPixel = colors[newPoint.y][newPoint.x];
+
+        pixels[row][col].setColor(rotatedPixel);
       }
     }
   }
   
   
   /**
-   * Method to _________________________________
+   * Method to Windmill
    */
-  public void change2() {
-    /* to be implemented in 6 Appendix Project */
+  public void change2(int degrees) {
+    double rad = Math.toRadians(degrees);
+    Pixel[][] pixels = this.getPixels2D();
+    int width = pixels[0].length;
+    boolean[][] changed = new boolean[pixels.length][width];
+
+    Point center = new Point(width/2, pixels.length/2);
+    for (int row=0;row<pixels.length;row++) {
+      for (int col=0;col<pixels[row].length;col++) {
+        if (!changed[row][col]) {
+          changed[row][col]=true;
+          Point relativePoint = new Point(col-center.x,row-center.y);
+          double distance = Math.sqrt(Math.pow(relativePoint.x,2)+Math.pow(relativePoint.y,2));
+          double angle = Math.atan2(relativePoint.y,relativePoint.x);
+          Point newPoint = new Point((int)(center.x+distance*Math.cos(angle+rad)),(int)(center.y+distance*Math.sin(angle+rad)));
+          if (newPoint.y<0||newPoint.y>=pixels.length||newPoint.x<0||newPoint.x>=width) {
+            pixels[row][col].setColor(Color.BLACK);
+
+            continue;
+          }
+          Color thisPixelColor = pixels[row][col].getColor();
+          Color newPixelColor = pixels[newPoint.y][newPoint.x].getColor();
+          if (!changed[newPoint.y][newPoint.x]) {
+            pixels[newPoint.y][newPoint.x].setColor(thisPixelColor);
+
+            changed[newPoint.y][newPoint.x]=true;
+          }
+          pixels[row][col].setColor(newPixelColor);
+
+          
+        }
+      }
+    }
   }
 
 

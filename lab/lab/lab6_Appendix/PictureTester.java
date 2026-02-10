@@ -35,8 +35,9 @@ public class PictureTester {
     
     /************************************ 6.F Lab ************************************/
     
-    testChange1();
+    //testChange1();
 //    testChange2();
+    testChange3();
     
   }
   
@@ -194,7 +195,7 @@ public class PictureTester {
     pic.explore();
     pic = new Picture("lab/lab/lab6_Appendix/images/koala.jpg");
     pic.explore();
-    pic.rotateCenter(-30);
+    pic.rotateCenter(-420);
     pic.explore();
   }
   
@@ -204,11 +205,22 @@ public class PictureTester {
   private static void testChange2() {
     Picture pic = new Picture("lab/lab/lab6_Appendix/images/butterfly.jpg");
     pic.explore();
-    pic.change2();
+    pic.change2(90);
     pic.explore();
     pic = new Picture("lab/lab/lab6_Appendix/images/whiteFlower.jpg");
     pic.explore();
-    pic.change2();
+    pic.change2(30);
+    pic.explore();
+  }
+
+  private static void testChange3() {
+    Picture pic = new Picture("lab/lab/lab6_Appendix/images/butterfly.jpg");
+    pic.explore();
+    pic.rotatePoint(100, 200, 90);
+    pic.explore();
+    pic = new Picture("lab/lab/lab6_Appendix/images/whiteFlower.jpg");
+    pic.explore();
+    pic.rotatePoint(200, 100, 30);
     pic.explore();
   }
   
