@@ -115,7 +115,7 @@ public class Action {
                subactions.add(new Action(m, monsters));
             }
         }
-        this.name = "Attack ("+monsterGroup.size()+" "+monsterGroup.get(0)+")";
+        this.name = "Attack ("+monsters.size()+" "+monsters.get(0)+")";
         this.monsterGroup = monsters;
     }
 
@@ -124,7 +124,7 @@ public class Action {
         this.type = Type.ATTACK; //TODO: decide how to apply weapon acitons to here
         
         this.name = "Attack "+monster+"";
-        this.target = monster;
+        this.target = (Thing) monster;
         this.monsterGroup = monsterGroup;
     }
     /**
@@ -208,7 +208,7 @@ public class Action {
                 //Monster.aggroGroup = this.monsterGroup;
                 return "You are now attacking the monsters!";
             case DAMAGE:
-                ((Entity)target).hp.dec(this.valToTarget);
+                ((Entity)target).damage(this.valToTarget);
                 return this.executer+" dealt "+this.valToTarget+" damage to "+this.target;
                 // if (executer==player) {
                 // } else if (executer instanceof Monster) {
@@ -223,17 +223,7 @@ public class Action {
                     player.mp.inc(this.valToTarget);
                     return player+" restored "+this.valToTarget+" mana.";
                 }
-            case INV:
-                Roomroot.pl("---- Your Inventory ----");
-                for (int i = 0; i < player.inventory.size(); i++) {
-                    Item item = player.inventory.get(i);
-                    String line = "("+(i+1)+")\t "+item;
-                    if (item.description!=null) {
-                        line+=" : "+item.description;
-                    }
-                    Roomroot.p(line);
-                }
-                Roomroot.pl("\n------------------------");
+            case INV: // Inventory action is inside Player.java
                 return "Subaction Finished.";
             case INVEQUIP:
                 for (Item i : player.inventory) {

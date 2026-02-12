@@ -5,11 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
-import Roomroot.Action.Type;
-
 import java.util.List;
 
-public class Monster extends Entity {
+public class Monster implements Entity {
     private static final int equalProbability = 90;
 
     private static Map<String, Monster> MONSTERS = new HashMap<>();
@@ -29,7 +27,7 @@ public class Monster extends Entity {
     public Max hp = new Max(100);
     public Max mp = new Max(0);
     private int damage = 10;
-    private ArrayList<Action> actions;
+    private ArrayList<Action> actions = new ArrayList<>();
     //private ArrayList<ExAction> xactions;
 
     private Entity target;
@@ -80,6 +78,9 @@ public class Monster extends Entity {
 
     @Override
     public ArrayList<Action> getActions() {
+        if (this.actions.size()==0) {
+            this.actions.add(new Action(this, damage)); // TODO: check if this fixes no action in m getaction
+        }
         return this.actions;
     }
     
@@ -117,6 +118,16 @@ public class Monster extends Entity {
             str += " ("+hp.v()+"/"+hp.max+")";
         }
         return str;
+    }
+
+    @Override
+    public boolean isAlive() {
+        return this.hp.v()>0;
+    }
+
+    @Override
+    public void damage(int damage) {
+        this.hp.dec(damage);
     }
 
     

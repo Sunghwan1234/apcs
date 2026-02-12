@@ -50,11 +50,14 @@ public class Item implements Thing, Comparable<Item> {
         if (this.level != 0) {
             s += " [Level "+this.level+"]";
         }
+        if (Roomroot.player.getWeapon().equals(this)) {
+            s+= " (Equipped)";
+        }
         return s;
     }
     @Override
     public int compareTo(Item o) {
-        if (this.toString()==o.toString()) {
+        if (this.name==o.name && this.level==o.level && this.description==o.description) {
             return 0;
         } else {
             return -1;

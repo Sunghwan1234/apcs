@@ -10,20 +10,23 @@ public class Roomroot {
         combat
     }
 
-    public static final boolean debug = true;
+    public static final boolean debug = false;
 
     public static Status status = Status.passive;
     private static boolean inPlay = true;
+
+    public static Player player;
 
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 
         pSep(); pl();
         p("Player name: ");
-        final Player player = new Player(input.nextLine());
+        player = new Player(input.nextLine());
         pl(); pSep();
         pl("Welcome to Roomroot, "+player+".");
-        pl("Starting Roomroot...");
+        pl("Starting Roomroot v1.0...");
+        if (debug) {pl("Debug Mode is Enabled.");}
         pSep();
         newLines(10);
 
@@ -120,7 +123,7 @@ public class Roomroot {
 
         int actionNumber=-1;
         while (actionNumber<=0 || actionNumber>actions.size()) {
-            p("Choose your Action (number): ");
+            p("| Choose your Action (number): ");
             try {
                 actionNumber = Integer.parseInt(input.nextLine());
             } catch (Exception e) {

@@ -129,8 +129,9 @@ public class Location implements Thing {
     public ArrayList<Action> getActions() {
         ArrayList<Action> actions = new ArrayList<>();
 
-        /* Movement */
+        
         if (Roomroot.status==Roomroot.Status.passive) {
+            /* Movement */
             ArrayList<Action> moveActions = new ArrayList<>();
             for (int i=0;i<passages.size();i++) {
                 if (passages.get(i).visible && !passages.get(i).locked) {
@@ -139,6 +140,7 @@ public class Location implements Thing {
             }
             actions.add(new Action(moveActions, "Move"));
 
+            /* Monsters */
             if (this.monsters.size()>0) {
                 actions.add(new Action(this.monsters));
             }

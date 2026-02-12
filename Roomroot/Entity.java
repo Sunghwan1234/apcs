@@ -1,26 +1,14 @@
 package Roomroot;
 
 /** For things that are alive. */
-public abstract class Entity implements Thing {
-    public Max hp;
-    public Max mana;
-    public String name;
-
-    public Entity target;
-
+public interface Entity extends Thing {
     /** Return HP>0 */
-    public boolean isAlive() {
-        return hp.v()>0;
-    };
+    abstract boolean isAlive();
 
-    public void damage(int damage) {
-        this.hp.dec(damage);
-    };
+    abstract void damage(int damage);
 
     /** Get a full list of Strings representing the entity's status. */
     abstract String[] getStatus();
     /** Set the target of the entity to another entity. */
-    public void setTarget(Entity target) {
-        this.target = target;
-    };
+    abstract void setTarget(Entity target);
 }

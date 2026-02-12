@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import Roomroot.Action.Type;
 
-public class Player extends Entity {
+public class Player implements Entity {
     public static ArrayList<Location> path = new ArrayList<>();
 
     public final String name;
@@ -36,7 +36,22 @@ public class Player extends Entity {
             actions.add(new Action(this.targets)); // TODO: make this work ig
         }
 
-        actions.add(new Action(Type.INV)) ;
+        actions.add(new Action(Type.INV) {
+            @Override
+            public String execute(Player player) {
+                Roomroot.pl("---- Your Inventory ----");
+                for (int i = 0; i < player.inventory.size(); i++) {
+                    Item item = player.inventory.get(i);
+                    String line = "("+(i+1)+")\t "+item.toString();
+                    if (item.description!=null) {
+                        line+=" : "+item.description;
+                    }
+                    Roomroot.p(line);
+                }
+                Roomroot.pl("\n------------------------");
+                return "Viewed Inventory";
+            }
+        }) ;
         
         actions.add(new Action(Type.INSTAKILL));
 
@@ -50,6 +65,15 @@ public class Player extends Entity {
             "Your Mana: "+mp+"/"+mp.max
         };
         return statuses;
+    }
+
+    @Override
+    public boolean isAlive() {
+        return this.hp.v()>0;
+    }
+    @Override
+    public void damage(int damage) {
+        this.hp.dec(damage);
     }
 
     public static void addLocationToPath(Location location) {
