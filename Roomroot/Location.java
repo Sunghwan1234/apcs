@@ -1,7 +1,6 @@
 package Roomroot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /** All rooms in the game Roomroot. */
 public class Location implements Thing {
@@ -15,7 +14,7 @@ public class Location implements Thing {
     public boolean locked = false;
     public boolean visible = true;
 
-    public ArrayList<Entity> entities = new ArrayList<>();
+    public ArrayList<Thing> things = new ArrayList<>();
     public ArrayList<Monster> monsters = new ArrayList<>();
 
     public Location(String type) {
@@ -131,7 +130,7 @@ public class Location implements Thing {
         ArrayList<Action> actions = new ArrayList<>();
 
         /* Movement */
-        if (Roomroot.status==Roomroot.stat.passive) {
+        if (Roomroot.status==Roomroot.Status.passive) {
             ArrayList<Action> moveActions = new ArrayList<>();
             for (int i=0;i<passages.size();i++) {
                 if (passages.get(i).visible && !passages.get(i).locked) {
@@ -141,7 +140,7 @@ public class Location implements Thing {
             actions.add(new Action(moveActions, "Move"));
 
             if (this.monsters.size()>0) {
-                actions.add(Action.attackGroup(this.monsters));
+                actions.add(new Action(this.monsters));
             }
         }
 

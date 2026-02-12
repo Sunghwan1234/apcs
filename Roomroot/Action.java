@@ -20,7 +20,7 @@ public class Action {
         //public toString() ?
     }
 
-    public Type type;
+    public final Type type;
     public Thing executer;
     public Thing target;
     public ArrayList<Monster> monsterGroup;
@@ -51,47 +51,39 @@ public class Action {
         this.valToTarget = toTarget;
         this.valToExecuter = toExecuter;
     }
-    /** With an Item, Attack a monsterGroup */
-    // public Action(Item item, Thing executer, ArrayList<Monster> monsterGroup) {
+    
+    /** Simple Monster Damage Action */
+    public Action(Entity executer, int damage) {
+        this.type = Type.DAMAGE;
+        this.executer = executer;
+        this.valToExecuter = damage;
+    }
+
+    //public Action(Entity executer, )
+
+    // //TOD make item actually damage monsters with subaction monster & subaction item actions
+    // /** With an Item Action, Target a monster in a monsterGroup */
+    // public Action(Action action, ArrayList<Monster> monsterGroup) {
     //     this.type = Type.SUBACTION;
-
-    //     if (item.actions.size() == 1) {
-    //         this.name = "Use "+item+" ("+item.actions.get(0)+")";
-
-    //         for (Monster m : monsterGroup) {
-    //         this.subactions.add(new Action(item.actions.get(0), m, monsterGroup));
-    //     }
-    //     } else {
-    //         this.name = "Use "+item;
-
-    //         for (Action a : item.actions) {
-    //             this.subactions.add(new Action(a, monsterGroup));   
-    //         }
+    //     this.name = "Use  "+action.name;
+    //     for (Monster m : monsterGroup) {
+    //         this.subactions.add(new Action(action, m, monsterGroup));
     //     }
     // }
-    //TODO: make item actually damage monsters with subaction monster & subaction item actions
-    /** With an Item Action, Target a monster in a monsterGroup */
-    public Action(Action action, ArrayList<Monster> monsterGroup) {
-        this.type = Type.SUBACTION;
-        this.name = "Use  "+action.name;
-        for (Monster m : monsterGroup) {
-            this.subactions.add(new Action(action, m, monsterGroup));
-        }
-    }
     /** With an Item Action and a monster in a monsterGroup, Use the Item Action. */
-    public Action(Action action, Monster monster, ArrayList<Monster> monsterGroup) {
-        this.type = Type.ATTACK;
-        this.name = "Use "+action.name+" on "+monster;
-        this.valToTarget = action.valToTarget;
-        this.valToExecuter = action.valToExecuter;
-        this.monsterGroup = monsterGroup;
-    }
+    // public Action(Action action, Monster monster, ArrayList<Monster> monsterGroup) {
+    //     this.type = Type.ATTACK;
+    //     this.name = "Use "+action.name+" on "+monster;
+    //     this.valToTarget = action.valToTarget;
+    //     this.valToExecuter = action.valToExecuter;
+    //     this.monsterGroup = monsterGroup;
+    // }
 
-    public Action(Type type, Thing target, Thing executer, ArrayList<Object> params) {
-        this.type = type;
-        this.target = target;
-        this.executer = executer;
-    }
+    // public Action(Type type, Thing target, Thing executer, ArrayList<Object> params) {
+    //     this.type = type;
+    //     this.target = target;
+    //     this.executer = executer;
+    // }
     /** ATTACK a group of monsters DEPRICATED. */
     // public Action(ArrayList<Monster> monsters) {
     //     //if (Roomroot.status == Roomroot.stat.passive) {
@@ -110,19 +102,33 @@ public class Action {
     //     // }
     // }
 
-    // TODO: Finish this
+    /**
+     * Attack a Monster Group.
+     * @param monsters
+     */
+    public Action(ArrayList<Monster> monsters) {
+        if (Roomroot.status==Roomroot.Status.passive) {
+            this.type = Type.ATTACKGROUP;
+        } else {
+            this.type = Type.SUBACTION;
+            for (Monster m : monsters) {
+               subactions.add(new Action(m, monsters));
+            }
+        }
+        this.name = "Attack ("+monsterGroup.size()+" "+monsterGroup.get(0)+")";
+        this.monsterGroup = monsters;
+    }
+
     /** ATTACK one Monster within a MonsterGroup */
     public Action(Monster monster, ArrayList<Monster> monsterGroup) {
-        if (Roomroot.status == Roomroot.stat.passive) {
-            this.type = Type.ATTACKGROUP; 
-        } else {
-            this.type = Type.ATTACK;
-        }
+        this.type = Type.ATTACK; //TODO: decide how to apply weapon acitons to here
+        
         this.name = "Attack "+monster+"";
         this.target = monster;
         this.monsterGroup = monsterGroup;
     }
-    /**Create a new SUBACTION Action with a list of subactions and a name.
+    /**
+     * Create a new SUBACTION Action with a list of subactions and a name.
      * Used for: MOVE
     */
     public Action(ArrayList<Action> subactions, String name) {
@@ -134,8 +140,8 @@ public class Action {
     /** Create a new SUBACTION Action with a list of subactions and a name, Can also set if you can go back. */
     public Action(ArrayList<Action> subactions, String name, boolean canGoBack) {
         this.type = Type.SUBACTION;
+        this.name = name;
         this.subactions = subactions;
-
         if (canGoBack) {
             this.subactions.add(new Action(Type.BACK));
         }
@@ -147,16 +153,6 @@ public class Action {
         setupAction(type);
     }
 
-    public static Action attackGroup(ArrayList<Monster> monsterGroup) {
-        ArrayList<Action> subactions = new ArrayList<>();
-        for (Monster m : monsterGroup) {
-            if (m.isAlive()) {
-                subactions.add(new Action(m, monsterGroup));
-            }
-        }
-        return new Action(subactions, "Attack ("+monsterGroup.size()+" "+monsterGroup.get(0)+")");
-    }
-
     /** Setup an Action's names & subactions using this one function. Remember to still set this.type */
     private void setupAction(Type type) {
         switch (type) {
@@ -165,8 +161,6 @@ public class Action {
                 break;
             case BACK:
                 this.name = "Back";
-                break;
-            case ATTACKGROUP: this.name = "Attack";
                 break;
             case INV:
                 this.name = "View Inventory";
@@ -196,9 +190,7 @@ public class Action {
         this.subactions.add(new Action(Type.BACK));
     }
 
-    public String execute(Entity executer) {
-        Player player = (Player) executer;
-        
+    public String execute(Player player) {
         switch (this.type) {
             case MOVE:
                 player.loc = (Location)this.target;
@@ -208,27 +200,28 @@ public class Action {
                 player.hp.inc(-134340);
                 return "You have committed suicide.";
             case ATTACKGROUP:
-                Roomroot.status = Roomroot.stat.combat;
-                executer.setTarget((Entity) this.target);
+                Roomroot.status = Roomroot.Status.combat;
+                player.targets = this.monsterGroup;
                 for (Monster m : this.monsterGroup) {
-                    m.setTarget((Entity) executer);
+                    m.setTarget((Entity) player);
                 }
-                Monster.aggroGroup = this.monsterGroup;
+                //Monster.aggroGroup = this.monsterGroup;
                 return "You are now attacking the monsters!";
             case DAMAGE:
-                if (executer instanceof Player) {
-                    ((Monster)target).hp.dec(this.valToTarget);
-                    return "dealt "+this.valToTarget+" damage to "+this.target;
-                }
+                ((Entity)target).hp.dec(this.valToTarget);
+                return this.executer+" dealt "+this.valToTarget+" damage to "+this.target;
+                // if (executer==player) {
+                // } else if (executer instanceof Monster) {
+                // }
             case HEAL:
-                if (executer instanceof Player) {
+                if (player instanceof Player) {
                     player.hp.inc(this.valToTarget);
                     return "You healed "+this.valToTarget+" health.";
                 }
             case RECHARGE:
-                if (executer instanceof Player) {
+                if (player instanceof Player) {
                     player.mp.inc(this.valToTarget);
-                    return executer+" restored "+this.valToTarget+" mana.";
+                    return player+" restored "+this.valToTarget+" mana.";
                 }
             case INV:
                 Roomroot.pl("---- Your Inventory ----");

@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 import Roomroot.Action.Type;
 
-public class Player implements Entity {
+public class Player extends Entity {
     public static ArrayList<Location> path = new ArrayList<>();
 
-    private String name;
+    public final String name;
     public int level = 0;
     public Max hp = new Max(100);
     public Max mp = new Max(100);
@@ -17,6 +17,7 @@ public class Player implements Entity {
     public ArrayList<Item> inventory = new ArrayList<>();
     private Item weapon = null;
 
+    public ArrayList<Monster> targets;
     public Entity target;
 
     public Player(String name) {
@@ -27,12 +28,12 @@ public class Player implements Entity {
     @Override
     public ArrayList<Action> getActions() {
         ArrayList<Action> actions = new ArrayList<>();
-        if (Roomroot.status == Roomroot.stat.passive) {
+        if (Roomroot.status == Roomroot.Status.passive) {
             actions.addAll(this.loc.getActions());
         }
 
-        if (Roomroot.status == Roomroot.stat.combat) {
-            actions.add(Action.attackGroup(Monster.aggroGroup)); // TODO: make this work ig
+        if (Roomroot.status == Roomroot.Status.combat) {
+            actions.add(new Action(this.targets)); // TODO: make this work ig
         }
 
         actions.add(new Action(Type.INV)) ;
@@ -41,12 +42,6 @@ public class Player implements Entity {
 
         return actions;
     }
-
-    @Override
-    public boolean isAlive() {
-        return hp.v()>0;
-    }
-
 
     @Override
     public String[] getStatus() {

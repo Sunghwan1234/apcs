@@ -1,14 +1,26 @@
 package Roomroot;
 
-import java.util.ArrayList;
-
 /** For things that are alive. */
-public interface Entity extends Thing {
+public abstract class Entity implements Thing {
+    public Max hp;
+    public Max mana;
+    public String name;
 
-    public boolean isAlive();
+    public Entity target;
+
+    /** Return HP>0 */
+    public boolean isAlive() {
+        return hp.v()>0;
+    };
+
+    public void damage(int damage) {
+        this.hp.dec(damage);
+    };
+
     /** Get a full list of Strings representing the entity's status. */
-    public String[] getStatus();
-    public String toString();
+    abstract String[] getStatus();
     /** Set the target of the entity to another entity. */
-    public void setTarget(Entity target);
+    public void setTarget(Entity target) {
+        this.target = target;
+    };
 }

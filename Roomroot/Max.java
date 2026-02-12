@@ -26,12 +26,13 @@ public class Max {
     this.v = Math.max(0, Math.min(this.v - i, this.max));
     return v;
   }
-
+  /** Sets a new maximum & value. */
   public int set(Max i) {
     this.max=i.max;
     this.v=i.v();
     return v;
   }
+  /** Sets a new maximum & value */
   public int set(int m) {
     this.max=m;
     this.v=m;

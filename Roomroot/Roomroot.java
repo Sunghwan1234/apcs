@@ -5,14 +5,14 @@ import java.util.Scanner;
 import Roomroot.Action.Type;
 
 public class Roomroot {
-    public enum stat {
+    public enum Status {
         passive,
         combat
     }
 
-    public static boolean debug = true;
+    public static final boolean debug = true;
 
-    public static stat status = stat.passive;
+    public static Status status = Status.passive;
     private static boolean inPlay = true;
 
     public static void main(String[] args) {
@@ -20,7 +20,7 @@ public class Roomroot {
 
         pSep(); pl();
         p("Player name: ");
-        Player player = new Player(input.nextLine());
+        final Player player = new Player(input.nextLine());
         pl(); pSep();
         pl("Welcome to Roomroot, "+player+".");
         pl("Starting Roomroot...");
@@ -36,7 +36,7 @@ public class Roomroot {
         pl(); pSep();
         /* Game Loop */
         while (inPlay) {
-            if (status==stat.passive) {
+            if (status==Status.passive) {
                 player.loc.visit(player);
                 pl("You are at "+player.loc+".");
                 if (!player.loc.discovered) {
@@ -44,11 +44,11 @@ public class Roomroot {
                     player.loc.discovered=true;
                 }
                 pl(printDescriptions(player.loc.getDescription(), "\n", "\t"));
-            } else if (status==stat.combat) {
-                p("There are "+Monster.aggroGroup.size()+" Aggroed Monsters near you! ");
-                pl(printDescriptions(Monster.getMonsterNames(Monster.aggroGroup), ", ", ""));
+            } else if (status==Status.combat) {
+                p("There are "+player.targets.size()+" Aggroed Monsters near you! ");
+                pl(printDescriptions(Monster.getMonsterNames(player.targets), ", ", ""));
 
-                for (Monster m : Monster.aggroGroup) {
+                for (Monster m : player.targets) {
                     if (m.isAlive()) {
                         pl(printStatus(m.getStatus())); // Get status of Monster
                     }
@@ -89,10 +89,10 @@ public class Roomroot {
             pl(playerAction.execute(player));
 
             // TODO: Monster Actions
-            if (status==stat.combat) {
-                for (Monster m : Monster.aggroGroup) {
+            if (status==Status.combat) {
+                for (Monster m : player.targets) {
                     if (m.isAlive()) {
-                        
+                        m.getActions().get(0).execute(player);
                     }
                 }
             }
@@ -124,7 +124,7 @@ public class Roomroot {
             try {
                 actionNumber = Integer.parseInt(input.nextLine());
             } catch (Exception e) {
-                pl("Invalid input. Please enter a number corresponding to an action.");
+                //pl("Invalid input. Please enter a number corresponding to an action.");
             }
         }
         return actions.get(actionNumber-1);
