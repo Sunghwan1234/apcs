@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "DiverseArrayTester",
+      "request": "launch",
+      "mainClass": "DiverseArrayTester",
+      "projectName": "apcs_143a8c93"
+    },
+    {
+      "type": "java",
       "name": "CrosswordGUIRunner",
       "request": "launch",
       "mainClass": "lab.AP.Sem2.Crossword.CrosswordGUIRunner",
