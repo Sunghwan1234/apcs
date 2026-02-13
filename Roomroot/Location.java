@@ -79,11 +79,10 @@ public class Location implements Thing {
             if (monsterSpawnChance>0) {
                 /* Monster Spawning */
                 if (Math.random() < monsterSpawnChance) {
-                    String type = Monster.getRandom(player);
                     int amount = (int)(Math.random()*((player.level)/10+3)+1);
                     for (int i=0;i<amount;i++) {
                         //Roomroot.pl("Spawning Monster: "+m); //debug
-                        this.monsters.add(Monster.getMonster(type));
+                        this.monsters.add(Monster.getRandomMonster(player)); //TODO: did this fix?
                     }
                 }
             }

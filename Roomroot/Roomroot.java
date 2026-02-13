@@ -48,8 +48,8 @@ public class Roomroot {
                 }
                 pl(printDescriptions(player.loc.getDescription(), "\n", "\t"));
             } else if (status==Status.combat) {
-                p("There are "+player.targets.size()+" Aggroed Monsters near you! ");
-                pl(printDescriptions(Monster.getMonsterNames(player.targets), ", ", ""));
+                p("There are "+player.targets.size()+" "+player.getTarget().toString()+" near you! ");
+                //pl(printDescriptions(Monster.getMonsterNames(player.targets), ", ", ""));
 
                 for (Monster m : player.targets) {
                     if (m.isAlive()) {
@@ -63,7 +63,7 @@ public class Roomroot {
                 pl("Equipped Weapon: "+player.getWeapon());
             }
             if (status==Status.combat && player.getTarget()!=null) {
-                pl("Currect Target: "+player.getTarget());
+                pl("Currect Target: "+player.getTarget()); // TODO: does this work
             }
             pl();
 
@@ -73,20 +73,9 @@ public class Roomroot {
             while (!choseFinalAction) {
                 // Choose Player Action
                 playerAction = chooseAction(player.getActions(), input, "Your Actions: ");
-
                 while (playerAction.type.com == Type.SUBACTION.com) {
                     playerAction = chooseAction(playerAction.subactions, input, playerAction.execute(player), "\n", "\t");
                 }
-                // while (playerAction.type==Type.INV) {
-                //     playerAction.execute(player);
-                //     Action invAction = chooseAction(playerAction.subactions, input, "Inventory Actions:\n", "\n", "\t");
-                //     playerAction = invAction;
-                // }
-                // while (playerAction.type.com == Type.CHOOSE.com) {
-                //     playerAction.execute(player);
-                //     Action invAction = chooseAction(playerAction.subactions, input, "Choose:\n", "\n", "\t");
-                //     playerAction = invAction;
-                // }
                 if (playerAction.type.com!=Type.BACK.com) {choseFinalAction=true;}
             }
 
@@ -117,7 +106,6 @@ public class Roomroot {
     public static Action chooseAction(ArrayList<Action> actions, Scanner input, String prompt, String sep, String tab) {
         p(prompt);
         pl(printActions(actions, sep, tab));
-
         int actionNumber=-1;
         while (actionNumber<=0 || actionNumber>actions.size()) {
             p("| Choose your Action (number): ");
@@ -174,7 +162,11 @@ public class Roomroot {
 
     //     return list;
     // }
-
+    // public static String getOneLine(String[] array) {
+    //     String s="";
+    //     for (int i=0;i<array.length;i++) {s+=i; if (i!=0){s+="\n";}}
+    //     return s;
+    // }
     public static void p(Object o) {System.out.print(o);}
     public static void pl() {pl("");}
     public static void pl(Object o) {System.out.println(o);}

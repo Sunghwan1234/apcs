@@ -46,12 +46,12 @@ public class Monster extends Entity {
     public Monster() {}
 
     public Monster(Monster m) {
-        this.type=m.type;
+        this.name=m.name; this.type=m.type;
         this.level=m.level;
-        this.hp=m.hp;
-        this.mp=m.mp;
+        this.hp=m.hp; this.mp=m.mp;
         this.damage=m.damage;
         this.actions=m.actions;
+        this.drops=m.drops;
     }
     private Monster(String type, int level, int hp, int mana, int damage) {
         c_basic(type, level, hp, mana);
@@ -67,13 +67,13 @@ public class Monster extends Entity {
         this.type=type; this.level=level; this.hp.set(hp); this.mp.set(mana);
     }
     /** STATIC Get a random monster. */
-    public static String getRandom(Player player) {
+    public static Monster getRandomMonster(Player player) {
         while (true) {
             String m_name = getRandomKey(MONSTERS);
             Monster m = MONSTERS.get(m_name);
             if (100*Math.random() < equalProbability + Math.abs(Math.pow(player.level-m.level,3))) { // ERR
                 //Roomroot.pl("GetRandom: "+m_name);
-                return m_name;
+                return new Monster(MONSTERS.get(m_name));
             }
         }
     }
@@ -109,13 +109,13 @@ public class Monster extends Entity {
         return statuses;
     }
 
-    public static ArrayList<String> getMonsterNames(ArrayList<Monster> monsters) {
-        ArrayList<String> names = new ArrayList<>();
-        for (int i=0;i<monsters.size();i++) {
-            names.add(monsters.get(i).toString());
-        }
-        return names;
-    }
+    // public static ArrayList<String> getMonsterNames(ArrayList<Monster> monsters) {
+    //     ArrayList<String> names = new ArrayList<>();
+    //     for (int i=0;i<monsters.size();i++) {
+    //         names.add(monsters.get(i).toString());
+    //     }
+    //     return names;
+    // }
 
     @Override
     Entity getTarget() {

@@ -184,7 +184,19 @@ public class Action {
                 Roomroot.debugLine("Damage Action from "+executer+" to "+target);
                 if (target==null) {target = ((Entity)this.executer).getTarget();}
                 ((Entity)target).damage(this.valToTarget);
-                return this.executer+" dealt "+this.valToTarget+" damage to "+this.target;
+                String output = this.executer+" dealt "+this.valToTarget+" damage to "+this.target;
+                if (!((Entity)this.target).isAlive()) {output+="\n"+this.target+" has died!";}
+
+                if (this.executer.toString()==player.toString()) {
+                    for (Monster m : player.targets) {
+                        if (m.isAlive()) {
+                            player.setTarget(m);
+                            output+="New target: "+m;
+                        }
+                    }
+                }
+
+                return output;
             case HEAL:
                 if (player instanceof Player) { // TODO: make this Target instead
                     player.hp.inc(this.valToTarget);
