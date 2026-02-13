@@ -4,12 +4,11 @@ import java.util.ArrayList;
 
 /** Base of all actions. */
 public class Action {
-    /** ActionType */
+    /** ActionType. SUBACTION for everything you can choose, CHOOSE to go back */
     public enum Type {
         MOVE(0), ATTACKGROUP(1), ATTACK(2), DAMAGE(3), HEAL(4), RECHARGE(5), DMGMANA(6), EQUIP(7),
-        SUBACTION(-1), BACK(-2), INV(-3),
-        CHOOSE(-10), INVEQUIP(-10),
-        INSTAKILL(-100);
+        SUBACTION(-1), BACK(-2), CHOOSE(-2),
+        CUSTOM(-100);
         
         /** Comparitor: Which Function */
         public final int com;
@@ -27,6 +26,7 @@ public class Action {
     public ArrayList<Action> subactions = new ArrayList<>();
 
     public String name;
+    public String subactionMessage;
     public int valToTarget, valToExecuter;
 
     public Action(Type type) {
@@ -39,12 +39,14 @@ public class Action {
         this.target = target;
         setupAction(type);
     }
+    /** Configure an Action with a name. */
     public Action(Type type, String name) {
-        this.type = type;
-        setupAction(type);
-        this.name = name;
+        this.type = type; this.name = name;
     }
-    /** Indivisual Actions in an Item */
+    public Action(Type type, String name, Thing target) {
+        this.type=type; this.name=name; this.target=target;
+    }
+    /** ITEM Internal Actions */
     public Action(String name, String description, Type type, int toTarget, int toExecuter) {
         this.type = type;
         this.name = name;
@@ -53,78 +55,46 @@ public class Action {
     }
     
     /** Simple Monster Damage Action */
-    public Action(Entity executer, int damage) {
+    public Action(String name, int damage) {
         this.type = Type.DAMAGE;
+        this.name = name;
+        this.valToTarget = damage;
+    }
+
+    /** 
+     * Executing an action from an executer to a target.
+     * @param executer
+     * @param target
+     * @param action usually ITEM Internal or Simple Monster Damage
+     * @apiNote Sets valToTarget, valToExecuter
+    */
+    public Action(Thing executer, Thing target, Action action) {
+        this.type = action.type;
         this.executer = executer;
-        this.valToExecuter = damage;
+        this.target = target;
+
+        this.name = action.name;
+        this.valToTarget = action.valToTarget;
+        this.valToExecuter = action.valToExecuter;
+    }
+    public Action(Thing executer, Thing target, Action action, String name) {
+        this.type = action.type;
+        this.executer = executer;
+        this.target = target;
+
+        this.name = name;
+        this.valToTarget = action.valToTarget;
+        this.valToExecuter = action.valToExecuter;
     }
 
-    //public Action(Entity executer, )
-
-    // //TOD make item actually damage monsters with subaction monster & subaction item actions
-    // /** With an Item Action, Target a monster in a monsterGroup */
-    // public Action(Action action, ArrayList<Monster> monsterGroup) {
-    //     this.type = Type.SUBACTION;
-    //     this.name = "Use  "+action.name;
-    //     for (Monster m : monsterGroup) {
-    //         this.subactions.add(new Action(action, m, monsterGroup));
-    //     }
-    // }
-    /** With an Item Action and a monster in a monsterGroup, Use the Item Action. */
-    // public Action(Action action, Monster monster, ArrayList<Monster> monsterGroup) {
-    //     this.type = Type.ATTACK;
-    //     this.name = "Use "+action.name+" on "+monster;
-    //     this.valToTarget = action.valToTarget;
-    //     this.valToExecuter = action.valToExecuter;
-    //     this.monsterGroup = monsterGroup;
-    // }
-
-    // public Action(Type type, Thing target, Thing executer, ArrayList<Object> params) {
-    //     this.type = type;
-    //     this.target = target;
-    //     this.executer = executer;
-    // }
-    /** ATTACK a group of monsters DEPRICATED. */
-    // public Action(ArrayList<Monster> monsters) {
-    //     //if (Roomroot.status == Roomroot.stat.passive) {
-    //         this.type = Action.SUBACTION;
-    //         this.name = "Attack ("+monsters.size()+" "+monsters.get(0)+")";
-
-    //         subactions = new ArrayList<Action>();
-    //         for (Monster m : monsters) {
-    //             subactions.add(new Action(m, monsters));
-    //         }
-
-    //     // } else {
-    //     //     this.type = Action.ATTACK;
-    //     //     this.monsters = monsters;
-    //     //     this.name = "Attack ("+monsters.size()+" "+monsters.get(0)+")";
-    //     // }
-    // }
-
-    /**
-     * Attack a Monster Group.
-     * @param monsters
+    /** 
+     * Target one monster and Aggro a monsterGroup
      */
-    public Action(ArrayList<Monster> monsters) {
-        if (Roomroot.status==Roomroot.Status.passive) {
-            this.type = Type.ATTACKGROUP;
-        } else {
-            this.type = Type.SUBACTION;
-            for (Monster m : monsters) {
-               subactions.add(new Action(m, monsters));
-            }
-        }
-        this.name = "Attack ("+monsters.size()+" "+monsters.get(0)+")";
-        this.monsterGroup = monsters;
-    }
-
-    /** ATTACK one Monster within a MonsterGroup */
     public Action(Monster monster, ArrayList<Monster> monsterGroup) {
-        this.type = Type.ATTACK; //TODO: decide how to apply weapon acitons to here
+        this.type = Type.ATTACKGROUP;
         
         this.name = "Attack "+monster+"";
-        this.target = (Thing) monster;
+        this.target = monster;
         this.monsterGroup = monsterGroup;
     }
     /**
@@ -137,6 +107,13 @@ public class Action {
         this.subactions = subactions;
         this.subactions.add(new Action(Type.BACK));
     }
+    public Action(ArrayList<Action> subactions, String name, String subactionMessage) {
+        this.type = Type.SUBACTION;
+        this.name = name;
+        this.subactions = subactions;
+        this.subactions.add(new Action(Type.BACK));
+        this.subactionMessage = subactionMessage;
+    }
     /** Create a new SUBACTION Action with a list of subactions and a name, Can also set if you can go back. */
     public Action(ArrayList<Action> subactions, String name, boolean canGoBack) {
         this.type = Type.SUBACTION;
@@ -146,6 +123,14 @@ public class Action {
             this.subactions.add(new Action(Type.BACK));
         }
     }
+    public Action(String name, Action... actions) {
+        this.type = Type.SUBACTION;
+        this.name = name;
+        addSubactionsWithBack(actions);
+    }
+
+
+
     /** MOVE to a Location */
     public Action(Location loc) {
         this.type = Type.MOVE;
@@ -162,80 +147,65 @@ public class Action {
             case BACK:
                 this.name = "Back";
                 break;
-            case INV:
-                this.name = "View Inventory";
-                addSubactionsWithBack(new Action(Type.INVEQUIP));
-                //this.subactions.add(new Action(Action.HEAL, "Quick Heal"));
-                break;
-            case INVEQUIP:
-                this.name = "Equip Weapon";
-                // The subactions for this action is inside the func execute()
-                break;
             case EQUIP:
                 this.name = "Equip "+this.target;
                 break;
-            case INSTAKILL:
-                this.name = "Suicide";
-                break;
             default:
-                this.name = "Unknown Action";
+                this.name = "Unknown Action ("+this.type+")";
                 break;
         }
     }
 
-    public void addSubactionsWithBack(Action... subactions) {
+    private void addSubactionsWithBack(Action... subactions) {
         for (Action a : subactions) {
             this.subactions.add(a);
         }
         this.subactions.add(new Action(Type.BACK));
     }
 
+    /** Execute instructions set by the Type. This function should not modify this Action in any way, unless it requires it. */
     public String execute(Player player) {
         switch (this.type) {
+            case SUBACTION:
+                return "Your Subactions for "+this+":\n";
             case MOVE:
                 player.loc = (Location)this.target;
                 return "You moved to "+((Location)this.target)+".";
-                
-            case INSTAKILL:
-                player.hp.inc(-134340);
-                return "You have committed suicide.";
             case ATTACKGROUP:
                 Roomroot.status = Roomroot.Status.combat;
+                player.setTarget((Entity)this.target);
                 player.targets = this.monsterGroup;
-                for (Monster m : this.monsterGroup) {
+                for (Monster m : player.targets) {
                     m.setTarget((Entity) player);
                 }
                 //Monster.aggroGroup = this.monsterGroup;
                 return "You are now attacking the monsters!";
             case DAMAGE:
+                Roomroot.debugLine("Damage Action from "+executer+" to "+target);
+                if (target==null) {target = ((Entity)this.executer).getTarget();}
                 ((Entity)target).damage(this.valToTarget);
                 return this.executer+" dealt "+this.valToTarget+" damage to "+this.target;
-                // if (executer==player) {
-                // } else if (executer instanceof Monster) {
-                // }
             case HEAL:
-                if (player instanceof Player) {
+                if (player instanceof Player) { // TODO: make this Target instead
                     player.hp.inc(this.valToTarget);
                     return "You healed "+this.valToTarget+" health.";
                 }
             case RECHARGE:
-                if (player instanceof Player) {
+                if (player instanceof Player) { // TODO: make this target instead
                     player.mp.inc(this.valToTarget);
                     return player+" restored "+this.valToTarget+" mana.";
                 }
-            case INV: // Inventory action is inside Player.java
-                return "Subaction Finished.";
-            case INVEQUIP:
-                for (Item i : player.inventory) {
-                    subactions.add(new Action(Type.EQUIP, i));
-                }
-                subactions.add(new Action(Type.BACK));
-                return "Subactions Added.";
+            // case INVEQUIP:
+            //     for (Item i : player.inventory) {
+            //         subactions.add(new Action(Type.EQUIP, i));
+            //     }
+            //     subactions.add(new Action(Type.BACK));
+            //     return "Subactions Added.";
             case EQUIP:
                 player.equip((Item) this.target);
                 return "Equipped "+this.target+"!";
             default:
-                return "null";
+                return "null action: "+this;
         }
     }
 

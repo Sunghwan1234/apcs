@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import Roomroot.Action.Type;
 
-public class Player implements Entity {
+public class Player extends Entity {
     public static ArrayList<Location> path = new ArrayList<>();
 
     public final String name;
@@ -18,7 +18,7 @@ public class Player implements Entity {
     private Item weapon = null;
 
     public ArrayList<Monster> targets;
-    public Entity target;
+    private Entity target;
 
     public Player(String name) {
         this.name = name;
@@ -28,32 +28,67 @@ public class Player implements Entity {
     @Override
     public ArrayList<Action> getActions() {
         ArrayList<Action> actions = new ArrayList<>();
+        // Location
         if (Roomroot.status == Roomroot.Status.passive) {
             actions.addAll(this.loc.getActions());
         }
-
+        // In Combat!
         if (Roomroot.status == Roomroot.Status.combat) {
-            actions.add(new Action(this.targets)); // TODO: make this work ig
+            ArrayList<Action> enemyChoice = new ArrayList<>();
+            for (Monster m : targets) {
+                enemyChoice.add(new Action(Type.CHOOSE, m.toString(), m) {
+                    @Override
+                    public String execute(Player player) {
+                        player.setTarget((Monster) this.target);
+                        return "Target set.";
+                    }
+                });
+            }
+            actions.add(new Action(enemyChoice, "Choose Target"));
+
+            if (weapon!=null) {
+                ArrayList<Action> weaponActions = weapon.getActions();
+                if (weaponActions.size()==1) {
+                    actions.add(new Action(this, target, weaponActions.get(0), weapon+": Use "+weaponActions.get(0)));
+                } else {
+                    ArrayList<Action> attackActions = new ArrayList<>();
+                    for (Action a : weapon.getActions()) {
+                        attackActions.add(new Action(this, target, a));
+                    }
+                    actions.add(new Action(attackActions, "Choose "+weapon+" Action"));
+                }
+            }
+
         }
 
-        actions.add(new Action(Type.INV) {
+        /** Inventory Actions */
+        ArrayList<Action> invActions = new ArrayList<>();
+        for (Item i : inventory) {invActions.add(new Action(Type.EQUIP, i));}
+        Action equipAction = new Action(invActions, "Equip Weapon", true);
+        actions.add(new Action("View Inventory", equipAction) {
             @Override
             public String execute(Player player) {
                 Roomroot.pl("---- Your Inventory ----");
                 for (int i = 0; i < player.inventory.size(); i++) {
                     Item item = player.inventory.get(i);
-                    String line = "("+(i+1)+")\t "+item.toString();
+                    String line = "("+(i+1)+")\t "+item.toInventoryString();
                     if (item.description!=null) {
                         line+=" : "+item.description;
                     }
                     Roomroot.p(line);
                 }
                 Roomroot.pl("\n------------------------");
-                return "Viewed Inventory";
+                return "Inventory Actions:\n";
             }
         }) ;
         
-        actions.add(new Action(Type.INSTAKILL));
+        actions.add(new Action(Type.CUSTOM, "Suicide") {
+            @Override
+            public String execute(Player player) {
+                player.hp.dec(666666);
+                return "You have commited suicide.";
+            }
+        });
 
         return actions;
     }
@@ -73,6 +108,7 @@ public class Player implements Entity {
     }
     @Override
     public void damage(int damage) {
+        Roomroot.debugLine("Recieving Damage: "+damage);
         this.hp.dec(damage);
     }
 
@@ -83,6 +119,7 @@ public class Player implements Entity {
     public void setTarget(Entity target) {
         this.target = target;
     }
+    @Override
     public Entity getTarget() {
         return this.target;
     }

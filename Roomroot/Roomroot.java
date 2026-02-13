@@ -32,7 +32,7 @@ public class Roomroot {
 
         // Initialization
         player.loc = new Location("Spawn");
-        player.inventory.add(Item.ITEMS.get("Wand"));
+        player.inventory.add(Item.getNew("Wand"));
         player.equip(player.inventory.get(0));
 
         pl("You have arrived at "+player.loc+".");
@@ -62,53 +62,50 @@ public class Roomroot {
             if (player.getWeapon()!=null) {
                 pl("Equipped Weapon: "+player.getWeapon());
             }
+            if (status==Status.combat && player.getTarget()!=null) {
+                pl("Currect Target: "+player.getTarget());
+            }
             pl();
 
             /* Choose Actions */
-            Action playerAction = new Action(Type.INSTAKILL);
+            Action playerAction = new Action(Type.CUSTOM);
             boolean choseFinalAction = false;
             while (!choseFinalAction) {
                 // Choose Player Action
                 playerAction = chooseAction(player.getActions(), input, "Your Actions: ");
 
                 while (playerAction.type.com == Type.SUBACTION.com) {
-                    Action subAction = chooseAction(playerAction.subactions, input, "Your Subactions for "+playerAction+":\n", "\n", "\t");
-                    playerAction = subAction;
+                    playerAction = chooseAction(playerAction.subactions, input, playerAction.execute(player), "\n", "\t");
                 }
-                while (playerAction.type==Type.INV) {
-                    playerAction.execute(player);
-                    Action invAction = chooseAction(playerAction.subactions, input, "Inventory Actions:\n", "\n", "\t");
-                    playerAction = invAction;
-                }
-                while (playerAction.type.com == Type.CHOOSE.com) {
-                    playerAction.execute(player);
-                    Action invAction = chooseAction(playerAction.subactions, input, "Choose:\n", "\n", "\t");
-                    playerAction = invAction;
-                }
-                if (playerAction.type!=Type.BACK) {choseFinalAction=true;}
+                // while (playerAction.type==Type.INV) {
+                //     playerAction.execute(player);
+                //     Action invAction = chooseAction(playerAction.subactions, input, "Inventory Actions:\n", "\n", "\t");
+                //     playerAction = invAction;
+                // }
+                // while (playerAction.type.com == Type.CHOOSE.com) {
+                //     playerAction.execute(player);
+                //     Action invAction = chooseAction(playerAction.subactions, input, "Choose:\n", "\n", "\t");
+                //     playerAction = invAction;
+                // }
+                if (playerAction.type.com!=Type.BACK.com) {choseFinalAction=true;}
             }
 
             pSep(); pl();
             pl(playerAction.execute(player));
 
-            // TODO: Monster Actions
             if (status==Status.combat) {
                 for (Monster m : player.targets) {
                     if (m.isAlive()) {
-                        m.getActions().get(0).execute(player);
+                        pl(m.getActions().get(0).execute(player));
                     }
                 }
             }
 
-            pl(); pSep();
-
-            if (!player.isAlive()) {
-                pl(); pSepL("You have died.");
-                inPlay=false;
+            if (!player.isAlive()) {inPlay=false;
+                pl("\n You have died.");
             }
 
-            p("Continue"); input.nextLine();
-            pSep();
+            pl(); pSep(); p("Continue"); input.nextLine(); pSep();
         }
         input.close();
     }
@@ -191,4 +188,5 @@ public class Roomroot {
     public static void pSepL(Object o) {
         pSep(); pl(o); pSep();
     }
+    public static void debugLine(Object o) {if (debug) {p("..");pl(o);}}
 }

@@ -9,10 +9,11 @@ public class Item implements Thing, Comparable<Item> {
     
     public String name, description;
     public int level = 0;
+    public int count = 1;
 
     public ArrayList<Action> actions = new ArrayList<>();
 
-    public static final HashMap<String, Item> ITEMS = new HashMap<>();
+    private static final HashMap<String, Item> ITEMS = new HashMap<>();
     static {
         ITEMS.put("Health Potion", new Item("Health Potion", 
                 new Action("Drink Health Potion", "Restores 50 health", Type.HEAL, 50, 0)));
@@ -20,6 +21,15 @@ public class Item implements Thing, Comparable<Item> {
                 new Action("Drink Mana Potion", "Recharges 50 mana", Type.RECHARGE, 0, 50)));
         ITEMS.put("Wand", new Item("Wand", 
                 new Action("Fireball", "Shoots a burst of fire", Type.DAMAGE, 25, 10)));
+    }
+    public static Item getNew(String name) {
+        Item mItem = ITEMS.get(name);
+        Item item = new Item(mItem.name);
+        item.description = mItem.description;
+        item.actions = mItem.actions;
+        item.level = mItem.level;
+        item.count = mItem.count;
+        return item;
     }
     public Item(String name) {
         this.name = name;
@@ -45,13 +55,18 @@ public class Item implements Thing, Comparable<Item> {
         return itemActions;
     }
 
+    public String toInventoryString() {
+        String s = this.toString();
+        if (Roomroot.player.getWeapon().equals(this)) {
+            s+= " (Equipped)";
+        }
+        return s;
+    }
+
     public String toString() {
         String s = this.name;
         if (this.level != 0) {
             s += " [Level "+this.level+"]";
-        }
-        if (Roomroot.player.getWeapon().equals(this)) {
-            s+= " (Equipped)";
         }
         return s;
     }

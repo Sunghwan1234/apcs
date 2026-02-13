@@ -2,6 +2,8 @@ package Roomroot;
 
 import java.util.ArrayList;
 
+import Roomroot.Action.Type;
+
 /** All rooms in the game Roomroot. */
 public class Location implements Thing {
     public static ArrayList<Location> map = new ArrayList<>();
@@ -48,29 +50,19 @@ public class Location implements Thing {
      * - Generates passages if undiscovered
      */
     public void visit(Player player) {
-        if (!this.discovered) {
-            this.discovered=true;
+        if (!this.discovered) {this.discovered=true;
             discoveredLocations++;
             Player.addLocationToPath(this);
 
-            int passageCount;
-            boolean spawnMonsters;
+            int passageCount = (int)(Math.random()*4+1);
+            double monsterSpawnChance=0.33;
 
             switch (this.type) {
                 case "Spawn":
-                    passageCount = 4;
-                    spawnMonsters = false;
-                    break;
-                default:
-                    passageCount = (int)(Math.random()*4+1);
-                    spawnMonsters = true;
-                    break;
+                    passageCount = 4; monsterSpawnChance=0; break;
+                default:break;
             }
             //Roomroot.p("Visiting Location "+name); //debug
-            
-
-            
-            
             //Roomroot.pl(" | With Passages: "+passageCount); //debug
             for (int i=0;i<passageCount;i++) {
                 if ((Math.random()<0.25 && map.size()>3)) {
@@ -84,10 +76,9 @@ public class Location implements Thing {
                 }
                 this.addPassage(new Location(this));
             }
-
-            if (spawnMonsters) {
+            if (monsterSpawnChance>0) {
                 /* Monster Spawning */
-                if (Math.random() < 0.3) {
+                if (Math.random() < monsterSpawnChance) {
                     String type = Monster.getRandom(player);
                     int amount = (int)(Math.random()*((player.level)/10+3)+1);
                     for (int i=0;i<amount;i++) {
@@ -122,7 +113,6 @@ public class Location implements Thing {
             things.add("There are also "+monsters.size()+" monsters.");
         }
         
-
         return things;
     }
 
@@ -140,9 +130,17 @@ public class Location implements Thing {
             }
             actions.add(new Action(moveActions, "Move"));
 
-            /* Monsters */
+            /* Attack Monsters */
             if (this.monsters.size()>0) {
-                actions.add(new Action(this.monsters));
+                if (this.monsters.size()>1) {
+                    ArrayList<Action> targetMonsterActions = new ArrayList<>();
+                    for (Monster m : monsters) {
+                        targetMonsterActions.add(new Action(m, monsters));
+                    }
+                    actions.add(new Action(targetMonsterActions, "Attack ("+monsters.size()+" "+monsters.get(0)+")", true));
+                } else {
+                    actions.add(new Action(monsters.get(0), monsters));
+                }
             }
         }
 
