@@ -77,12 +77,13 @@ public class Location implements Thing {
                 this.addPassage(new Location(this));
             }
             if (monsterSpawnChance>0) {
+                Roomroot.debugLine("Spawning monsters");
                 /* Monster Spawning */
                 if (Math.random() < monsterSpawnChance) {
                     int amount = (int)(Math.random()*((player.level)/10+3)+1);
                     for (int i=0;i<amount;i++) {
                         //Roomroot.pl("Spawning Monster: "+m); //debug
-                        this.monsters.add(Monster.getRandomMonster(player)); //TODO: did this fix?
+                        this.monsters.add(Monster.getMonster(Monster.getRandom(player))); //TODO: did this fix?
                     }
                 }
             }
@@ -132,13 +133,20 @@ public class Location implements Thing {
             /* Attack Monsters */
             if (this.monsters.size()>0) {
                 if (this.monsters.size()>1) {
+                    boolean canAttack=false;
                     ArrayList<Action> targetMonsterActions = new ArrayList<>();
                     for (Monster m : monsters) {
-                        targetMonsterActions.add(new Action(m, monsters));
+                        if (m.isAlive()) {canAttack=true;
+                            targetMonsterActions.add(new Action(m, monsters));
+                        }
                     }
-                    actions.add(new Action(targetMonsterActions, "Attack ("+monsters.size()+" "+monsters.get(0)+")", true));
+                    if (canAttack) {
+                        actions.add(new Action(targetMonsterActions, "Attack ("+monsters.size()+" "+monsters.get(0)+")", true));
+                    }
                 } else {
-                    actions.add(new Action(monsters.get(0), monsters));
+                    if (monsters.get(0).isAlive()) {
+                        actions.add(new Action(monsters.get(0), monsters));
+                    }
                 }
             }
         }

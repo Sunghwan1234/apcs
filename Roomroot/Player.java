@@ -39,7 +39,8 @@ public class Player extends Entity {
                 enemyChoice.add(new Action(Type.CHOOSE, m.toString(), m) {
                     @Override
                     public String execute(Player player) {
-                        player.setTarget((Monster) this.target);
+                        player.setTarget((Entity) this.target);
+                        Roomroot.pl("Target set to "+m.toString());
                         return "Target set.";
                     }
                 });
@@ -61,11 +62,25 @@ public class Player extends Entity {
 
         }
 
-        /** Inventory Actions */
-        ArrayList<Action> invActions = new ArrayList<>();
-        for (Item i : inventory) {invActions.add(new Action(Type.EQUIP, i));}
-        Action equipAction = new Action(invActions, "Equip Weapon", true);
-        actions.add(new Action("View Inventory", equipAction) {
+        // Inventory Actions ----------------------------------------------------------------
+        ArrayList<Action> equipActions = new ArrayList<>();
+        ArrayList<Action> useActions = new ArrayList<>();
+        for (Item i : inventory) {
+            equipActions.add(new Action(Type.EQUIP, i));
+            if (i.getActions().size()>1) {
+                useActions.add(new Action(this, this, i.getActions().get(0)));
+            } else {
+                ArrayList<Action> itemActions = new ArrayList<>();
+                for (Action a : i.getActions()) {
+                    itemActions.add(new Action(this, this, a));
+                }
+                useActions.add(new Action(itemActions, i+" ("+i.getActions().size()+")", true));
+            }
+        }
+        Action equipAction = new Action(equipActions, "Equip Weapon", true);
+        Action useAction = new Action(useActions, "Use Item", true);
+
+        actions.add(new Action("View Inventory", equipAction, useAction) {
             @Override
             public String execute(Player player) {
                 Roomroot.pl("---- Your Inventory ----");
@@ -75,7 +90,7 @@ public class Player extends Entity {
                     if (item.description!=null) {
                         line+=" : "+item.description;
                     }
-                    Roomroot.p(line);
+                    Roomroot.pl(line);
                 }
                 Roomroot.pl("\n------------------------");
                 return "Inventory Actions:\n";
@@ -96,8 +111,8 @@ public class Player extends Entity {
     @Override
     public String[] getStatus() {
         String[] statuses = {
-            "Your Health: "+hp+"/"+hp.max,
-            "Your Mana: "+mp+"/"+mp.max
+            "Your Health: "+hp,
+            "Your Mana: "+mp
         };
         return statuses;
     }
@@ -107,9 +122,17 @@ public class Player extends Entity {
         return this.hp.v()>0;
     }
     @Override
+    public String atDeath() {
+        return "You died.";
+    }
+    @Override
     public void damage(int damage) {
-        Roomroot.debugLine("Recieving Damage: "+damage);
+        //Roomroot.debugLine("Recieving Damage: "+damage);
         this.hp.dec(damage);
+    }
+    @Override
+    public void heal(int hp) {
+        this.hp.inc(hp);
     }
 
     public static void addLocationToPath(Location location) {
@@ -141,7 +164,8 @@ public class Player extends Entity {
 
     @Override
     public String toString() {
-        //return name+" [Lv"+level+"]";
+        String s = "You";
+        if (!hp.full()) {s+=" ("+hp+")";}
         return "You";
     }
 }

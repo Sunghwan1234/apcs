@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Action {
     /** ActionType. SUBACTION for everything you can choose, CHOOSE to go back */
     public enum Type {
-        MOVE(0), ATTACKGROUP(1), ATTACK(2), DAMAGE(3), HEAL(4), RECHARGE(5), DMGMANA(6), EQUIP(7),
+        MOVE(0), ATTACKGROUP(1), ATTACK(2), DAMAGE(3), HEAL(4), RECHARGE(5), DMGMANA(6), EQUIP(7), USE(8),
         SUBACTION(-1), BACK(-2), CHOOSE(-2),
         CUSTOM(-100);
         
@@ -28,6 +28,8 @@ public class Action {
     public String name;
     public String subactionMessage;
     public int valToTarget, valToExecuter;
+    public int itemIndex=-1;
+    public boolean bool;
 
     public Action(Type type) {
         this.type = type;
@@ -53,6 +55,13 @@ public class Action {
         this.valToTarget = toTarget;
         this.valToExecuter = toExecuter;
     }
+    public Action(String name, String description, Type type, int toTarget, int toExecuter, boolean useup) {
+        this.type = type;
+        this.name = name;
+        this.valToTarget = toTarget;
+        this.valToExecuter = toExecuter;
+        this.bool = useup;
+    }
     
     /** Simple Monster Damage Action */
     public Action(String name, int damage) {
@@ -76,6 +85,7 @@ public class Action {
         this.name = action.name;
         this.valToTarget = action.valToTarget;
         this.valToExecuter = action.valToExecuter;
+        this.bool = action.bool;
     }
     public Action(Thing executer, Thing target, Action action, String name) {
         this.type = action.type;
@@ -85,6 +95,18 @@ public class Action {
         this.name = name;
         this.valToTarget = action.valToTarget;
         this.valToExecuter = action.valToExecuter;
+        this.bool = action.bool;
+    }
+    public Action(Thing executer, Thing target, Action action, int itemIndex) {
+        this.type = action.type;
+        this.executer = executer;
+        this.target = target;
+
+        this.name = action.name;
+        this.valToTarget = action.valToTarget;
+        this.valToExecuter = action.valToExecuter;
+        this.bool = action.bool;
+        this.itemIndex = itemIndex;
     }
 
     /** 
@@ -150,6 +172,9 @@ public class Action {
             case EQUIP:
                 this.name = "Equip "+this.target;
                 break;
+            case USE:
+                this.name = "Use "+this.target;
+                break;
             default:
                 this.name = "Unknown Action ("+this.type+")";
                 break;
@@ -165,6 +190,11 @@ public class Action {
 
     /** Execute instructions set by the Type. This function should not modify this Action in any way, unless it requires it. */
     public String execute(Player player) {
+        ArrayList<String> output = new ArrayList<>();
+        if (itemIndex>=0 && bool) {
+            output.add("You have used "+player.inventory.get(itemIndex));
+            player.inventory.remove(itemIndex);
+        }
         switch (this.type) {
             case SUBACTION:
                 return "Your Subactions for "+this+":\n";
@@ -183,48 +213,46 @@ public class Action {
             case DAMAGE:
                 Roomroot.debugLine("Damage Action from "+executer+" to "+target);
                 if (target==null) {target = ((Entity)this.executer).getTarget();}
-                ((Entity)target).damage(this.valToTarget);
-                String output = this.executer+" dealt "+this.valToTarget+" damage to "+this.target;
-                if (!((Entity)this.target).isAlive()) {output+="\n"+this.target+" has died!";}
+                Entity entity = (Entity) target;
 
-                if (this.executer.toString()==player.toString()) {
-                    for (Monster m : player.targets) {
-                        if (m.isAlive()) {
-                            player.setTarget(m);
-                            output+="New target: "+m;
+                output.add(this.executer+" dealt "+this.valToTarget+" damage to "+this.target);
+                entity.damage(this.valToTarget);
+                if (!entity.isAlive()) {
+                    output.add(entity.atDeath());
+
+                    if (this.executer.toString()==player.toString()) {
+                        for (Monster m : player.targets) {
+                            if (m.isAlive()) {
+                                player.setTarget(m);
+                                output.add("New target: "+m);
+                            }
                         }
                     }
                 }
-
-                return output;
+                return Roomroot.toOneString(output);
             case HEAL:
-                if (player instanceof Player) { // TODO: make this Target instead
-                    player.hp.inc(this.valToTarget);
-                    return "You healed "+this.valToTarget+" health.";
-                }
+                output.add(this.target+" healed "+this.valToTarget+" HP.");
+                ((Entity) this.target).heal(this.valToTarget);
+                return Roomroot.toOneString(output);
             case RECHARGE:
                 if (player instanceof Player) { // TODO: make this target instead
                     player.mp.inc(this.valToTarget);
                     return player+" restored "+this.valToTarget+" mana.";
                 }
-            // case INVEQUIP:
-            //     for (Item i : player.inventory) {
-            //         subactions.add(new Action(Type.EQUIP, i));
-            //     }
-            //     subactions.add(new Action(Type.BACK));
-            //     return "Subactions Added.";
             case EQUIP:
                 player.equip((Item) this.target);
                 return "Equipped "+this.target+"!";
+            case USE:
+                
             default:
-                return "null action: "+this;
+                return "null actions for "+this;
         }
     }
 
     @Override
     public String toString() {
         if (Roomroot.debug) {
-            return this.name+" [AT."+type+"]";
+            return this.name+" ["+type.com+"]";
         }
         return this.name;
     }

@@ -19,6 +19,7 @@ public class Monster extends Entity {
             this.chance = chance; this.item = item;
         }
         public boolean roll() {return Math.random()<=chance;}
+        public Item get() {return this.item[(int)(Math.random()*item.length)];}
     }
 
     static {
@@ -30,6 +31,8 @@ public class Monster extends Entity {
 
     /** A group of monsters get aggro'ed together. */
     //public static ArrayList<Monster> aggroGroup;
+    public static int ids=0;
+    private int id;
 
     public String name, type;
     private int level = 0;
@@ -52,6 +55,7 @@ public class Monster extends Entity {
         this.damage=m.damage;
         this.actions=m.actions;
         this.drops=m.drops;
+        this.id=ids++; // Change id idk
     }
     private Monster(String type, int level, int hp, int mana, int damage) {
         c_basic(type, level, hp, mana);
@@ -67,13 +71,13 @@ public class Monster extends Entity {
         this.type=type; this.level=level; this.hp.set(hp); this.mp.set(mana);
     }
     /** STATIC Get a random monster. */
-    public static Monster getRandomMonster(Player player) {
+    public static String getRandom(Player player) {
         while (true) {
             String m_name = getRandomKey(MONSTERS);
             Monster m = MONSTERS.get(m_name);
-            if (100*Math.random() < equalProbability + Math.abs(Math.pow(player.level-m.level,3))) { // ERR
+            if (100*Math.random() < equalProbability + Math.abs(Math.pow(player.level-m.level,3))) {
                 //Roomroot.pl("GetRandom: "+m_name);
-                return new Monster(MONSTERS.get(m_name));
+                return m_name;
             }
         }
     }
@@ -99,7 +103,7 @@ public class Monster extends Entity {
     
     @Override
     public String[] getStatus() {
-        String line1 = this.getSimpleString()+"'s Health: "+hp+"/"+hp.max;
+        String line1 = this.getSimpleString()+"'s Health: "+hp;
         if (this.mp.max>0) {
             line1 += " | Mana: "+mp+"/"+mp.max;
         }
@@ -118,7 +122,7 @@ public class Monster extends Entity {
     // }
 
     @Override
-    Entity getTarget() {
+    public Entity getTarget() {
         return this.target;
     }
     @Override
@@ -134,15 +138,35 @@ public class Monster extends Entity {
     public String toString() {
         String str = this.type+" [Level "+this.level+"]";
         if (!this.hp.full()) {
-            str += " ("+hp.v()+"/"+hp.max+")";
+            if (this.hp.empty()) {
+                str += " (Dead)";
+            } else {
+                str += " ("+hp.v()+")";
+            }
         }
-        return str;
+        return str+" {"+id+"}";
     }
 
     @Override
     public boolean isAlive() {return this.hp.v()>0;}
     @Override
-    public void damage(int damage) {this.hp.dec(damage);}
-
+    public String atDeath() {
+        String deathMsg = this+" has died.";
+        // Check drops
+        for (Drop d : drops) {
+            if (d.roll()) {
+                Item i = d.get();
+                Roomroot.player.inventory.add(i);
+                deathMsg += "\n"+this+" dropped a "+i.toString()+"!";
+            }
+        }
+        return deathMsg;
+    }
+    @Override
+    public void damage(int hp) {this.hp.dec(hp);}
+    @Override
+    public void heal(int hp) {
+        this.hp.inc(hp);
+    }
     
 }

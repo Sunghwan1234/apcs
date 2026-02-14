@@ -42,9 +42,10 @@ public class Max {
   public boolean full() {
     return this.v==this.max;
   }
+  public boolean empty() {return this.v==0;}
 
   @Override
   public String toString() {
-    return v+"";
+    return v+"/"+max;
   }
 }

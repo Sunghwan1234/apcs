@@ -6,6 +6,8 @@ import java.util.HashMap;
 import Roomroot.Action.Type;
 
 public class Item implements Thing, Comparable<Item> {
+    public static int ids=0;
+    private final int id;
     
     public String name, description;
     public int level = 0;
@@ -16,9 +18,9 @@ public class Item implements Thing, Comparable<Item> {
     private static final HashMap<String, Item> ITEMS = new HashMap<>();
     static {
         ITEMS.put("Health Potion", new Item("Health Potion", 
-                new Action("Drink Health Potion", "Restores 50 health", Type.HEAL, 50, 0)));
+                new Action("Drink Health Potion", "Restores 50 health", Type.HEAL, 50, 0, true)));
         ITEMS.put("Mana Potion", new Item("Mana Potion", 
-                new Action("Drink Mana Potion", "Recharges 50 mana", Type.RECHARGE, 0, 50)));
+                new Action("Drink Mana Potion", "Recharges 50 mana", Type.RECHARGE, 50, 0, true)));
         ITEMS.put("Wand", new Item("Wand", 
                 new Action("Fireball", "Shoots a burst of fire", Type.DAMAGE, 25, 10)));
     }
@@ -33,18 +35,24 @@ public class Item implements Thing, Comparable<Item> {
     }
     public Item(String name) {
         this.name = name;
+
+        this.id=ids++;
     }
     public Item(String name, ArrayList<Action> actions) {
         this.name = name; this.actions = actions;
+        this.id=ids++;
     }
     public Item(String name, Action... actions) {
         this.name = name; setActions(actions);
+        this.id=ids++;
     }
     public Item(String name, String description, ArrayList<Action> actions) {
         this.name = name; this.description = description; this.actions = actions;
+        this.id=ids++;
     }
     public Item(String name, String description, Action... actions) {
         this.name=name; this.description=description; setActions(actions);
+        this.id=ids++;
     }
     
     private void setActions(Action[] actions) {for (Action a : actions) {this.actions.add(a);}}

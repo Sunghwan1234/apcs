@@ -48,7 +48,7 @@ public class Roomroot {
                 }
                 pl(printDescriptions(player.loc.getDescription(), "\n", "\t"));
             } else if (status==Status.combat) {
-                p("There are "+player.targets.size()+" "+player.getTarget().toString()+" near you! ");
+                pl("There are "+player.targets.size()+" "+player.getTarget().toString()+" near you! ");
                 //pl(printDescriptions(Monster.getMonsterNames(player.targets), ", ", ""));
 
                 for (Monster m : player.targets) {
@@ -83,20 +83,30 @@ public class Roomroot {
             pl(playerAction.execute(player));
 
             if (status==Status.combat) {
+                boolean endCombat=true;
                 for (Monster m : player.targets) {
                     if (m.isAlive()) {
                         pl(m.getActions().get(0).execute(player));
+                        endCombat=false;
                     }
+                }
+                if (endCombat) {
+                    pl("You have killed all the monsters!");
+                    status = Status.passive;
                 }
             }
 
             if (!player.isAlive()) {inPlay=false;
-                pl("\n You have died.");
+                pl("\nYou have died.");
             }
 
             pl(); pSep(); p("Continue"); input.nextLine(); pSep();
         }
         input.close();
+    }
+
+    public static void checkDeaths() {
+
     }
 
     /** chooseAction with sep=', ' tab='' */
@@ -162,11 +172,11 @@ public class Roomroot {
 
     //     return list;
     // }
-    // public static String getOneLine(String[] array) {
-    //     String s="";
-    //     for (int i=0;i<array.length;i++) {s+=i; if (i!=0){s+="\n";}}
-    //     return s;
-    // }
+    public static String toOneString(ArrayList<String> array) {
+        String s="";
+        for (int i=0;i<array.size();i++) {if (i!=0){s+="\n";} s+=array.get(i);}
+        return s;
+    }
     public static void p(Object o) {System.out.print(o);}
     public static void pl() {pl("");}
     public static void pl(Object o) {System.out.println(o);}
