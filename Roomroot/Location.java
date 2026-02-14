@@ -55,7 +55,7 @@ public class Location implements Thing {
             Player.addLocationToPath(this);
 
             int passageCount = (int)(Math.random()*4+1);
-            double monsterSpawnChance=0.33;
+            double monsterSpawnChance=0.5;
 
             switch (this.type) {
                 case "Spawn":
@@ -108,7 +108,6 @@ public class Location implements Thing {
         if (lockedCount>0) {
             things.add("There are also "+lockedCount+" locked passages.");
         }
-
         if (monsters.size()>0) {
             things.add("There are also "+monsters.size()+" monsters.");
         }
@@ -119,7 +118,6 @@ public class Location implements Thing {
     public ArrayList<Action> getActions() {
         ArrayList<Action> actions = new ArrayList<>();
 
-        
         if (Roomroot.status==Roomroot.Status.passive) {
             /* Movement */
             ArrayList<Action> moveActions = new ArrayList<>();
@@ -130,7 +128,7 @@ public class Location implements Thing {
             }
             actions.add(new Action(moveActions, "Move"));
 
-            /* Attack Monsters */
+            // Attack Monsters --------------------------------------------------
             if (this.monsters.size()>0) {
                 if (this.monsters.size()>1) {
                     boolean canAttack=false;

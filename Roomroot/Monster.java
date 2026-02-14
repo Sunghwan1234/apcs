@@ -10,7 +10,12 @@ import java.util.List;
 public class Monster extends Entity {
     private static final int equalProbability = 90;
 
-    private static Map<String, Monster> MONSTERS = new HashMap<>();
+    private static Map<String, Monster> MONSTERS = new HashMap<>() {{
+        put("Goblin",          new Monster("Goblin", 3, 10, 0, 5));
+        put("Bully Goblin",    new Monster("Bully Goblin", 5, 10, 0 ,5));
+        put("Troll",           new Monster("Troll", 7, 10, 0, 10));
+        put("Orc",             new Monster("Orc", 10, 100, 0, 25));
+    }};
 
     private class Drop {
         public Item[] item;
@@ -20,13 +25,6 @@ public class Monster extends Entity {
         }
         public boolean roll() {return Math.random()<=chance;}
         public Item get() {return this.item[(int)(Math.random()*item.length)];}
-    }
-
-    static {
-        MONSTERS.put("Goblin",          new Monster("Goblin", 3, 10, 0, 5));
-        MONSTERS.put("Bully Goblin",    new Monster("Bully Goblin", 5, 10, 0 ,5));
-        MONSTERS.put("Troll",           new Monster("Troll", 7, 10, 0, 10));
-        MONSTERS.put("Orc",             new Monster("Orc", 10, 100, 0, 25));
     }
 
     /** A group of monsters get aggro'ed together. */
@@ -51,10 +49,10 @@ public class Monster extends Entity {
     public Monster(Monster m) {
         this.name=m.name; this.type=m.type;
         this.level=m.level;
-        this.hp=m.hp; this.mp=m.mp;
+        this.hp=new Max(m.hp); this.mp=new Max(m.mp);
         this.damage=m.damage;
-        this.actions=m.actions;
-        this.drops=m.drops;
+        for (Action a : m.actions) {this.actions.add(a);}
+        for (Drop d : m.drops) {this.drops.add(d);}
         this.id=ids++; // Change id idk
     }
     private Monster(String type, int level, int hp, int mana, int damage) {
@@ -163,10 +161,11 @@ public class Monster extends Entity {
         return deathMsg;
     }
     @Override
-    public void damage(int hp) {this.hp.dec(hp);}
-    @Override
-    public void heal(int hp) {
-        this.hp.inc(hp);
+    public Max getHP() {
+        return this.hp;
     }
-    
+    @Override
+    public Max getMP() {
+        return this.mp;
+    }
 }

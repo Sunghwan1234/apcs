@@ -33,7 +33,7 @@ public class Roomroot {
         // Initialization
         player.loc = new Location("Spawn");
         player.inventory.add(Item.getNew("Wand"));
-        player.equip(player.inventory.get(0));
+        player.equip(0);
 
         pl("You have arrived at "+player.loc+".");
         pl(); pSep();

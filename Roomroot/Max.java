@@ -4,7 +4,10 @@ package Roomroot;
 public class Max {
   public int max;
   private int v;
-
+  public Max(Max m) {
+    this.max=m.max;
+    this.v=max;
+  }
   public Max(int max, int v) {
     this.max=max;
     this.v=v;
@@ -14,18 +17,14 @@ public class Max {
     this.v=max;
   }
   /** Returns V. */
-  public int v() {
-    return v;
-  }
-
-  public int inc(int i) {
+  public int v() {return v;}
+  /** Change Value. */
+  public int c(int i) {
     this.v = Math.max(0, Math.min(this.v + i, this.max));
     return v;
   }
-  public int dec(int i) {
-    this.v = Math.max(0, Math.min(this.v - i, this.max));
-    return v;
-  }
+  public int inc(int i) {return c(i);}
+  public int dec(int i) {return c(-i);}
   /** Sets a new maximum & value. */
   public int set(Max i) {
     this.max=i.max;
@@ -39,9 +38,7 @@ public class Max {
     return v;
   }
 
-  public boolean full() {
-    return this.v==this.max;
-  }
+  public boolean full() {return this.v==this.max;}
   public boolean empty() {return this.v==0;}
 
   @Override
