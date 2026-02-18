@@ -27,7 +27,7 @@ public class Location implements Thing {
         String[] sl = {"ael","nuo","bel","cao","bun","pho","ghi","ard","fri","sin","gho","who","cry","jan","las","vei","kos","qou","za","xu","yi","fu","bi","ne","la","ra","ze","lu","do","mo","te","ve"};
         int r = (int)(Math.random()*3+2);
         this.name = "";
-        for (int i=0;i<r;i++) {
+        for (int i=0;i<r;i++) { // TODO: make these names better lol: non-duplicate names
             this.name += sl[(int) (Math.random()*sl.length)];
         }
         this.name = this.name.substring(0,1).toUpperCase()+this.name.substring(1);

@@ -34,6 +34,7 @@ public class Player extends Entity {
         }
         // In Combat!
         if (Roomroot.status == Roomroot.Status.combat) {
+            // Choose Enemy Action --------------------------------------------------------------
             ArrayList<Action> enemyChoice = new ArrayList<>();
             for (Monster m : targets) {
                 if (m.isAlive()) {
@@ -42,7 +43,7 @@ public class Player extends Entity {
                         public String execute(Player player) {
                             player.setTarget(getTargetEntity()); // TODO: bug
                             Roomroot.pl("Target set to "+m);
-                            return "Target set.";
+                            return "Target set to "+m;
                         }
                     });
                 }

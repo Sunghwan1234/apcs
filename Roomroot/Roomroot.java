@@ -76,7 +76,8 @@ public class Roomroot {
                 while (playerAction.type.com == Type.SUBACTION.com) {
                     playerAction = chooseAction(playerAction.subactions, input, playerAction.execute(player), "\n", "\t");
                 }
-                if (playerAction.type.com!=Type.BACK.com) {choseFinalAction=true;}
+                if (playerAction.type.com==Type.CHOOSE.com) {playerAction.execute(player);}
+                if (playerAction.type.com>=0) {choseFinalAction=true;}
             }
 
             pSep(); pl();
@@ -88,6 +89,11 @@ public class Roomroot {
                     if (m.isAlive()) {
                         pl(m.getActions().get(0).execute(player));
                         endCombat=false;
+
+                        if (!player.getTarget().isAlive()) {
+                            player.setTarget(m);
+                            pl("New Target: "+m);
+                        }
                     }
                 }
                 if (endCombat) {

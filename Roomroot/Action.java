@@ -10,10 +10,10 @@ public class Action {
     /** ActionType. SUBACTION for everything you can choose, CHOOSE to go back */
     public enum Type {
         MOVE(0), ATTACKGROUP(1), ATTACK(2), DAMAGE(2), HEAL(2), RECHARGE(2), DMGMANA(2), EQUIP(7), USE(8),
-        SUBACTION(-1), BACK(-2), CHOOSE(-2),
-        CUSTOM(-100), ITEM(-10);
+        SUBACTION(-1), BACK(-2), CHOOSE(-3),
+        CUSTOM(100), ITEM(10);
         
-        /** Comparitor: Which Function */
+        /** Comparitor. Negative = will not continue */
         public final int com;
         private Type(int com) {
             this.com = com;
