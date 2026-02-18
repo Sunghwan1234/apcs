@@ -40,7 +40,7 @@ public class Player extends Entity {
                     enemyChoice.add(new Action(Type.CHOOSE, m.toString(), m) {
                         @Override
                         public String execute(Player player) {
-                            player.setTarget(targetEntity()); // TODO: bug
+                            player.setTarget(getTargetEntity()); // TODO: bug
                             Roomroot.pl("Target set to "+m);
                             return "Target set.";
                         }

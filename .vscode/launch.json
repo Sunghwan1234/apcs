@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Roomroot",
+            "request": "launch",
+            "mainClass": "Roomroot.Roomroot",
+            "projectName": "apcs_143a8c93"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"

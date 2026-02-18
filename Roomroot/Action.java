@@ -1,6 +1,7 @@
 package Roomroot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -234,6 +235,11 @@ public class Action {
         vars.put(key, value);
         return this;
     }
+    /** Put a key with the value set as 1 into the vars HashMap */
+    public Action v(String key) {
+        vars.put(key, 1);
+        return this;
+    }
     public Action setName(String customName) {
         this.name=customName;
         return this;
@@ -259,7 +265,7 @@ public class Action {
                 return "You are now attacking "+player.getTarget()+"!";
             case DAMAGE:
                 Roomroot.debugLine("Damage Action from "+executer+" to "+target);
-                if (target==null) {target = executerEntity().getTarget();}
+                if (target==null) {target = getExecuterEntity().getTarget();}
                 Entity targetEntity = (Entity) target;
 
                 output.add(this.executer+" dealt "+this.valToTarget+" damage to "+this.target);
@@ -281,40 +287,43 @@ public class Action {
             case HEAL:
                 //Roomroot.pl("bool "+bool+" item "+itemIndex);
                 output.add(this.target+" healed "+this.valToTarget+" HP.");
-                targetEntity().getHP().inc(this.valToTarget);
+                getTargetEntity().getHP().inc(this.valToTarget);
                 return Roomroot.toOneString(output);
             case RECHARGE:
-                targetEntity().getMP().inc(this.valToTarget);
-                return targetEntity()+" restored "+this.valToTarget+" mana.";
+                getTargetEntity().getMP().inc(this.valToTarget);
+                return getTargetEntity()+" restored "+this.valToTarget+" mana.";
             case EQUIP:
                 player.equip(player.inventory.indexOf(this.target));
                 return "Equipped "+this.target+"!";
             case ITEM: // TODO: Test to see if it works
                 boolean consume = false;
-                for (Map.Entry<String, Integer> entry : vars.entrySet()) {
-                    String[] s = entry.getKey().split("."); Integer i = entry.getValue();
-                    String value = s[0]; String v1 = s.length>1?s[1]:"none";
-                    Entity valTarget = targetEntity();
-                    if (v1.contains("exec"))
-                    switch (value) {
-                        case "hp": valTarget.getHP().c(i); 
-                            if (i>0) {
-                                output.add(valTarget+" healed "+i+" HP.");
+                for (Map.Entry<String, Integer> entry : this.vars.entrySet()) {
+                    // the String (ex. hp.exec) will be split by the commas. the comma has a special regex.
+                    String[] keyArray = entry.getKey().split("\\."); Integer value = entry.getValue();
+                    String key = keyArray[0]; String keyParam = keyArray.length>1?keyArray[1]:"none";
+                    Entity valueTarget = getTargetEntity();
+                    if (keyParam.contains("exec")) {valueTarget = getExecuterEntity();}
+                    String oneOutput = "";
+                    switch (key) {
+                        case "hp": valueTarget.getHP().c(value); 
+                            if (value>0) { oneOutput+=valueTarget+" healed "+value+" HP";
                             } else {
-                                output.add(executerEntity()+" dealt "+i+" DMG to "+valTarget);
+                                oneOutput+=getExecuterEntity()+" dealt "+value+" DMG to ";
+                                oneOutput+=getExecuterEntity()==valueTarget?"self":valueTarget;
                             } break;
-                        case "mp": valTarget.getMP().c(i); 
-                            if (i>0) {
-                                output.add(valTarget+" regenerated "+i+" MP.");
+                        case "mp": valueTarget.getMP().c(value); 
+                            if (value>0) {oneOutput+=valueTarget+" regenerated "+value+" MP";
                             } else {
-                                output.add(executerEntity()+" dissipated "+i+" MANA of "+valTarget);
+                                oneOutput+=getExecuterEntity()+" dissipated "+value+" Mana of ";
+                                oneOutput+=getExecuterEntity()==valueTarget?"self":valueTarget;
                             } break;
                         case "consume": consume=true; break;
-                        default: Roomroot.pl("UNKNOWN KEY: "+s+" v: "+i); break;
+                        default: Roomroot.pl("UNKNOWN KEY: "+keyArray+" v: "+value); break;
                     }
+                    if (!oneOutput.equals("")) {output.add(oneOutput+".");} // Add oneOutput to output
                 }
                 if (consume) {
-                    output.add("You have used up a "+player.inventory.get(itemIndex));
+                    output.add("You have used up the "+player.inventory.get(itemIndex));
                     player.inventory.remove(itemIndex);
                 }
                 return Roomroot.toOneString(output);
@@ -322,8 +331,8 @@ public class Action {
                 return "null actions for "+this;
         }
     }
-    public Entity targetEntity() {return ((Entity)this.target);}
-    public Entity executerEntity() {return ((Entity)this.executer);}
+    public Entity getTargetEntity() {return ((Entity)this.target);}
+    public Entity getExecuterEntity() {return ((Entity)this.executer);}
 
     @Override
     public String toString() {
