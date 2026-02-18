@@ -12,8 +12,8 @@ public class Monster extends Entity {
 
     private static Map<String, Monster> MONSTERS = new HashMap<>() {{
         put("Goblin",          new Monster("Goblin", 3, 10, 0, 5));
-        put("Bully Goblin",    new Monster("Bully Goblin", 5, 10, 0 ,5));
-        put("Troll",           new Monster("Troll", 7, 10, 0, 10));
+        put("Bully Goblin",    new Monster("Bully Goblin", 4, 15, 0 ,5));
+        put("Troll",           new Monster("Troll", 5, 25, 0, 10));
         put("Orc",             new Monster("Orc", 10, 100, 0, 25));
     }};
 
