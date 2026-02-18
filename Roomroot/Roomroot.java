@@ -24,7 +24,7 @@ public class Roomroot {
         p("Player name: ");
         player = new Player(input.nextLine());
         pl(); pSep();
-        pl("Welcome to Roomroot, "+player+".");
+        pl("Welcome to Roomroot, "+player.name+".");
         pl("Starting Roomroot v1.0...");
         if (debug) {pl("Debug Mode is Enabled.");}
         pSep();

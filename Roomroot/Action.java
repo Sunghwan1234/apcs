@@ -308,14 +308,17 @@ public class Action {
                         case "hp": valueTarget.getHP().c(value); 
                             if (value>0) { oneOutput+=valueTarget+" healed "+value+" HP";
                             } else {
-                                oneOutput+=getExecuterEntity()+" dealt "+value+" DMG to ";
+                                oneOutput+=getExecuterEntity()+" dealt "+-value+" DMG to ";
                                 oneOutput+=getExecuterEntity()==valueTarget?"self":valueTarget;
                             } break;
                         case "mp": valueTarget.getMP().c(value); 
                             if (value>0) {oneOutput+=valueTarget+" regenerated "+value+" MP";
                             } else {
-                                oneOutput+=getExecuterEntity()+" dissipated "+value+" Mana of ";
-                                oneOutput+=getExecuterEntity()==valueTarget?"self":valueTarget;
+                                if (getExecuterEntity()==valueTarget) {
+                                    oneOutput+=getExecuterEntity()+" consumed "+value+" Mana";
+                                } else {
+                                    oneOutput+=getExecuterEntity()+" dissipated "+-value+" Mana of ";
+                                }
                             } break;
                         case "consume": consume=true; break;
                         default: Roomroot.pl("UNKNOWN KEY: "+keyArray+" v: "+value); break;
