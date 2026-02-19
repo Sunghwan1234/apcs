@@ -33,7 +33,7 @@ public class Roomroot {
         // Initialization
         player.loc = new Location("Spawn");
         player.inventory.add(Item.getNew("Wand"));
-        player.equip(player.inventory.getFirst());
+        player.equip(player.inventory.get(0));
 
         pl("You have arrived at "+player.loc+".");
         pl(); pSep();
@@ -63,7 +63,7 @@ public class Roomroot {
                 pl("Equipped Weapon: "+player.weapon);
             }
             if (status==Status.combat && player.getTarget()!=null) {
-                pl("Currect Target: "+player.getTarget()); // TODO: does this work
+                pl("Currect Target: "+player.getTarget());
             }
             pl();
 

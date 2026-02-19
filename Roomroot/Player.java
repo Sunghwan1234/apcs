@@ -41,7 +41,7 @@ public class Player extends Entity {
                     enemyChoice.add(new Action(Type.CHOOSE, m.toString(), m) {
                         @Override
                         public String execute(Player player) {
-                            player.setTarget(getTargetEntity()); // TODO: bug
+                            player.setTarget(getTargetEntity());
                             Roomroot.pl("Target set to "+m);
                             return "Target set to "+m;
                         }
@@ -55,7 +55,7 @@ public class Player extends Entity {
                 ArrayList<Action> weaponActions = weapon.getActions();
                 if (weaponActions.size()>1) {
                     ArrayList<Action> attackActions = new ArrayList<>();
-                    for (Action a : weapon.getActions()) {
+                    for (Action a : weaponActions) {
                         attackActions.add(new Action(this, target, a, weapon));
                     }
                     actions.add(new Action(attackActions, "Choose "+weapon+" Action"));
@@ -80,7 +80,8 @@ public class Player extends Entity {
                 }
                 useActions.add(new Action(itemActions, i+" ("+i.getActions().size()+")", true));
             } else {
-                useActions.add(new Action(this, this, i.getActions().get(0), i));
+                useActions.add(new Action(this, this, i.getActions().get(0), i)
+                    .setName(i+": "+i.getActions().get(0)));
             }
         }
         Action equipAction = new Action(equipActions, "Equip Weapon", true);

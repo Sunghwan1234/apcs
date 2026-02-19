@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /** Base of all actions. */
+@SuppressWarnings("unused")
 public class Action {
     /** ActionType. SUBACTION for everything you can choose, CHOOSE to go back */
     public enum Type {
@@ -293,7 +294,7 @@ public class Action {
             case EQUIP:
                 player.equip((Item) this.target);
                 return "Equipped "+this.target+"!";
-            case ITEM: // TODO: Test to see if it works
+            case ITEM:
                 boolean consume = false;
                 for (Map.Entry<String, Integer> entry : this.vars.entrySet()) {
                     // the String (ex. hp.exec) will be split by the commas. the comma has a special regex.
