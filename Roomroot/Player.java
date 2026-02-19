@@ -15,7 +15,7 @@ public class Player extends Entity {
     public Location loc;
 
     public ArrayList<Item> inventory = new ArrayList<>();
-    private int weaponIndex = -1;
+    public Item weapon;
 
     public ArrayList<Monster> targets;
     private Entity target;
@@ -51,17 +51,17 @@ public class Player extends Entity {
             actions.add(new Action(enemyChoice, "Choose Target"));
 
             // Weapon Actions --------------------------------------------------------------------
-            if (weaponIndex!=-1) {
-                ArrayList<Action> weaponActions = getWeapon().getActions();
+            if (weapon!=null) {
+                ArrayList<Action> weaponActions = weapon.getActions();
                 if (weaponActions.size()>1) {
                     ArrayList<Action> attackActions = new ArrayList<>();
-                    for (Action a : getWeapon().getActions()) {
-                        attackActions.add(new Action(this, target, a, weaponIndex));
+                    for (Action a : weapon.getActions()) {
+                        attackActions.add(new Action(this, target, a, weapon));
                     }
-                    actions.add(new Action(attackActions, "Choose "+getWeapon()+" Action"));
+                    actions.add(new Action(attackActions, "Choose "+weapon+" Action"));
                 } else {
-                    actions.add(new Action(this, target, weaponActions.get(0), weaponIndex)
-                        .setName(getWeapon()+": Use "+weaponActions.get(0))); // TODO: chec kif this works
+                    actions.add(new Action(this, target, weaponActions.get(0), weapon)
+                        .setName(weapon+": Use "+weaponActions.get(0))); // TODO: chec kif this works
                 }
             }
 
@@ -71,15 +71,16 @@ public class Player extends Entity {
         ArrayList<Action> equipActions = new ArrayList<>();
         ArrayList<Action> useActions = new ArrayList<>();
         for (Item i : inventory) {
-            equipActions.add(new Action(Type.EQUIP, i));
+            equipActions.add(new Action(Type.EQUIP, i)); // Equip Action
+
             if (i.getActions().size()>1) {
                 ArrayList<Action> itemActions = new ArrayList<>();
                 for (Action a : i.getActions()) {
-                    itemActions.add(new Action(this, this, a, weaponIndex));
+                    itemActions.add(new Action(this, this, a, i));
                 }
                 useActions.add(new Action(itemActions, i+" ("+i.getActions().size()+")", true));
             } else {
-                useActions.add(new Action(this, this, i.getActions().get(0), weaponIndex));
+                useActions.add(new Action(this, this, i.getActions().get(0), i));
             }
         }
         Action equipAction = new Action(equipActions, "Equip Weapon", true);
@@ -131,14 +132,15 @@ public class Player extends Entity {
     public String atDeath() {
         return "You died.";
     }
+    
     @Override
-    public Max getHP() {
-        //Roomroot.debugLine("Recieving Damage: "+damage);
-        return this.hp;
+    public void changeHP(int health) {
+        this.hp.add(health);
     }
+
     @Override
-    public Max getMP() {
-        return this.mp;
+    public void changeMP(int mana) {
+        this.mp.add(mana);
     }
 
     public static void addLocationToPath(Location location) {
@@ -157,12 +159,8 @@ public class Player extends Entity {
         return this.level;
     }
 
-    public void equip(int weapon) {
-        this.weaponIndex = weapon;
-    }
-    public Item getWeapon() {
-        if (weaponIndex<0) {return null;}
-        return inventory.get(weaponIndex);
+    public void equip(Item weapon) {
+        this.weapon = weapon;
     }
 
     @Override

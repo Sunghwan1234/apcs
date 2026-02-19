@@ -71,7 +71,7 @@ public class Item implements Thing, Comparable<Item> {
 
     public String toInventoryString() {
         String s = this.toString();
-        if (Roomroot.player.getWeapon().equals(this)) {
+        if (Roomroot.player.weapon.equals(this)) {
             s+= " (Equipped)";
         }
         return s;
@@ -86,7 +86,12 @@ public class Item implements Thing, Comparable<Item> {
     }
     @Override
     public int compareTo(Item o) {
-        if (this.name==o.name && this.level==o.level && this.description==o.description) {
+        if (
+            this.name==o.name && 
+            this.level==o.level && 
+            this.description==o.description &&
+            this.actions == o.actions
+        ) {
             return 0;
         } else {
             return -1;

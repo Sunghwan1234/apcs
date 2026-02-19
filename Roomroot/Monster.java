@@ -31,6 +31,7 @@ public class Monster extends Entity {
     //public static ArrayList<Monster> aggroGroup;
     public static int ids=0;
     private int id;
+    public boolean alive=true;
 
     public String name, type;
     private int level = 0;
@@ -147,6 +148,7 @@ public class Monster extends Entity {
 
     @Override
     public boolean isAlive() {return this.hp.v()>0;}
+
     @Override
     public String atDeath() {
         String deathMsg = this+" has died.";
@@ -160,12 +162,13 @@ public class Monster extends Entity {
         }
         return deathMsg;
     }
+
     @Override
-    public Max getHP() {
-        return this.hp;
+    public void changeHP(int health) {
+        this.hp.add(health);
     }
     @Override
-    public Max getMP() {
-        return this.mp;
+    public void changeMP(int mana) {
+        this.mp.add(mana);
     }
 }

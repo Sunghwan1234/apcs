@@ -32,7 +32,7 @@ public class Action {
 
     public String subactionMessage;
     public int valToTarget, valToExecuter;
-    public int itemIndex=-1;
+    public Item item;
     public boolean bool;
 
     /** Vars store many, MANY actions in one. */
@@ -141,14 +141,14 @@ public class Action {
      * @param action
      * @param itemIndex
      */
-    public Action(Thing executer, Thing target, Action action, int itemIndex) {
+    public Action(Thing executer, Thing target, Action action, Item item) {
         this.type = action.type;
         this.executer=executer;
         this.target=target;
 
         this.name=action.name;
         this.vars=action.vars;
-        this.itemIndex=itemIndex;
+        this.item = item;
     }
 
     /** 
@@ -269,11 +269,9 @@ public class Action {
                 Entity targetEntity = (Entity) target;
 
                 output.add(this.executer+" dealt "+this.valToTarget+" damage to "+this.target);
-                targetEntity.getHP().dec(this.valToTarget);
+                targetEntity.changeHP(-this.valToTarget);
                 
                 if (!targetEntity.isAlive()) {
-                    output.add(targetEntity.atDeath());
-
                     if (this.executer.toString()==player.toString()) {
                         for (Monster m : player.targets) {
                             if (m.isAlive()) {
@@ -287,13 +285,13 @@ public class Action {
             case HEAL:
                 //Roomroot.pl("bool "+bool+" item "+itemIndex);
                 output.add(this.target+" healed "+this.valToTarget+" HP.");
-                getTargetEntity().getHP().inc(this.valToTarget);
+                getTargetEntity().changeHP(this.valToTarget);
                 return Roomroot.toOneString(output);
             case RECHARGE:
-                getTargetEntity().getMP().inc(this.valToTarget);
+                getTargetEntity().changeMP(this.valToTarget);
                 return getTargetEntity()+" restored "+this.valToTarget+" mana.";
             case EQUIP:
-                player.equip(player.inventory.indexOf(this.target));
+                player.equip((Item) this.target);
                 return "Equipped "+this.target+"!";
             case ITEM: // TODO: Test to see if it works
                 boolean consume = false;
@@ -305,17 +303,17 @@ public class Action {
                     if (keyParam.contains("exec")) {valueTarget = getExecuterEntity();}
                     String oneOutput = "";
                     switch (key) {
-                        case "hp": valueTarget.getHP().c(value); 
+                        case "hp": valueTarget.changeHP(value); 
                             if (value>0) { oneOutput+=valueTarget+" healed "+value+" HP";
                             } else {
                                 oneOutput+=getExecuterEntity()+" dealt "+-value+" DMG to ";
                                 oneOutput+=getExecuterEntity()==valueTarget?"self":valueTarget;
                             } break;
-                        case "mp": valueTarget.getMP().c(value); 
+                        case "mp": valueTarget.changeMP(value); 
                             if (value>0) {oneOutput+=valueTarget+" regenerated "+value+" MP";
                             } else {
                                 if (getExecuterEntity()==valueTarget) {
-                                    oneOutput+=getExecuterEntity()+" consumed "+value+" Mana";
+                                    oneOutput+=getExecuterEntity()+" consumed "+-value+" Mana";
                                 } else {
                                     oneOutput+=getExecuterEntity()+" dissipated "+-value+" Mana of ";
                                 }
@@ -326,8 +324,8 @@ public class Action {
                     if (!oneOutput.equals("")) {output.add(oneOutput+".");} // Add oneOutput to output
                 }
                 if (consume) {
-                    output.add("You have used up the "+player.inventory.get(itemIndex));
-                    player.inventory.remove(itemIndex);
+                    output.add("You have used up the "+item+".");
+                    if (!player.inventory.remove(item)) {Roomroot.pl("ERROR :: item did not remove");}
                 }
                 return Roomroot.toOneString(output);
             default:

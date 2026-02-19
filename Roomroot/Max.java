@@ -19,12 +19,12 @@ public class Max {
   /** Returns V. */
   public int v() {return v;}
   /** Change Value. */
-  public int c(int i) {
+  public int add(int i) {
     this.v = Math.max(0, Math.min(this.v + i, this.max));
     return v;
   }
-  public int inc(int i) {return c(i);}
-  public int dec(int i) {return c(-i);}
+  public int inc(int i) {return add(i);}
+  public int dec(int i) {return add(-i);}
   /** Sets a new maximum & value. */
   public int set(Max i) {
     this.max=i.max;
@@ -40,6 +40,8 @@ public class Max {
 
   public boolean full() {return this.v==this.max;}
   public boolean empty() {return this.v==0;}
+
+
 
   @Override
   public String toString() {

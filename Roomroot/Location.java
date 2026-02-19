@@ -2,8 +2,6 @@ package Roomroot;
 
 import java.util.ArrayList;
 
-import Roomroot.Action.Type;
-
 /** All rooms in the game Roomroot. */
 public class Location implements Thing {
     public static ArrayList<Location> map = new ArrayList<>();

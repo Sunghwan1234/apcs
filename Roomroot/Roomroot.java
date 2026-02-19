@@ -33,7 +33,7 @@ public class Roomroot {
         // Initialization
         player.loc = new Location("Spawn");
         player.inventory.add(Item.getNew("Wand"));
-        player.equip(0);
+        player.equip(player.inventory.getFirst());
 
         pl("You have arrived at "+player.loc+".");
         pl(); pSep();
@@ -59,8 +59,8 @@ public class Roomroot {
             }
             pl();
             pl("Your Status:\n"+printStatus(player.getStatus()));
-            if (player.getWeapon()!=null) {
-                pl("Equipped Weapon: "+player.getWeapon());
+            if (player.weapon!=null) {
+                pl("Equipped Weapon: "+player.weapon);
             }
             if (status==Status.combat && player.getTarget()!=null) {
                 pl("Currect Target: "+player.getTarget()); // TODO: does this work
@@ -85,17 +85,22 @@ public class Roomroot {
 
             if (status==Status.combat) {
                 boolean endCombat=true;
+                ArrayList<String> monsterOutput = new ArrayList<>();
                 for (Monster m : player.targets) {
                     if (m.isAlive()) {
-                        pl(m.getActions().get(0).execute(player));
+                        monsterOutput.add(m.getActions().get(0).execute(player));
                         endCombat=false;
 
                         if (!player.getTarget().isAlive()) {
                             player.setTarget(m);
                             pl("New Target: "+m);
                         }
+                    } else if (m.alive) {
+                        m.alive=false;
+                        pl(m.atDeath());
                     }
                 }
+                pl(toOneString(monsterOutput));
                 if (endCombat) {
                     pl("You have killed all the monsters!");
                     status = Status.passive;
