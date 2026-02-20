@@ -5,7 +5,7 @@ public class Main {
     public static void main(String[] args) {
       Scanner scanner = new Scanner(System.in);
       
-      String alpha = new String("APCS"); String beta = new String("APCS"); String delta = alpha; System.out.println(alpha.equals(beta)); System.out.println(alpha == beta); System.out.println(alpha == delta);
+      String str = "qrstu"; String result = ""; for (int j = 0; j < str.length(); j++) { result += str.substring(0, j + 1); } System.out.println(result);
       
       scanner.close();
     }

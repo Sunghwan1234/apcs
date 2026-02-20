@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "Main",
+      "projectName": "apcs_143a8c93"
+    },
+    {
+      "type": "java",
       "name": "ArrayTesterDriver",
       "request": "launch",
       "mainClass": "lab.AP.Sem2.ArrayTesterP2.ArrayTesterDriver",
