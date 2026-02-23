@@ -1,4 +1,4 @@
-package AP.StudentRecord;
+package AP.Sem1.StudentRecord;
 
 /**
  * A student record contains a student's scores, as well as tools

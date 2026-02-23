@@ -1,4 +1,4 @@
-package AP.MultiPractice;
+package AP.Sem1.MultiPractice;
 
 /**
  * StudyPractice is comprised of practice problems on a certain subject.

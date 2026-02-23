@@ -1,4 +1,4 @@
-package AP.Phrase;
+package AP.Sem1.Phrase;
 
 /**
  * PhraseTester contains a main method to test Phrase objects.

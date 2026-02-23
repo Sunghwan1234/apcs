@@ -1,4 +1,4 @@
-package AP.NumberCube;
+package AP.Sem1.NumberCube;
 
 /**
  * A number cube can be tossed to obtain a face value of 1 to 6.

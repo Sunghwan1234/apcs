@@ -1,4 +1,4 @@
-package AP.NumberCube;
+package AP.Sem1.NumberCube;
 
 /**
  * NumberCubeTester contains a main method to test two other class methods

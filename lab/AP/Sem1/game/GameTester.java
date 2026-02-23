@@ -1,4 +1,4 @@
-package AP.game;
+package AP.Sem1.game;
 
 /**
  * GameTester contains a main method to test the Game class.

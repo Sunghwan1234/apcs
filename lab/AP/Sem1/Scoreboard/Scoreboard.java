@@ -1,4 +1,4 @@
-package AP.Scoreboard;
+package AP.Sem1.Scoreboard;
 
 public class Scoreboard {
   private String team1, team2;

@@ -1,4 +1,4 @@
-package AP.Trio;
+package AP.Sem1.Trio;
 
 public class Trio implements MenuItem {
   Sandwich sandwich; Salad salad; Drink drink;

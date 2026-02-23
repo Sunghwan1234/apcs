@@ -1,4 +1,4 @@
-package AP.SelfDivisor;
+package AP.Sem1.SelfDivisor;
 
 /**
  * SelfDivisor contains two class methods to analyze integers. An integer is a

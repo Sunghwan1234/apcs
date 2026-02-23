@@ -1,4 +1,4 @@
-package AP.Scoreboard;
+package AP.Sem1.Scoreboard;
 
 /**
  * ScoreboardTester contains a main method to test Scoreboard objects.

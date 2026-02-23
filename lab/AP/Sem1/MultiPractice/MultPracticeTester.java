@@ -1,4 +1,4 @@
-package AP.MultiPractice;
+package AP.Sem1.MultiPractice;
 
 /**
  * MultPracticeTester contains a main method to test MultPractice objects.

@@ -1,4 +1,4 @@
-package AP.HiddenWord;
+package AP.Sem1.HiddenWord;
 
 import java.io.*;
 import java.net.*;

@@ -1,4 +1,4 @@
-package AP.Trio;
+package AP.Sem1.Trio;
 /**
  * TrioTester contains a main method to test Trio objects.
  * 

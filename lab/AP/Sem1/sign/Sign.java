@@ -1,4 +1,4 @@
-package AP.sign;
+package AP.Sem1.sign;
 
 public class Sign {
   private String msg;

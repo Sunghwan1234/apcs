@@ -1,4 +1,4 @@
-package AP.FrogSimulation;
+package AP.Sem1.FrogSimulation;
 
 /**
  * FrogSimulationTester contains a main method to test a number of frog simulations.

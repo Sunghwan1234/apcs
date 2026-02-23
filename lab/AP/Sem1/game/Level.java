@@ -1,4 +1,4 @@
-package AP.game;
+package AP.Sem1.game;
 /**
  * A level earns points for the player if it is completed.
  */

@@ -1,4 +1,4 @@
-package AP.CombinedTable;
+package AP.Sem1.CombinedTable;
 
 /**
  * A single table is comprised of a number of seats at this table, the height of this table,

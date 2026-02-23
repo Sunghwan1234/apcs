@@ -1,4 +1,4 @@
-package AP.StudentRecord;
+package AP.Sem1.StudentRecord;
 
 /**
  * StudentRecordTester contains a main method to test StudentRecord objects.

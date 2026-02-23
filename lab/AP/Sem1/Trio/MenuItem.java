@@ -1,4 +1,4 @@
-package AP.Trio;
+package AP.Sem1.Trio;
 
 /**
  * A menu item is comprised of a name and price of the item.

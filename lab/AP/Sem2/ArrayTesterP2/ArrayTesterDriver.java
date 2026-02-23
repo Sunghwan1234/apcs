@@ -1,4 +1,4 @@
-package lab.AP.Sem2.ArrayTesterP2;
+package AP.Sem2.ArrayTesterP2;
 
 /**
  * ArrayTesterDriver contains a main method to test an ArrayTester object.

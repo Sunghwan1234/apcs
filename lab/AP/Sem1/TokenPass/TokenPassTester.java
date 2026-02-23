@@ -1,4 +1,4 @@
-package AP.TokenPass;
+package AP.Sem1.TokenPass;
 
 /**
  * TokenPassTester contains a main method to test a TokenPass object.

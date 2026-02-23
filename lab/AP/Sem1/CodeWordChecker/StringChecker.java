@@ -1,4 +1,4 @@
-package AP.CodeWordChecker;
+package AP.Sem1.CodeWordChecker;
 
 /**
  * A StringChecker validates a given string of text.

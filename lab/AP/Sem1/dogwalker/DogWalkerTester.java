@@ -1,4 +1,4 @@
-package AP.dogwalker;
+package AP.Sem1.dogwalker;
 
 /**
  * DogWalkTester contains a main method to test a DogWalker object.

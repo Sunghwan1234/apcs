@@ -1,4 +1,4 @@
-package AP.Trio;
+package AP.Sem1.Trio;
 
 public class Drink implements MenuItem {
   String name;

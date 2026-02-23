@@ -1,4 +1,4 @@
-package AP.MultiPractice;
+package AP.Sem1.MultiPractice;
 
 public class MultPractice implements StudyPractice {
   private int x,y;

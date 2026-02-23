@@ -1,4 +1,4 @@
-package lab.AP.Sem2.Crossword;
+package AP.Sem2.Crossword;
 
 import java.awt.*;
 import javax.swing.*;

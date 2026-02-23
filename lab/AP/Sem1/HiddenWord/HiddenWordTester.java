@@ -1,4 +1,4 @@
-package AP.HiddenWord;
+package AP.Sem1.HiddenWord;
 
 /**
  * HiddenWordTester contains a main method to test a HiddenWord object.

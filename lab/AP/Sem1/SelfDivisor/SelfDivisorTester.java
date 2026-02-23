@@ -1,4 +1,4 @@
-package AP.SelfDivisor;
+package AP.Sem1.SelfDivisor;
 /**
  * SelfDivisorTester contains a main method to test SelfDivisor class methods.
  * 

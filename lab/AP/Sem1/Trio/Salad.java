@@ -1,4 +1,4 @@
-package AP.Trio;
+package AP.Sem1.Trio;
 
 public class Salad implements MenuItem {
   String name;

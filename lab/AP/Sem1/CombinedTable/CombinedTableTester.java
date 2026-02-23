@@ -1,4 +1,4 @@
-package AP.CombinedTable;
+package AP.Sem1.CombinedTable;
 
 /** 
  * CombinedTableTester contains a main method to test a CombinedTable object.

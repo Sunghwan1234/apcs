@@ -1,4 +1,4 @@
-package AP.CodeWordChecker;
+package AP.Sem1.CodeWordChecker;
 
 /**
  * CodeWordCheckerTester contains a main method to test CodeWordChecker object.

@@ -1,4 +1,4 @@
-package AP.CodeWordChecker;
+package AP.Sem1.CodeWordChecker;
 
 public class CodeWordChecker implements StringChecker {
   private int min=6, max=20;

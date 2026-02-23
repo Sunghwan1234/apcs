@@ -1,4 +1,4 @@
-package AP.CombinedTable;
+package AP.Sem1.CombinedTable;
 
 public class CombinedTable {
   private SingleTable t1, t2;

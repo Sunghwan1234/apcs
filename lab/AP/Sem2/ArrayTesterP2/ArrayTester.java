@@ -1,4 +1,4 @@
-package lab.AP.Sem2.ArrayTesterP2;
+package AP.Sem2.ArrayTesterP2;
 
 /**
  * ArrayTester contains static methods that can be used to analyze 1D and 2D

@@ -1,4 +1,4 @@
-package AP.Trio;
+package AP.Sem1.Trio;
 
 public class Sandwich implements MenuItem {
   String name;

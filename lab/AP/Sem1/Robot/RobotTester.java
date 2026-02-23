@@ -1,4 +1,4 @@
-package AP.Robot;
+package AP.Sem1.Robot;
 
 /**
  * RobotTester contains a main method to test a Robot object.

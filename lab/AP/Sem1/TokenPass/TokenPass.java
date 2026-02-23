@@ -1,4 +1,4 @@
-package AP.TokenPass;
+package AP.Sem1.TokenPass;
 
 /**
  * Token Pass is a multiplayer game in which token are distributed amongst 

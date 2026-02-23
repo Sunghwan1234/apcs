@@ -1,4 +1,4 @@
-package lab.AP.Sem2.Crossword;
+package AP.Sem2.Crossword;
 
 /**
  * A crossword contains black and white squares with some white squares

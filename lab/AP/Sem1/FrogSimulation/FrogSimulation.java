@@ -1,4 +1,4 @@
-package AP.FrogSimulation;
+package AP.Sem1.FrogSimulation;
 
 import java.util.Scanner;
 
@@ -49,6 +49,7 @@ public class FrogSimulation {
       System.out.print("Examples 1-5 are taken from the lab directions.");
       System.out.println(" Example 6 is for random siumlations.");
       exampleNum = userInput.nextInt();
+      userInput.close();
     }
 
     int[] example = null;
@@ -77,6 +78,7 @@ public class FrogSimulation {
 
     int output = example[randomHopIndex];
     randomHopIndex = (randomHopIndex+1) % example.length;
+    
     return output;
   }
 

@@ -1,4 +1,4 @@
-package AP.Calendar_2;
+package AP.Sem1.Calendar_2;
 
 import java.util.Scanner;
 
