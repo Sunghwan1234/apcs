@@ -19,6 +19,22 @@ public class Sort {
     }
   }
 
+  public void sort4() {
+    setLogVarTypes(new String[] {"i","hi","li"});
+
+    int highest=array[0], lowest=array[0];
+    int highestIndex=0, lowestIndex=0;
+    for (int i=0;i<array.length;i++) {
+      if (array[i]>highest) {highestIndex=i;}
+      if (array[i]<lowest) {lowestIndex=i;}
+
+      logVars(array, new Object[] {i, highestIndex, lowestIndex});
+    }
+    swapIndices(highestIndex, lowestIndex);
+
+    
+  }
+
   /** Back-Tracing Insertion Sort */
   public void sort3() {
     int pointer = 0;
@@ -41,7 +57,7 @@ public class Sort {
     }
   }
 
-  /** Teleporting Insertion Sort: Super Efficient */
+  /** Teleporting Bubble Sort: Super Efficient */
   public void sort2() {
     setLogVarTypes(new String[] {"p", "p+1", "s"});
 
@@ -76,7 +92,7 @@ public class Sort {
   
 
   /** 
-   * Insertion Sort: Bubbling Back (Pull Sort)
+   * Bubble Sort: Bubbling Back (Pull Sort)
    * Sort right to left until cannot, then go left to right until can.
    */
   public void sort1() {
