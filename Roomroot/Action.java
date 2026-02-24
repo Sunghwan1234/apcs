@@ -57,6 +57,7 @@ public class Action {
         this.type=type; this.name=name; this.target=target;
     }
     // Configure ITEM Actions ---------------------------------------------------------------
+    /** Simple Name and Description of an Item */
     public Action(String name, String description) {
         this.type = Type.ITEM;
         this.name = name;
@@ -272,16 +273,16 @@ public class Action {
                 output.add(this.executer+" dealt "+this.valToTarget+" damage to "+this.target);
                 targetEntity.changeHP(-this.valToTarget);
                 
-                if (!targetEntity.isAlive()) {
-                    if (this.executer.toString()==player.toString()) {
-                        for (Monster m : player.targets) {
-                            if (m.isAlive()) {
-                                player.setTarget(m);
-                                output.add("New target: "+m);
-                            }
-                        }
-                    }
-                }
+                // if (!targetEntity.isAlive()) {
+                //     if (this.executer.toString()==player.toString()) {
+                //         for (Monster m : player.targets) {
+                //             if (m.isAlive()) {
+                //                 player.setTarget(m);
+                //                 output.add("New target: "+m);
+                //             }
+                //         }
+                //     }
+                // }
                 return Roomroot.toOneString(output);
             case HEAL:
                 //Roomroot.pl("bool "+bool+" item "+itemIndex);
