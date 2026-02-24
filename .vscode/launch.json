@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "TestGrades",
+      "request": "launch",
+      "mainClass": "lab.lab.lab6_7.TestGrades",
+      "projectName": "apcs_143a8c93"
+    },
+    {
+      "type": "java",
       "name": "Wrappers",
       "request": "launch",
       "mainClass": "note.note2_7.Wrappers",
