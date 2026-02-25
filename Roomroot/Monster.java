@@ -8,6 +8,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.List;
 
 public class Monster extends Entity {
+    /** Probablilty of spawning an equal level monster. */
     private static final int equalProbability = 90;
 
     private static Map<String, Monster> MONSTERS = new HashMap<>() {{
@@ -74,12 +75,17 @@ public class Monster extends Entity {
     private void c_basic(String type, int level, int hp, int mana) {
         this.type=type; this.level=level; this.hp.set(hp); this.mp.set(mana);
     }
-    /** STATIC Get a random monster. */
+    /**
+     * STATIC Get a random monster.
+     * 
+     * \max\left(90-m\left(p_{l}-e_{l}\right)^{2},0\right)
+     * m = 3.54 : 1.5% chance for 5 levels above/below.
+     */
     public static String getRandom(Player player) {
         while (true) {
             String m_name = getRandomKey(MONSTERS);
             Monster m = MONSTERS.get(m_name);
-            if (100*Math.random() < equalProbability + Math.abs(Math.pow(player.level-m.level,3))) {
+            if (100*Math.random() < Math.max(0, equalProbability - 3.54*Math.pow(player.level-m.level,2))) {
                 //Roomroot.pl("GetRandom: "+m_name);
                 return m_name;
             }
