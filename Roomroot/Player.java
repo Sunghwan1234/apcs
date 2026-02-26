@@ -139,6 +139,14 @@ public class Player extends Entity {
         this.hp.add(health);
     }
 
+    public String regenerateMP() {
+        if (mp.full()) {return "";}
+        double tenthLevel = ((double) level)/10.0;
+        int regMP = (int)Math.ceil((tenthLevel+1.0)*mp.v()/(tenthLevel+1.0+mp.max-mp.v()));
+        changeMP(regMP);
+        return "You regenerated "+regMP+" Mana!";
+    }
+
     @Override
     public void changeMP(int mana) {
         this.mp.add(mana);

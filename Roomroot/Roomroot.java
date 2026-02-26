@@ -93,11 +93,11 @@ public class Roomroot {
 
                         if (!player.getTarget().isAlive()) {
                             player.setTarget(m);
-                            pl("New Target: "+m);
+                            monsterOutput.add(1, "New Target: "+m);
                         }
                     } else if (m.alive) {
                         m.alive=false;
-                        pl(m.atDeath());
+                        monsterOutput.addFirst(m.atDeath()); // TODO: check if these work
                     }
                 }
                 pl(toOneString(monsterOutput));
@@ -109,6 +109,8 @@ public class Roomroot {
 
             if (!player.isAlive()) {inPlay=false;
                 pl("\nYou have died.");
+            } else {
+                if (!player.mp.full()) {pl(player.regenerateMP());}
             }
 
             pl(); pSep(); p("Continue"); input.nextLine(); pSep();

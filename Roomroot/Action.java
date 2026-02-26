@@ -34,7 +34,7 @@ public class Action {
     public String subactionMessage;
     public int valToTarget, valToExecuter;
     public Item item;
-    public boolean bool;
+    public boolean consumeItem;
 
     /** Vars store many, MANY actions in one. */
     public HashMap<String, Integer> vars = new HashMap<>();
@@ -75,7 +75,7 @@ public class Action {
         this.name = name;
         this.valToTarget = toTarget;
         this.valToExecuter = toExecuter;
-        this.bool = useup;
+        this.consumeItem = useup;
     }
     
     /** Simple Monster Damage Action */
@@ -100,7 +100,7 @@ public class Action {
         this.name = action.name;
         this.valToTarget = action.valToTarget;
         this.valToExecuter = action.valToExecuter;
-        this.bool = action.bool;
+        this.consumeItem = action.consumeItem;
     }
     public Action(Thing executer, Thing target, Action action, String name) {
         this.type = action.type;
@@ -110,7 +110,7 @@ public class Action {
         this.name = name;
         this.valToTarget = action.valToTarget;
         this.valToExecuter = action.valToExecuter;
-        this.bool = action.bool;
+        this.consumeItem = action.consumeItem;
     }
     /** Execute an ITEM Action */
     // public Action(Thing executer, Thing target, Action action, int itemIndex) {
@@ -296,46 +296,54 @@ public class Action {
                 player.equip((Item) this.target);
                 return "Equipped "+this.target+"!";
             case ITEM:
-                boolean consume = false;
-                for (Map.Entry<String, Integer> entry : this.vars.entrySet()) {
-                    // the String (ex. hp.exec) will be split by the commas. the comma has a special regex.
-                    String[] keyArray = entry.getKey().split("\\."); Integer value = entry.getValue();
-                    String key = keyArray[0]; String keyParam = keyArray.length>1?keyArray[1]:"none";
-                    Entity valueTarget = getTargetEntity();
-                    if (keyParam.contains("exec")) {valueTarget = getExecuterEntity();}
-                    String oneOutput = "";
-                    switch (key) {
-                        case "hp": valueTarget.changeHP(value); 
-                            if (value>0) { oneOutput+=valueTarget+" healed "+value+" HP";
-                            } else {
-                                oneOutput+=getExecuterEntity()+" dealt "+-value+" DMG to ";
-                                oneOutput+=getExecuterEntity()==valueTarget?"self":valueTarget;
-                            } break;
-                        case "mp": valueTarget.changeMP(value); 
-                            if (value>0) {oneOutput+=valueTarget+" regenerated "+value+" MP";
-                            } else {
-                                if (getExecuterEntity()==valueTarget) {
-                                    oneOutput+=getExecuterEntity()+" consumed "+-value+" Mana";
-                                } else {
-                                    oneOutput+=getExecuterEntity()+" dissipated "+-value+" Mana of ";
-                                }
-                            } break;
-                        case "consume": consume=true; break;
-                        default: Roomroot.pl("UNKNOWN KEY: "+keyArray+" v: "+value); break;
-                    }
-                    if (!oneOutput.equals("")) {output.add(oneOutput+".");} // Add oneOutput to output
-                }
-                if (consume) {
-                    output.add("You have used up the "+item+".");
-                    if (!player.inventory.remove(item)) {Roomroot.pl("ERROR :: item did not remove");}
-                }
-                return Roomroot.toOneString(output);
+                return executeVars(player);
             default:
                 return "null actions for "+this;
         }
     }
+    // Public methods because it needs to be accessible by (){} outside
     public Entity getTargetEntity() {return ((Entity)this.target);}
     public Entity getExecuterEntity() {return ((Entity)this.executer);}
+
+    public String executeVars(Player player) {
+        ArrayList<String> output = new ArrayList<>();
+        boolean consume = false;
+        for (Map.Entry<String, Integer> entry : this.vars.entrySet()) {
+            // the String (ex. hp.exec) will be split by the commas. the comma has a special regex.
+            String[] keyArray = entry.getKey().split("\\."); Integer value = entry.getValue();
+            String key = keyArray[0]; String keyParam = keyArray.length>1?keyArray[1]:"none";
+            Entity valueTarget = getTargetEntity();
+            if (keyParam.contains("exec")) {valueTarget = getExecuterEntity();}
+            String oneOutput = "";
+            switch (key) {
+                case "hp": valueTarget.changeHP(value); 
+                    if (value>0) { oneOutput+=valueTarget+" healed "+value+" HP";
+                    } else {
+                        oneOutput+=getExecuterEntity()+" dealt "+-value+" DMG to ";
+                        oneOutput+=getExecuterEntity()==valueTarget?"self":valueTarget;
+                    } break;
+                case "mp": valueTarget.changeMP(value); 
+                    if (value>0) {oneOutput+=valueTarget+" regenerated "+value+" MP";
+                    } else {
+                        if (getExecuterEntity()==valueTarget) {
+                            oneOutput+=getExecuterEntity()+" consumed "+-value+" Mana";
+                        } else {
+                            oneOutput+=getExecuterEntity()+" dissipated "+-value+" Mana of ";
+                        }
+                    } break;
+                case "consume": consume=true; break;
+                default: Roomroot.pl("UNKNOWN KEY: "+keyArray+" v: "+value); break;
+            }
+            if (!oneOutput.equals("")) {output.add(oneOutput+".");} // Add oneOutput to output
+        }
+        if (consume && item!=null) {
+            output.add("You have used up the "+item+".");
+            if (!player.inventory.remove(item)) {Roomroot.pl("ERROR :: item did not remove");}
+        } if (consume && item==null) {
+            Roomroot.pl("ERROR :: item is null but consume called");
+        }
+        return Roomroot.toOneString(output);
+    }
 
     @Override
     public String toString() {
