@@ -58,7 +58,8 @@ public class Roomroot {
                 }
             }
             pl();
-            pl("Your Status:\n"+printStatus(player.getStatus()));
+            pl(player.name+" | Level "+player.level+" | Status:");
+            pl(printStatus(player.getStatus()));
             if (player.weapon!=null) {
                 pl("Equipped Weapon: "+player.weapon);
             }

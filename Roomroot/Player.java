@@ -90,14 +90,28 @@ public class Player extends Entity {
         actions.add(new Action("View Inventory", equipAction, useAction) {
             @Override
             public String execute(Player player) {
-                Roomroot.pl("---- Your Inventory ----");
-                for (int i = 0; i < player.inventory.size(); i++) {
+                ArrayList<Item> itemsScanned = new ArrayList<>();
+                ArrayList<Integer> itemsCount = new ArrayList<>();
+
+                for (int i = 0; i < player.inventory.size(); i++) { // TODO: playtest
                     Item item = player.inventory.get(i);
+                    if (itemsScanned.contains(item)) {
+                        itemsCount.set(i, itemsCount.get(i)+1);
+                    } else {
+                        itemsScanned.add(item);
+                        itemsCount.add(1);
+                    }
+                }
+
+                Roomroot.pl("---- Your Inventory ----");
+                for (int i = 0; i < itemsScanned.size(); i++) {
+                    Item item = itemsScanned.get(i);
                     String line = "("+(i+1)+")\t "+item.toInventoryString();
                     if (item.description!=null) {
                         line+=" : "+item.description;
                     }
-                    if (i!=player.inventory.size()-1) {line+="\n";}
+                    if (itemsCount.get(i)>1) {line+=" ("+itemsCount.get(i)+")";}
+                    if (i!=itemsScanned.size()-1) {line+="\n";}
                     Roomroot.p(line);
                 }
                 Roomroot.pl("\n------------------------");
@@ -143,6 +157,7 @@ public class Player extends Entity {
         if (mp.full()) {return "";}
         double tenthLevel = ((double) level)/10.0;
         int regMP = (int)Math.ceil((tenthLevel+1.0)*mp.v()/(tenthLevel+1.0+mp.max-mp.v()));
+        if (regMP>mp.max) {regMP=mp.max-mp.v();}
         changeMP(regMP);
         return "You regenerated "+regMP+" Mana!";
     }

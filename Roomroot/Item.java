@@ -97,4 +97,12 @@ public class Item implements Thing, Comparable<Item> {
             return -1;
         }
     }
+    @Override
+    public boolean equals(Object obj) {
+        Roomroot.debugLine(this+"="+obj+"? "+this.compareTo((Item) obj)); // TODO: debug
+        if (obj instanceof Item) {
+            return 0==this.compareTo((Item) obj);
+        }
+        return false;
+    }
 }

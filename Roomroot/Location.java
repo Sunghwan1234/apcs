@@ -78,7 +78,7 @@ public class Location implements Thing {
                 Roomroot.debugLine("Spawning monsters");
                 /* Monster Spawning */
                 if (Math.random() < monsterSpawnChance) {
-                    int amount = (int)(Math.random()*((player.level)/10+3)+1);
+                    int amount = (int)(Math.random()*((player.level)/10+3)+1); // Increases by 1 by plevel/10
                     for (int i=0;i<amount;i++) {
                         //Roomroot.pl("Spawning Monster: "+m); //debug
                         this.monsters.add(Monster.getMonster(Monster.getRandom(player))); //TODO: did this fix?
