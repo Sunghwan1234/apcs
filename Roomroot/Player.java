@@ -195,4 +195,9 @@ public class Player extends Entity {
         }
         return s;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Player;
+    }
 }

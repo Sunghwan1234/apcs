@@ -10,7 +10,7 @@ public class Roomroot {
         combat
     }
 
-    public static final boolean debug = false;
+    public static final boolean debug = true;
 
     public static Status status = Status.passive;
     private static boolean inPlay = true;
