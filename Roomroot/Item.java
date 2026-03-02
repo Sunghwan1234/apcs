@@ -90,7 +90,7 @@ public class Item implements Thing, Comparable<Item> {
             this.name==o.name && 
             this.level==o.level && 
             this.description==o.description &&
-            this.actions == o.actions
+            this.actions.equals(o.actions)
         ) {
             return 0;
         } else {

@@ -355,15 +355,24 @@ public class Action {
 
     @Override
     public boolean equals(Object obj) {
-        Action action = (Action) obj;
+        Action a = (Action) obj;
         return (
-            this.type == action.type &&
-            name == action.name &&
-            description == action.description &&
-            this.executer == action.executer &&
-            this.target == action.target &&
-            this.item.equals(action.item) &&
-            this.vars == action.vars
+            this.type == a.type &&
+            this.name == a.name &&
+            this.description == a.description &&
+            this.executer == a.executer &&
+            this.target == a.target &&
+            this.item.equals(a.item) &&
+            this.vars.equals(a.vars)
+        );
+    }
+    public boolean varEquals(Action a) {
+        return (
+            this.type == a.type &&
+            this.name == a.name &&
+            this.description == a.description &&
+            this.item.equals(a.item) &&
+            this.vars.equals(a.vars)
         );
     }
     /* public final Type type;
