@@ -98,7 +98,7 @@ public class Roomroot {
                         }
                     } else if (m.alive) {
                         m.alive=false;
-                        monsterOutput.addFirst(m.atDeath()); // TODO: check if these work
+                        monsterOutput.add(0, m.atDeath()); // TODO: check if these work
                     }
                 }
                 pl(toOneString(monsterOutput));
@@ -188,12 +188,16 @@ public class Roomroot {
     // }
     public static String toOneString(ArrayList<String> array) {
         String s="";
-        for (int i=0;i<array.size();i++) {if (i!=0){s+="\n";} s+=array.get(i);}
+        for (int i=0;i<array.size();i++) {
+            if (i!=0&&!array.get(i).endsWith("\n")) {s+="\n";}
+            s+=array.get(i);}
         return s;
     }
     public static void p(Object o) {System.out.print(o);}
-    public static void pl() {pl("");}
-    public static void pl(Object o) {System.out.println(o);}
+    public static void pl() {System.out.println();}
+    public static void pl(String s) {
+        System.out.print(s.endsWith("\n")?s:s+"\n");
+    }
     public static void newLines(int lines) {
         for (int i=0;i<lines;i++) {pl();}
     }
@@ -202,7 +206,7 @@ public class Roomroot {
         pl("------------------------------------------");
     }
     public static void pSepL(Object o) {
-        pSep(); pl(o); pSep();
+        pSep(); pl(o.toString()); pSep();
     }
-    public static void debugLine(Object o) {if (debug) {p("..");pl(o);}}
+    public static void debugLine(Object o) {if (debug) {p("..");pl(o.toString());}}
 }

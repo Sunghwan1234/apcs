@@ -9,6 +9,7 @@ public class Player extends Entity {
 
     public final String name;
     public int level = 0;
+    private int xp = 0;
     public final Max hp = new Max(100);
     public final Max mp = new Max(100);
     public int con = 0, mag = 0;
@@ -96,7 +97,8 @@ public class Player extends Entity {
                 for (int i = 0; i < player.inventory.size(); i++) { // TODO: playtest
                     Item item = player.inventory.get(i);
                     if (itemsScanned.contains(item)) {
-                        itemsCount.set(i, itemsCount.get(i)+1);
+                        int ci = itemsScanned.indexOf(item);
+                        itemsCount.set(ci, itemsCount.get(ci)+1);
                     } else {
                         itemsScanned.add(item);
                         itemsCount.add(1);
@@ -157,7 +159,7 @@ public class Player extends Entity {
         if (mp.full()) {return "";}
         double tenthLevel = ((double) level)/10.0;
         int regMP = (int)Math.ceil((tenthLevel+1.0)*mp.v()/(tenthLevel+1.0+mp.max-mp.v()));
-        if (regMP>mp.max) {regMP=mp.max-mp.v();}
+        if (regMP>mp.max-mp.v()) {regMP=mp.max-mp.v();}
         changeMP(regMP);
         return "You regenerated "+regMP+" Mana!";
     }
@@ -177,6 +179,17 @@ public class Player extends Entity {
     @Override
     public Entity getTarget() {
         return this.target;
+    }
+
+    public String addXP(int axp) {
+        this.xp+=axp;
+        String output="";
+        while (xp>=level*(level+1)/2+1) {
+            this.level++;
+            output+="You leveled up!\n";
+        }
+        if (!output.equals("")) {output+="You are now level "+level+"\n";}
+        return output;
     }
 
     public int getLevel() {

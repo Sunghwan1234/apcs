@@ -169,6 +169,7 @@ public class Monster extends Entity {
                 Item i = d.get();
                 Roomroot.player.inventory.add(i);
                 deathMsg += "\n"+this+" dropped a "+i.toString()+"!";
+                deathMsg += Roomroot.player.addXP(this.level);
             }
         }
         return deathMsg;
