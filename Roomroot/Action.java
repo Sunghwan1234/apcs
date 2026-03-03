@@ -352,4 +352,39 @@ public class Action {
         }
         return this.name;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Action a = (Action) obj;
+        return (
+            this.type == a.type &&
+            this.name == a.name &&
+            this.description == a.description &&
+            this.executer == a.executer &&
+            this.target == a.target &&
+            this.item.equals(a.item) &&
+            this.vars.equals(a.vars)
+        );
+    }
+    public boolean varEquals(Action a) {
+        return (
+            this.type == a.type &&
+            this.name == a.name &&
+            this.description == a.description &&
+            this.item.equals(a.item) &&
+            this.vars.equals(a.vars)
+        );
+    }
+    /* public final Type type;
+    public Thing executer;
+    public Thing target;
+    public ArrayList<Monster> monsterGroup;
+    public ArrayList<Action> subactions = new ArrayList<>();
+
+    public String name, description;
+
+    public String subactionMessage;
+    public int valToTarget, valToExecuter;
+    public Item item;
+    public boolean consumeItem; */
 }
