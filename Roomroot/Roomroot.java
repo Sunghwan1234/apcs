@@ -10,7 +10,7 @@ public class Roomroot {
         combat
     }
 
-    public static final boolean debug = true;
+    public static boolean debug;
 
     public static Status status = Status.passive;
     private static boolean inPlay = true;
@@ -26,7 +26,7 @@ public class Roomroot {
         pl(); pSep();
         pl("Welcome to Roomroot, "+player.name+".");
         pl("Starting Roomroot v1.0...");
-        if (debug) {pl("Debug Mode is Enabled.");}
+        debug = player.name.equals("debug"); if (debug) {pl("Debug Mode is Enabled.");}
         pSep();
         newLines(10);
 
@@ -119,10 +119,6 @@ public class Roomroot {
         input.close();
     }
 
-    public static void checkDeaths() {
-
-    }
-
     /** chooseAction with sep=', ' tab='' */
     public static Action chooseAction(ArrayList<Action> actions, Scanner input, String prompt) {
         return chooseAction(actions, input, prompt, ", ", "");
@@ -178,14 +174,17 @@ public class Roomroot {
     }
     // public static String printActions(Action[] arr, String sep, String tab) {
     //     String list = "";
-
     //     for (int i=0;i<arr.length;i++) {
     //         if (i!=0) {list+=sep;}
     //         list+=tab+arr[i];
     //     }
-
     //     return list;
     // }
+    /**
+     * Automatically formats every item to have one newline at the end.
+     * @param array
+     * @return String string
+     */
     public static String toOneString(ArrayList<String> array) {
         String s="";
         for (int i=0;i<array.size();i++) {

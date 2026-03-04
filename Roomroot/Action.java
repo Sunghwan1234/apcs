@@ -82,7 +82,7 @@ public class Action {
     public Action(String name, int damage) {
         this.type = Type.DAMAGE;
         this.name = name;
-        this.valToTarget = damage;
+        this.v("hp" ,-damage);
     }
 
     /** 
@@ -232,14 +232,24 @@ public class Action {
         this.subactions.add(new Action(Type.BACK));
     }
 
-    /** Put a value into the vars HashMap */
+    /**
+     * Put a value into the vars HashMap.
+     * The key automatically targets target.
+     * Add 'exec' to target executer.
+     * <p>Keys: hp mp consume
+     */
     public Action v(String key, Integer value) {
-        vars.put(key, value);
+        this.vars.put(key, value);
         return this;
     }
-    /** Put a key with the value set as 1 into the vars HashMap */
+    /** 
+     * Put a key with the value set as 1 into the vars HashMap.
+     * The key automatically targets target.
+     * Add 'exec' to target executer.
+     * <p>Keys: hp mp consume
+     */
     public Action v(String key) {
-        vars.put(key, 1);
+        this.vars.put(key, 1);
         return this;
     }
     public Action setName(String customName) {
@@ -268,21 +278,10 @@ public class Action {
             case DAMAGE:
                 Roomroot.debugLine("Damage Action from "+executer+" to "+target);
                 if (target==null) {target = getExecuterEntity().getTarget();}
-                Entity targetEntity = (Entity) target;
-
-                output.add(this.executer+" dealt "+this.valToTarget+" damage to "+this.target);
-                targetEntity.changeHP(-this.valToTarget);
                 
-                // if (!targetEntity.isAlive()) {
-                //     if (this.executer.toString()==player.toString()) {
-                //         for (Monster m : player.targets) {
-                //             if (m.isAlive()) {
-                //                 player.setTarget(m);
-                //                 output.add("New target: "+m);
-                //             }
-                //         }
-                //     }
-                // }
+                output.add(executer+" used "+name);
+                output.add(executeVars(player));
+                
                 return Roomroot.toOneString(output);
             case HEAL:
                 //Roomroot.pl("bool "+bool+" item "+itemIndex);
@@ -305,9 +304,15 @@ public class Action {
     public Entity getTargetEntity() {return ((Entity)this.target);}
     public Entity getExecuterEntity() {return ((Entity)this.executer);}
 
+    /**
+     * Execute all vars stored.
+     * @param player
+     * @return
+     */
     public String executeVars(Player player) {
         ArrayList<String> output = new ArrayList<>();
         boolean consume = false;
+        Roomroot.debugLine("Executing "+this.vars.size()+" vars");
         for (Map.Entry<String, Integer> entry : this.vars.entrySet()) {
             // the String (ex. hp.exec) will be split by the commas. the comma has a special regex.
             String[] keyArray = entry.getKey().split("\\."); Integer value = entry.getValue();

@@ -154,7 +154,10 @@ public class Monster extends Entity {
                 str += " ("+hp.v()+")";
             }
         }
-        return str+" {"+id+"}";
+        if (Roomroot.debug) {
+            str+=" {"+id+"}";
+        }
+        return str;
     }
 
     @Override
@@ -162,13 +165,13 @@ public class Monster extends Entity {
 
     @Override
     public String atDeath() {
-        String deathMsg = this+" has died.";
+        String deathMsg = this+" has died.\n";
         // Check drops
         for (Drop d : drops) {
             if (d.roll()) {
                 Item i = d.get();
                 Roomroot.player.inventory.add(i);
-                deathMsg += "\n"+this+" dropped a "+i.toString()+"!";
+                deathMsg += this+" dropped a "+i.toString()+"!\n";
                 deathMsg += Roomroot.player.addXP(this.level);
             }
         }
