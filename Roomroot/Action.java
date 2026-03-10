@@ -10,7 +10,7 @@ import java.util.Map;
 public class Action {
     /** ActionType. SUBACTION for everything you can choose, CHOOSE to go back */
     public enum Type {
-        MOVE(0), ATTACKGROUP(1), ATTACK(2), DAMAGE(2), HEAL(2), RECHARGE(2), DMGMANA(2), EQUIP(7), USE(8),
+        MOVE(0), ATTACKGROUP(1), ATTACK(2), DAMAGE(2), EQUIP(7), USE(8),
         SUBACTION(-1), BACK(-2), CHOOSE(-3),
         CUSTOM(100), ITEM(10);
         
@@ -32,9 +32,8 @@ public class Action {
     public String name, description;
 
     public String subactionMessage;
-    public int valToTarget, valToExecuter;
+    /** Do not call or get anything from this item. */
     public Item item;
-    public boolean consumeItem;
 
     /** Vars store many, MANY actions in one. */
     public HashMap<String, Integer> vars = new HashMap<>();
@@ -64,21 +63,21 @@ public class Action {
         this.description = description;
     }
     /** ITEM Internal Actions */
-    public Action(String name, String description, Type type, int toTarget, int toExecuter) {
-        this.type = type;
-        this.name = name;
-        this.valToTarget = toTarget;
-        this.valToExecuter = toExecuter;
-    }
-    public Action(String name, String description, Type type, int toTarget, int toExecuter, boolean useup) {
-        this.type = type;
-        this.name = name;
-        this.valToTarget = toTarget;
-        this.valToExecuter = toExecuter;
-        this.consumeItem = useup;
-    }
+    // public Action(String name, String description, Type type, int toTarget, int toExecuter) {
+    //     this.type = type;
+    //     this.name = name;
+    //     this.valToTarget = toTarget;
+    //     this.valToExecuter = toExecuter;
+    // }
+    // public Action(String name, String description, Type type, int toTarget, int toExecuter, boolean useup) {
+    //     this.type = type;
+    //     this.name = name;
+    //     this.valToTarget = toTarget;
+    //     this.valToExecuter = toExecuter;
+    //     this.consumeItem = useup;
+    // }
     
-    /** Simple Monster Damage Action */
+    /** Simple Monster Damage Action. */
     public Action(String name, int damage) {
         this.type = Type.DAMAGE;
         this.name = name;
@@ -86,7 +85,7 @@ public class Action {
     }
 
     /** 
-     * Executing an action from an executer to a target.
+     * Configure an executing action from an executer to a target. Use .setName() to set the name.
      * @param executer
      * @param target
      * @param action usually ITEM Internal or Simple Monster Damage
@@ -98,20 +97,17 @@ public class Action {
         this.target = target;
 
         this.name = action.name;
-        this.valToTarget = action.valToTarget;
-        this.valToExecuter = action.valToExecuter;
-        this.consumeItem = action.consumeItem;
+        this.vars = action.vars;
     }
-    public Action(Thing executer, Thing target, Action action, String name) {
-        this.type = action.type;
-        this.executer = executer;
-        this.target = target;
-
-        this.name = name;
-        this.valToTarget = action.valToTarget;
-        this.valToExecuter = action.valToExecuter;
-        this.consumeItem = action.consumeItem;
-    }
+    // public Action(Thing executer, Thing target, Action action, String name) {
+    //     this.type = action.type;
+    //     this.executer = executer;
+    //     this.target = target;
+    //     this.name = name;
+    //     this.valToTarget = action.valToTarget;
+    //     this.valToExecuter = action.valToExecuter;
+    //     this.consumeItem = action.consumeItem;
+    // }
     /** Execute an ITEM Action */
     // public Action(Thing executer, Thing target, Action action, int itemIndex) {
     //     this.type = action.type;
@@ -137,7 +133,7 @@ public class Action {
     //     this.itemIndex = itemIndex;
     // }
     /**
-     * Execute an ITEM Action with an itemIndex.
+     * Execute an ITEM Action with an item (to remove).
      * @param executer
      * @param target
      * @param action
@@ -240,6 +236,7 @@ public class Action {
      */
     public Action v(String key, Integer value) {
         this.vars.put(key, value);
+        Roomroot.debugLine("Put "+key+":"+value+" inside "+this+": "+vars.toString());
         return this;
     }
     /** 
@@ -278,19 +275,17 @@ public class Action {
             case DAMAGE:
                 Roomroot.debugLine("Damage Action from "+executer+" to "+target);
                 if (target==null) {target = getExecuterEntity().getTarget();}
-                
                 output.add(executer+" used "+name);
                 output.add(executeVars(player));
-                
                 return Roomroot.toOneString(output);
-            case HEAL:
-                //Roomroot.pl("bool "+bool+" item "+itemIndex);
-                output.add(this.target+" healed "+this.valToTarget+" HP.");
-                getTargetEntity().changeHP(this.valToTarget);
-                return Roomroot.toOneString(output);
-            case RECHARGE:
-                getTargetEntity().changeMP(this.valToTarget);
-                return getTargetEntity()+" restored "+this.valToTarget+" mana.";
+            // case HEAL:
+            //     //Roomroot.pl("bool "+bool+" item "+itemIndex);
+            //     output.add(this.target+" healed "+this.valToTarget+" HP.");
+            //     getTargetEntity().changeHP(this.valToTarget);
+            //     return Roomroot.toOneString(output);
+            // case RECHARGE:
+            //     getTargetEntity().changeMP(this.valToTarget);
+            //     return getTargetEntity()+" restored "+this.valToTarget+" mana.";
             case EQUIP:
                 player.equip((Item) this.target);
                 return "Equipped "+this.target+"!";
@@ -312,7 +307,7 @@ public class Action {
     public String executeVars(Player player) {
         ArrayList<String> output = new ArrayList<>();
         boolean consume = false;
-        Roomroot.debugLine("Executing "+this.vars.size()+" vars");
+        Roomroot.debugLine("Executing "+this.vars.toString());
         for (Map.Entry<String, Integer> entry : this.vars.entrySet()) {
             // the String (ex. hp.exec) will be split by the commas. the comma has a special regex.
             String[] keyArray = entry.getKey().split("\\."); Integer value = entry.getValue();

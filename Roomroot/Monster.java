@@ -12,12 +12,12 @@ public class Monster extends Entity {
     private static final int equalProbability = 90;
 
     private static Map<String, Monster> MONSTERS = new HashMap<>() {{
-        put("Feral Wolf",      new Monster("Feral Wolf", 2, 10, 0, 4));
-        put("Goblin",          new Monster("Goblin", 3, 10, 0, 5));
-        put("Bully Goblin",    new Monster("Bully Goblin", 4, 15, 0 ,5));
-        put("Gnome",           new Monster("Gnome", 4, 10, 0 ,8));
-        put("Troll",           new Monster("Troll", 5, 25, 0, 10));
-        put("Orc",             new Monster("Orc", 10, 100, 0, 25));
+        put("Feral Wolf",      new Monster("Feral Wolf", 1, 10, 0, 4));
+        put("Goblin",          new Monster("Goblin", 1, 15, 0, 5));
+        put("Bully Goblin",    new Monster("Bully Goblin", 2, 20, 0 ,5));
+        put("Gnome",           new Monster("Gnome", 2, 30, 0 ,10));
+        put("Troll",           new Monster("Troll", 3, 40, 0, 15));
+        put("Orc",             new Monster("Orc", 5, 100, 0, 25));
         put("Dragon",          new Monster("Red Dragon", 100, 2000, 500, 
             100
         ));
