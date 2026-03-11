@@ -64,7 +64,7 @@ public class Monster extends Entity {
     }
     private Monster(String type, int level, int hp, int mana, int damage) {
         c_basic(type, level, hp, mana);
-        this.actions.add(new Action("Attack", damage));
+        this.actions.add(new Action(null, damage));
         this.drops.add(new Drop(0.85, Item.getNew("Health Potion")));
         
     }

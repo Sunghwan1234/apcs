@@ -275,7 +275,7 @@ public class Action {
             case DAMAGE:
                 Roomroot.debugLine("Damage Action from "+executer+" to "+target);
                 if (target==null) {target = getExecuterEntity().getTarget();}
-                output.add(executer+" used "+name);
+                if (name!=null) {output.add(executer+" used "+name);}
                 output.add(executeVars(player));
                 return Roomroot.toOneString(output);
             // case HEAL:
@@ -290,7 +290,7 @@ public class Action {
                 player.equip((Item) this.target);
                 return "Equipped "+this.target+"!";
             case ITEM:
-                return executeVars(player);
+                return executer+" used "+name+"\n"+executeVars(player);
             default:
                 return "null actions for "+this;
         }

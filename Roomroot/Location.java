@@ -4,18 +4,19 @@ import java.util.ArrayList;
 
 /** All rooms in the game Roomroot. */
 public class Location implements Thing {
-    public static ArrayList<Location> map = new ArrayList<>();
+    public static ArrayList<Location> map = new ArrayList<Location>();
     public static int discoveredLocations = 0;
 
     private String type = "Default";
     private String name;
-    private ArrayList<Location> passages = new ArrayList<>();
+    private ArrayList<Location> passages = new ArrayList<Location>();
     public boolean discovered = false;
     public boolean locked = false;
     public boolean visible = true;
 
-    public ArrayList<Thing> things = new ArrayList<>();
-    public ArrayList<Monster> monsters = new ArrayList<>();
+    public ArrayList<Thing> things = new ArrayList<Thing>();
+    public ArrayList<Monster> monsters = new ArrayList<Monster>();
+    public ArrayList<Item> rewards = new ArrayList<Item>();
 
     public Location(String type) {
         map.add(this);
@@ -144,7 +145,11 @@ public class Location implements Thing {
                         actions.add(new Action(monsters.get(0), monsters));
                     }
                 }
+                // Get Rewards -------------------------------------------------------
+
             }
+            
+            
         }
 
         return actions;

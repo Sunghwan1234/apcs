@@ -111,7 +111,7 @@ public class Roomroot {
             if (!player.isAlive()) {inPlay=false;
                 pl("\nYou have died.");
             } else {
-                if (!player.mp.full()) {pl(player.regenerateMP());}
+                if (!player.mp.full() && status==Status.passive) {pl(player.regenerateMP());}
             }
 
             pl(); pSep(); p("Continue"); input.nextLine(); pSep();

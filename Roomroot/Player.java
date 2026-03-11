@@ -12,6 +12,7 @@ public class Player extends Entity {
     private int xp = 0;
     public final Max hp = new Max(100);
     public final Max mp = new Max(100);
+    public int def = 0;
     public int con = 0, mag = 0;
     public Location loc;
 
@@ -152,7 +153,7 @@ public class Player extends Entity {
     
     @Override
     public void changeHP(int health) {
-        this.hp.add(health);
+        this.hp.add(Math.max(health-def, 0));
     }
 
     public String regenerateMP() {

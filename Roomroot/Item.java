@@ -13,21 +13,45 @@ public class Item implements Thing, Comparable<Item> {
     public int level = 0;
     public int count = 1;
 
+    public int cooldown;
+    public int cooldownTimer;
+
     public ArrayList<Action> actions = new ArrayList<>();
 
     private static final HashMap<String, Item> ITEMS = new HashMap<>(){{
         put("Health Potion", new Item("Health Potion", 
-                new Action("Drink Health Potion", "Restores 50 health")
-                .v("hp", 50)
-                .v("consume")));
+            new Action("Drink Health Potion", "Restores 50 health")
+                .v("hp", 50).v("consume")
+        ));
         put("Mana Potion", new Item("Mana Potion", 
-                new Action("Drink Mana Potion", "Recharges 50 mana")
-                .v("mp", 50)
-                .v("consume")));
+            new Action("Drink Mana Potion", "Recharges 50 mana")
+                .v("mp", 50).v("consume")
+        ));
         put("Wand", new Item("Wand", 
-                new Action("Fireball", "Shoots a burst of fire")
-                .v("hp", -25)
-                .v("mp.exec", -10)));
+            new Action("Fireball", "Shoots a burst of fire")
+                .v("hp", -25).v("mp.exec", -10)
+        ));
+        put("Greatsword", new Item("Sword",
+            new Action("Slash", "Slash the opponent").v("hp",-20),
+            new Action("Super Swing", "Deal massive damage using 25 mana")
+                .v("hp", -50).v("mp.exec",-25)
+        ));
+        put("Daggers", new Item("Daggers",
+            new Action("Quickslash", "Slash the opponent two times")
+                .v("hp",-12).v("hp",-12),
+            new Action("Dual Pierce", "Puncture the opponent with both hands")
+                .v("hp",-30).v("mp.exec", -15)
+        ));
+        put("Small Shield", new Item("Small Shield",
+            new Action("Block", "Enter a defensive mode")
+                .v("def.exec",5),
+            new Action("Push Block", "Push the enemy while blocking")
+                .v("def.exec", 3).v("hp",-5)
+        ));
+        put("Gloves", new Item("Gloves",
+            new Action("Punch", "Throw a strong punch").v("hp",-10),
+            new Action("Uppercut", "Knock the opponent's head").v("hp", -25).v("cooldown", 2)
+        ));
     }};
     public static Item getNew(String name) {
         Item mItem = ITEMS.get(name);
