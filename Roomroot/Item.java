@@ -124,7 +124,7 @@ public class Item implements Thing, Comparable<Item> {
                 iActions.add("Increase "+a.vars.get("def.exec")+"DEF");
             }
             if (a.vars.containsKey("mp.exec")) {
-                iActions.add("Consume "+a.vars.get("mp.exec")+"MP");
+                iActions.add("Consume "+-a.vars.get("mp.exec")+"MP");
             }
 
             inspectActions+=Roomroot.printArrayList(iActions, "","\n|\t - ")+"\n";
