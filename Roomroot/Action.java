@@ -11,7 +11,11 @@ public class Action {
     /** ActionType. SUBACTION for everything you can choose, CHOOSE to go back */
     public enum Type {
         MOVE(0), ATTACKGROUP(1), ATTACK(2), DAMAGE(2), EQUIP(7), USE(8),
-        SUBACTION(-1), BACK(-2), CHOOSE(-3),
+        /** Choose between several actions. */
+        SUBACTION(-1), BACK(-2),
+        /** Execute but not continue. */
+        CHOOSE(-3),
+        /* ITEM to be removed */
         CUSTOM(100), ITEM(10);
         
         /** Comparitor. Negative = will not continue */
@@ -253,6 +257,10 @@ public class Action {
         this.name=customName;
         return this;
     }
+    public Action setDescription(String customDescription) {
+        this.description = customDescription;
+        return this;
+    }
 
     /** Execute instructions set by the Type. This function should not modify this Action in any way, unless it requires it. */
     public String execute(Player player) {
@@ -260,6 +268,7 @@ public class Action {
         switch (this.type) {
             case SUBACTION:
                 return "Your Subactions for "+this+":\n";
+            case CHOOSE: return "Standalone Choose Action; please fix!";
             case MOVE:
                 player.loc = (Location)this.target;
                 return "You moved to "+((Location)this.target)+".";
@@ -329,6 +338,7 @@ public class Action {
                             oneOutput+=getExecuterEntity()+" consumed "+-value+" Mana";
                         } else {
                             oneOutput+=getExecuterEntity()+" dissipated "+-value+" Mana of ";
+                            oneOutput+=getExecuterEntity()==valueTarget?"self":valueTarget;
                         }
                     } break;
                 case "consume": consume=true; break;

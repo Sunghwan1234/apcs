@@ -1,11 +1,13 @@
 package Roomroot;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import Roomroot.Action.Type;
 
 public class Player extends Entity {
-    public static ArrayList<Location> path = new ArrayList<>();
+    public static ArrayList<Location> path = new ArrayList<Location>();
 
     public final String name;
     public int level = 0;
@@ -16,7 +18,7 @@ public class Player extends Entity {
     public int con = 0, mag = 0;
     public Location loc;
 
-    public ArrayList<Item> inventory = new ArrayList<>();
+    public ArrayList<Item> inventory = new ArrayList<Item>();
     public Item weapon;
 
     public ArrayList<Monster> targets;
@@ -29,7 +31,7 @@ public class Player extends Entity {
 
     @Override
     public ArrayList<Action> getActions() {
-        ArrayList<Action> actions = new ArrayList<>();
+        ArrayList<Action> actions = new ArrayList<Action>();
         // Location
         if (Roomroot.status == Roomroot.Status.passive) {
             actions.addAll(this.loc.getActions());
@@ -37,7 +39,7 @@ public class Player extends Entity {
         // In Combat!
         if (Roomroot.status == Roomroot.Status.combat) {
             // Choose Enemy Action --------------------------------------------------------------
-            ArrayList<Action> enemyChoice = new ArrayList<>();
+            ArrayList<Action> enemyChoice = new ArrayList<Action>();
             for (Monster m : targets) {
                 if (m.isAlive()) {
                     enemyChoice.add(new Action(Type.CHOOSE, m.toString(), m) {
@@ -56,7 +58,7 @@ public class Player extends Entity {
             if (weapon!=null) {
                 ArrayList<Action> weaponActions = weapon.getActions();
                 if (weaponActions.size()>1) {
-                    ArrayList<Action> attackActions = new ArrayList<>();
+                    ArrayList<Action> attackActions = new ArrayList<Action>();
                     for (Action a : weaponActions) {
                         attackActions.add(new Action(this, target, a, weapon));
                     }
@@ -70,32 +72,47 @@ public class Player extends Entity {
         }
 
         // Inventory Actions ----------------------------------------------------------------
-        ArrayList<Action> equipActions = new ArrayList<>();
-        ArrayList<Action> useActions = new ArrayList<>();
+        // Set all executing actions here
+        ArrayList<Action> equipActions = new ArrayList<Action>();
+        ArrayList<Action> useActions = new ArrayList<Action>();
+        ArrayList<String> inspectMessages = new ArrayList<>();
+        int inspectItemCounter = 1;
         for (Item i : inventory) {
             equipActions.add(new Action(Type.EQUIP, i)); // Equip Action
 
             if (i.getActions().size()>1) {
-                ArrayList<Action> itemActions = new ArrayList<>();
+                ArrayList<Action> useItemActions = new ArrayList<Action>();
+                
                 for (Action a : i.getActions()) {
-                    itemActions.add(new Action(this, this, a, i));
+                    useItemActions.add(new Action(this, this, a, i));
                 }
-                useActions.add(new Action(itemActions, i+" ("+i.getActions().size()+")", true));
+                useActions.add(new Action(useItemActions, i+" ("+i.getActions().size()+")", true));
             } else {
                 useActions.add(new Action(this, this, i.getActions().get(0), i)
-                    .setName(i+": "+i.getActions().get(0)));
+                    .setName(i+": "+i.getActions().get(0))); // Use Action
             }
+            inspectMessages.add(
+                "("+inspectItemCounter+")\t"+i+"\n"+i.inspect()
+            );
+            inspectItemCounter++;
         }
+        // Contain all executing actions in these containers
         Action equipAction = new Action(equipActions, "Equip Weapon", true);
         Action useAction = new Action(useActions, "Use Item", true);
-
-        actions.add(new Action("View Inventory", equipAction, useAction) {
+        Action inspectAction = new Action(Type.CHOOSE, "Inspect Items") {
             @Override
             public String execute(Player player) {
-                ArrayList<Item> itemsScanned = new ArrayList<>();
-                ArrayList<Integer> itemsCount = new ArrayList<>();
+                Roomroot.pl(description);
+                return super.execute(player);
+            }
+        }.setDescription(Roomroot.toOneString(inspectMessages));
 
-                for (int i = 0; i < player.inventory.size(); i++) { // TODO: playtest
+        actions.add(new Action("View Inventory", equipAction, useAction, inspectAction) {
+            @Override
+            public String execute(Player player) {
+                ArrayList<Item> itemsScanned = new ArrayList<Item>();
+                ArrayList<Integer> itemsCount = new ArrayList<Integer>();
+                for (int i = 0; i < player.inventory.size(); i++) {
                     Item item = player.inventory.get(i);
                     if (itemsScanned.contains(item)) {
                         int ci = itemsScanned.indexOf(item);
@@ -106,18 +123,18 @@ public class Player extends Entity {
                     }
                 }
 
-                Roomroot.pl("---- Your Inventory ----");
+                Roomroot.pl("-------- Your Inventory --------");
                 for (int i = 0; i < itemsScanned.size(); i++) {
-                    Item item = itemsScanned.get(i);
+                    Item item = itemsScanned.get(i); // TODO: does this work lol
                     String line = "("+(i+1)+")\t "+item.toInventoryString();
                     if (item.description!=null) {
                         line+=" : "+item.description;
                     }
-                    if (itemsCount.get(i)>1) {line+=" ("+itemsCount.get(i)+")";}
-                    if (i!=itemsScanned.size()-1) {line+="\n";}
-                    Roomroot.p(line);
+                    int count = itemsCount.get(i);
+                    if (count>1) {line+=" ("+count+")";}
+                    Roomroot.pl(line);
                 }
-                Roomroot.pl("\n------------------------");
+                Roomroot.pl("--------------------------------");
                 return "Inventory Actions:\n";
             }
         }) ;
@@ -153,7 +170,11 @@ public class Player extends Entity {
     
     @Override
     public void changeHP(int health) {
-        this.hp.add(Math.max(health-def, 0));
+        if (health<0) {
+            this.hp.dec(Math.max(def-health, 0));
+        } else {
+            this.hp.add(health);
+        }
     }
 
     public String regenerateMP() {

@@ -99,6 +99,38 @@ public class Item implements Thing, Comparable<Item> {
         return s;
     }
 
+    public String inspect() {
+        String inspectActions="";
+        for (Action a : this.actions) {
+            inspectActions+="|\t"+a;
+            if (a.vars.containsKey("hp")) {
+                int var_hp = a.vars.get("hp");
+                if (var_hp>0) {
+                    inspectActions+="\n|\t Heal "+var_hp+"HP of Target";
+                } else {
+                    inspectActions+="\n|\t Deal "+-var_hp+"DMG to Target";
+                }
+            }
+            if (a.vars.containsKey("mp")) {
+                int var_mp = a.vars.get("mp");
+                if (var_mp>0) {
+                    inspectActions+="\n|\t Regenerate "+var_mp+"MP of Target";
+                } else {
+                    inspectActions+="\n|\t Remove "+-var_mp+"MP to Target";
+                }
+            }
+            if (a.vars.containsKey("def.exec")) { // probably change Increase to smth cooler
+                inspectActions+="\n|\t Increase "+a.vars.get("def.exec")+"Def";
+            }
+            if (a.vars.containsKey("mp.exec")) {
+                inspectActions+="\n|\t Consume "+a.vars.get("mp.exec")+"MP";
+            }
+
+            inspectActions+="\n";
+        }
+        return inspectActions;
+    }
+
     @Override
     public String toString() {
         String s = this.name;
