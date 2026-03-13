@@ -102,31 +102,32 @@ public class Item implements Thing, Comparable<Item> {
     public String inspect() {
         String inspectActions="";
         for (Action a : this.actions) {
-            inspectActions+="|\t"+a;
+            inspectActions+="|\t "+a;
+            ArrayList<String> iActions = new ArrayList<>();
             if (a.vars.containsKey("hp")) {
                 int var_hp = a.vars.get("hp");
                 if (var_hp>0) {
-                    inspectActions+="\n|\t Heal "+var_hp+"HP of Target";
+                    iActions.add("Heal "+var_hp+"HP of Target");
                 } else {
-                    inspectActions+="\n|\t Deal "+-var_hp+"DMG to Target";
+                    iActions.add("Deal "+-var_hp+"DMG to Target");
                 }
             }
             if (a.vars.containsKey("mp")) {
                 int var_mp = a.vars.get("mp");
                 if (var_mp>0) {
-                    inspectActions+="\n|\t Regenerate "+var_mp+"MP of Target";
+                    iActions.add("Regenerate "+var_mp+"MP of Target");
                 } else {
-                    inspectActions+="\n|\t Remove "+-var_mp+"MP to Target";
+                    iActions.add("Remove "+-var_mp+"MP to Target");
                 }
             }
             if (a.vars.containsKey("def.exec")) { // probably change Increase to smth cooler
-                inspectActions+="\n|\t Increase "+a.vars.get("def.exec")+"Def";
+                iActions.add("Increase "+a.vars.get("def.exec")+"DEF");
             }
             if (a.vars.containsKey("mp.exec")) {
-                inspectActions+="\n|\t Consume "+a.vars.get("mp.exec")+"MP";
+                iActions.add("Consume "+a.vars.get("mp.exec")+"MP");
             }
 
-            inspectActions+="\n";
+            inspectActions+=Roomroot.printArrayList(iActions, "","\n|\t - ")+"\n";
         }
         return inspectActions;
     }

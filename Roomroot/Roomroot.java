@@ -46,7 +46,7 @@ public class Roomroot {
                     pl("You have discovered a new location!");
                     player.loc.discovered=true;
                 }
-                pl(printDescriptions(player.loc.getDescription(), "\n", "\t"));
+                pl(printArrayList(player.loc.getDescription(), "\n", "\t"));
             } else if (status==Status.combat) {
                 pl("There are "+player.targets.size()+" "+player.getTarget().toString()+" near you! ");
                 //pl(printDescriptions(Monster.getMonsterNames(player.targets), ", ", ""));
@@ -147,8 +147,13 @@ public class Roomroot {
         }
         return status;
     }
-
-    public static String printDescriptions(ArrayList<String> arr, String sep, String tab) {
+    /**
+     * @param arr Array To Print
+     * @param sep Goes after the String (Not on the last one).
+     * @param tab Goes before the String.
+     * @return
+     */
+    public static String printArrayList(ArrayList<String> arr, String sep, String tab) {
         String list = "";
         for (int i=0;i<arr.size();i++) {
             if (i!=0) {list+=sep;}
