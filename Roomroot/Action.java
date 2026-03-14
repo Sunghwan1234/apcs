@@ -10,7 +10,7 @@ import java.util.Map;
 public class Action {
     /** ActionType. SUBACTION for everything you can choose, CHOOSE to go back */
     public enum Type {
-        MOVE(0), ATTACKGROUP(1), ATTACK(2), DAMAGE(2), EQUIP(7), USE(8),
+        MOVE(0), ATTACKGROUP(1), ATTACK(2), DAMAGE(2), EQUIP(7), USE(8), PICKUP(9),
         /** Choose between several actions. */
         SUBACTION(-1), BACK(-2),
         /** Execute but not continue. */
@@ -59,27 +59,16 @@ public class Action {
     public Action(Type type, String name, Thing target) {
         this.type=type; this.name=name; this.target=target;
     }
+    public Action(Type type, String name, Thing executer, Thing target) {
+        this.type=type; this.name=name; this.executer=executer; this.target=target;
+    }
     // Configure ITEM Actions ---------------------------------------------------------------
-    /** Simple Name and Description of an Item */
+    /** Simple Name and Description of an Item. Make sure to follow this up with .v() */
     public Action(String name, String description) {
         this.type = Type.ITEM;
         this.name = name;
         this.description = description;
     }
-    /** ITEM Internal Actions */
-    // public Action(String name, String description, Type type, int toTarget, int toExecuter) {
-    //     this.type = type;
-    //     this.name = name;
-    //     this.valToTarget = toTarget;
-    //     this.valToExecuter = toExecuter;
-    // }
-    // public Action(String name, String description, Type type, int toTarget, int toExecuter, boolean useup) {
-    //     this.type = type;
-    //     this.name = name;
-    //     this.valToTarget = toTarget;
-    //     this.valToExecuter = toExecuter;
-    //     this.consumeItem = useup;
-    // }
     
     /** Simple Monster Damage Action. */
     public Action(String name, int damage) {
@@ -103,39 +92,6 @@ public class Action {
         this.name = action.name;
         this.vars = action.vars;
     }
-    // public Action(Thing executer, Thing target, Action action, String name) {
-    //     this.type = action.type;
-    //     this.executer = executer;
-    //     this.target = target;
-    //     this.name = name;
-    //     this.valToTarget = action.valToTarget;
-    //     this.valToExecuter = action.valToExecuter;
-    //     this.consumeItem = action.consumeItem;
-    // }
-    /** Execute an ITEM Action */
-    // public Action(Thing executer, Thing target, Action action, int itemIndex) {
-    //     this.type = action.type;
-    //     this.executer = executer;
-    //     this.target = target;
-
-    //     this.name = action.name;
-    //     this.valToTarget = action.valToTarget;
-    //     this.valToExecuter = action.valToExecuter;
-    //     this.bool = action.bool;
-    //     this.itemIndex = itemIndex;
-    // }
-    /** Execute an Item Action */
-    // public Action(Thing executer, Thing target, Action action, int itemIndex, String customName) {
-    //     this.type = action.type;
-    //     this.executer = executer;
-    //     this.target = target;
-
-    //     this.name = customName;
-    //     this.valToTarget = action.valToTarget;
-    //     this.valToExecuter = action.valToExecuter;
-    //     this.bool = action.bool;
-    //     this.itemIndex = itemIndex;
-    // }
     /**
      * Execute an ITEM Action with an item (to remove).
      * @param executer

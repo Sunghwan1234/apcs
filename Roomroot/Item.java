@@ -61,6 +61,15 @@ public class Item implements Thing, Comparable<Item> {
         item.count = mItem.count;
         return item;
     }
+    /**
+     * Get a random Item
+     * @param from an index
+     * @return random item
+     */
+    public static Item getRandom(int from) {
+        String[] str = ITEMS.keySet().toArray(new String[0]);
+        return getNew(str[(int)(Math.random()*(str.length-from))+from]);
+    }
     public Item(String name) {
         this.name = name;
 

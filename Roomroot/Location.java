@@ -54,7 +54,7 @@ public class Location implements Thing {
             Player.addLocationToPath(this);
 
             int passageCount = (int)(Math.random()*4+1);
-            double monsterSpawnChance=0.5;
+            double monsterSpawnChance = 0.5, treasureChance = 0.05;
 
             switch (this.type) {
                 case "Spawn":
@@ -84,6 +84,8 @@ public class Location implements Thing {
                         this.monsters.add(Monster.getMonster(Monster.getRandom(player))); // TODO: did this fix?
                     }
                     Roomroot.debugLine("Spawned "+amount+" monsters");
+
+                    rewards.add(Item.getRandom(3));
                 }
             }
         }
@@ -139,6 +141,18 @@ public class Location implements Thing {
                     }
                     if (canAttack) {
                         actions.add(new Action(targetMonsterActions, "Attack ("+monsters.size()+" "+monsters.get(0)+")", true));
+                    } else { // All Monsters Defeated
+                        if (rewards.size()>0) {
+                            Item reward = rewards.get((int)(Math.random()*rewards.size()));
+                            rewards.remove(reward);
+                            actions.add(new Action(Action.Type.PICKUP, "Open rewards", Roomroot.player, reward) {
+                                @Override
+                                public String execute(Player player) {
+                                    player.inventory.add((Item) target);
+                                    return "You have obtained: "+target.toString();
+                                }
+                            });
+                        }
                     }
                 } else {
                     if (monsters.get(0).isAlive()) {
