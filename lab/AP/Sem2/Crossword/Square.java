@@ -1,4 +1,4 @@
-package lab.AP.Sem2.Crossword;
+package AP.Sem2.Crossword;
 
 /**
  * A square is black or white and has a number.

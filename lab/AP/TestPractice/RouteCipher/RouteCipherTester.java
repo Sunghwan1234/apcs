@@ -1,4 +1,4 @@
-package lab.AP.Sem2.RouteCipher;
+package AP.TestPractice.RouteCipher;
 
 /**
  * RouteCipherTester contains a main method to test a RouteCipher object.
@@ -17,7 +17,7 @@ public class RouteCipherTester {
     
     RouteCipher partB = new RouteCipher(2, 3);
     System.out.println(partB.encryptMessage(""));
-    
+
     System.out.println(partB.encryptMessage("Meet at midnight"));
   }
 }

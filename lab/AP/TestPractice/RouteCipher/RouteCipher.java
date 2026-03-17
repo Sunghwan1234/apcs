@@ -1,4 +1,4 @@
-package lab.AP.Sem2.RouteCipher;
+package AP.TestPractice.RouteCipher;
 
 import java.util.Set;
 
