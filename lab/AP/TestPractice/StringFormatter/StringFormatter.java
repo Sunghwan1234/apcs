@@ -42,7 +42,7 @@ public class StringFormatter {
     int left = formattedLen-tl;
     int gaps = wordList.size()-1;
     int div = left/gaps;
-    int mod = left%gaps;
+    int mod = left%gaps; //leftoverSpaces
     return div;
   }
   
@@ -83,7 +83,23 @@ public class StringFormatter {
    * 
    */
   public static String format(List<String> wordList, int formattedLen)
-  {  /* to be implemented in part (c) */  }
+  {
+    int lo = leftoverSpaces(wordList, formattedLen);
+    int bgw = basicGapWidth(wordList, formattedLen);
+    String bg = "";
+    for (int i=0;i<bgw;i++) {
+        bg+=" ";
+    }
+    String o = "";
+    for (String s : wordList) {
+      o+=s+bg;
+      if (lo>0) {
+        o+=" ";
+        lo--;
+      }
+    }
+    return o;
+  }
   
   
 }
