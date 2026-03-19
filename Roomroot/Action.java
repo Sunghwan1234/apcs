@@ -311,6 +311,36 @@ public class Action {
         return Roomroot.toOneString(output);
     }
 
+    public String getVarDetails() {
+        String inspectActions = this.toString();
+        ArrayList<String> iActions = new ArrayList<>();
+        if (this.vars.containsKey("hp")) {
+            int var_hp = this.vars.get("hp");
+            if (var_hp>0) {
+                iActions.add("Heal "+var_hp+"HP of Target");
+            } else {
+                iActions.add("Deal "+-var_hp+"DMG to Target");
+            }
+        }
+        if (this.vars.containsKey("mp")) {
+            int var_mp = this.vars.get("mp");
+            if (var_mp>0) {
+                iActions.add("Regenerate "+var_mp+"MP of Target");
+            } else {
+                iActions.add("Remove "+-var_mp+"MP to Target");
+            }
+        }
+        if (this.vars.containsKey("def.exec")) { // probably change Increase to smth cooler
+            iActions.add("Increase "+this.vars.get("def.exec")+"DEF");
+        }
+        if (this.vars.containsKey("mp.exec")) {
+            iActions.add("Consume "+-this.vars.get("mp.exec")+"MP");
+        }
+
+        inspectActions+=Roomroot.printArrayList(iActions, "","\n|\t - ")+"\n";
+        return inspectActions;
+    }
+
     @Override
     public String toString() {
         if (Roomroot.debug) {

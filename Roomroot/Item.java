@@ -33,8 +33,8 @@ public class Item implements Thing, Comparable<Item> {
         ));
         put("Greatsword", new Item("Sword",
             new Action("Slash", "Slash the opponent").v("hp",-20),
-            new Action("Super Swing", "Deal massive damage using 25 mana")
-                .v("hp", -50).v("mp.exec",-25)
+            new Action("Super Swing", "Deal massive damage")
+                .v("hp", -40).v("mp.exec",-25)
         ));
         put("Daggers", new Item("Daggers",
             new Action("Quickslash", "Slash the opponent two times")
@@ -111,32 +111,7 @@ public class Item implements Thing, Comparable<Item> {
     public String inspect() {
         String inspectActions="";
         for (Action a : this.actions) {
-            inspectActions+="|\t "+a;
-            ArrayList<String> iActions = new ArrayList<>();
-            if (a.vars.containsKey("hp")) {
-                int var_hp = a.vars.get("hp");
-                if (var_hp>0) {
-                    iActions.add("Heal "+var_hp+"HP of Target");
-                } else {
-                    iActions.add("Deal "+-var_hp+"DMG to Target");
-                }
-            }
-            if (a.vars.containsKey("mp")) {
-                int var_mp = a.vars.get("mp");
-                if (var_mp>0) {
-                    iActions.add("Regenerate "+var_mp+"MP of Target");
-                } else {
-                    iActions.add("Remove "+-var_mp+"MP to Target");
-                }
-            }
-            if (a.vars.containsKey("def.exec")) { // probably change Increase to smth cooler
-                iActions.add("Increase "+a.vars.get("def.exec")+"DEF");
-            }
-            if (a.vars.containsKey("mp.exec")) {
-                iActions.add("Consume "+-a.vars.get("mp.exec")+"MP");
-            }
-
-            inspectActions+=Roomroot.printArrayList(iActions, "","\n|\t - ")+"\n";
+            inspectActions+="|\t "+a.getVarDetails();
         }
         return inspectActions;
     }

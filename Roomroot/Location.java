@@ -88,6 +88,13 @@ public class Location implements Thing {
                     rewards.add(Item.getRandom(3));
                 }
             }
+        } else {
+            for (int i=0;i<monsters.size();i++) {
+                if (!monsters.get(i).isAlive()) {
+                    monsters.remove(i);
+                    i--;
+                }
+            }
         }
     }
     
