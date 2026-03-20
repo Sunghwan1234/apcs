@@ -154,7 +154,8 @@ public class Player extends Entity {
     public String[] getStatus() {
         String[] statuses = {
             "Your Health: "+hp,
-            "Your Mana: "+mp
+            "Your Mana: "+mp,
+            "Your Defence: "+dp
         };
         return statuses;
     }
