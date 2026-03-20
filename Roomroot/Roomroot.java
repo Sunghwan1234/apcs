@@ -110,8 +110,11 @@ public class Roomroot {
 
             if (!player.isAlive()) {inPlay=false;
                 pl("\nYou have died.");
-            } else {
+            } else { // End of turn actions
                 if (!player.mp.full() && status==Status.passive) {pl(player.regenerateMP());}
+                // Clamp mp and dp so it does not continue being overfilled
+                player.mp.clamp();
+                player.dp.clamp();
             }
 
             pl(); pSep(); p("Continue"); input.nextLine(); pSep();
