@@ -14,7 +14,7 @@ public class Player extends Entity {
     private int xp = 0;
     public final Max hp = new Max(100);
     public final Max mp = new Max(100);
-    public int def = 0;
+    public final Max dp = new Max(0);
     public int con = 0, mag = 0;
     public Location loc;
 
@@ -171,7 +171,7 @@ public class Player extends Entity {
     @Override
     public void changeHP(int health) {
         if (health<0) {
-            this.hp.dec(Math.max(def-health, 0));
+            this.hp.dec(Math.max(dp.v()-health, 0));
         } else {
             this.hp.add(health);
         }
@@ -189,6 +189,11 @@ public class Player extends Entity {
     @Override
     public void changeMP(int mana) {
         this.mp.add(mana);
+    }
+
+    @Override
+    public void changeDP(int def) {
+        this.dp.overfill(def);
     }
 
     public static void addLocationToPath(Location location) {

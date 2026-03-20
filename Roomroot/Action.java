@@ -297,6 +297,13 @@ public class Action {
                             oneOutput+=getExecuterEntity()==valueTarget?"self":valueTarget;
                         }
                     } break;
+                case "def": valueTarget.changeDP(value);
+                    if (value>0) {oneOutput+=valueTarget+" increased "+value+" DP";
+                    } else {
+                        oneOutput+=getExecuterEntity()+" decreased "+-value+" Defence of ";
+                        oneOutput+=getExecuterEntity()==valueTarget?"self":valueTarget;
+                        //TODO: make defence message things
+                    }
                 case "consume": consume=true; break;
                 default: Roomroot.pl("UNKNOWN KEY: "+keyArray+" v: "+value); break;
             }

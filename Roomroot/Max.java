@@ -2,11 +2,13 @@ package Roomroot;
 
 /** For values that need a max. */
 public class Max {
+  /** Maximum */
   public int max;
+  /** Value */
   private int v;
   public Max(Max m) {
     this.max=m.max;
-    this.v=max;
+    this.v=m.v();
   }
   public Max(int max, int v) {
     this.max=max;
@@ -16,9 +18,9 @@ public class Max {
     this.max=max;
     this.v=max;
   }
-  /** Returns V. */
+  /** Returns Value. */
   public int v() {return v;}
-  /** Change Value. */
+  /** Change Value. Automatically clamps. */
   public int add(int i) {
     this.v = Math.max(0, Math.min(this.v + i, this.max));
     return v;
@@ -37,10 +39,20 @@ public class Max {
     this.v=m;
     return v;
   }
+  /** Overfills max. */
+  public int overfill(int i) {
+    this.v += i;
+    return v;
+  }
 
   public boolean full() {return this.v==this.max;}
   public boolean empty() {return this.v==0;}
+  public boolean over() {return this.v>this.max || this.v<0;}
 
+  public int clamp() {
+    this.v=Math.clamp(this.v,0,this.max);
+    return this.v;
+  }
 
 
   @Override

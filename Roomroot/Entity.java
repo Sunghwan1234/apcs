@@ -7,6 +7,7 @@ public abstract class Entity implements Thing {
 
     public abstract void changeHP(int health);
     public abstract void changeMP(int mana);
+    public abstract void changeDP(int def);
 
     /** Get a full list of Strings representing the entity's status. */
     public abstract String[] getStatus();
