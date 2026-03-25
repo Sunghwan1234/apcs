@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "StringCoderTester",
+      "request": "launch",
+      "mainClass": "lab.AP.TestPractice.StringCoder.StringCoderTester",
+      "projectName": "apcs_143a8c93"
+    },
+    {
+      "type": "java",
       "name": "SeatingChartTester",
       "request": "launch",
       "mainClass": "AP.TestPractice.SeatingChart.SeatingChartTester",
