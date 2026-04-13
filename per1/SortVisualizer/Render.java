@@ -1,6 +1,8 @@
 
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -10,9 +12,11 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
+import java.util.ArrayList;
 
 public class Render {
-  public static final int FRAME_WIDTH = 500, FRAME_HEIGHT = 500;
+  public static final int items = 25;
+  public static final int FRAME_WIDTH = 40*items, FRAME_HEIGHT = 25*items;
   public static final int PANEL_HEIGHT = FRAME_HEIGHT-60;
 
   private static final JFrame frame = new JFrame("JFrame");
@@ -46,30 +50,78 @@ public class Render {
       }
     });;
 
-  private static Timer timer;
+  private static Timer timer = new Timer(500, new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      animateTick();
+    }
+  });
+  /** Delay in ms */
+  public static int delay = 500;
   public static int ticks = -1;
   private static Sort sort;
+  private static int sortType = 1;
 
   public static Point mouse = new Point(0, 10);
 
-  static int[] array = {4,3,7,8,2,9,1,5,6,0};
+  static int[] array;// = {4,3,7,8,2,9,1,5,6,0};
 
   public static int pointerX = 0;
 
   public static void main(String[] args) {
+    array = new int[items];
+    ArrayList<Integer> listOfNumbers = new ArrayList<Integer>();
+    for (int i=0;i<items;i++) {
+      listOfNumbers.add(i);
+    }
+    for(int i=0;i<items;i++) {
+      int randIndex = (int)(Math.random()*listOfNumbers.size());
+      array[i]=listOfNumbers.remove(randIndex);
+    }
+
     frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     panel.setLayout(new BorderLayout());
-    JButton button = new JButton("Run");
-    button.addActionListener(new ActionListener() {
+    
+    JButton randomizeButton = new JButton("Randomize");
+    randomizeButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          ArrayList<Integer> listOfNumbers = new ArrayList<Integer>();
+          for (int i=0;i<items;i++) {
+            listOfNumbers.add(i);
+          }
+          for(int i=0;i<items;i++) {
+            int randIndex = (int)(Math.random()*listOfNumbers.size());
+            array[i]=listOfNumbers.remove(randIndex);
+          }
+          Block.setGoalX(array);
+        }
+    });
+    JButton runButton = new JButton("Run");
+    runButton.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             System.out.println("Button clicked!");
             startAnimation();
         }
     });
+    JSlider slider = new JSlider(0, 1000);
+    slider.addChangeListener(new ChangeListener() {
+      @Override
+      public void stateChanged(ChangeEvent e) {
+        timer.setDelay(slider.getValue());
+        if (ticks>-1) {
+          timer.restart();
+        } else {
+          timer.setInitialDelay(slider.getValue());
+        }
+      }
+    });
     JPanel controlPanel = new JPanel();
-    controlPanel.add(button);
+    controlPanel.add(randomizeButton);
+    controlPanel.add(runButton);
+    controlPanel.add(slider);
     // Init Finished //
 
     for (int i=0;i<array.length;i++) {
@@ -84,15 +136,9 @@ public class Render {
   }
 
   public static void startAnimation() {
-    sort = new Sort(array, 2);
-    System.out.println(sort);
+    sort = new Sort(array, sortType);
+    //System.out.println(sort);
     ticks = 0;
-    timer = new Timer(500, new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        animateTick();
-      }
-    });
     timer.start();
     System.out.println("Timer Started.");
   }

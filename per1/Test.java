@@ -4,10 +4,9 @@ import java.util.Arrays;
 
 public class Test {
     public static void main(String[] args) {
-      for (int i=0;i<100;i++) {
-        pl(i%10);
-      }
+      pl(Arrays.toString(sort(new int[] {1,2,3,5,4})));
     }
+    public static int[] sort(int[] arr) { for (int j = 0; j < arr.length - 1; j++) { int minIndex = j; for (int k = j + 1; k < arr.length - 1; k++) { if (arr[k] < arr[minIndex]) { minIndex = k; } } int temp = arr[minIndex]; arr[minIndex] = arr[j]; arr[j] = temp; } return arr;}
     public static int reqI(Scanner scanner, String ask, int low) {
       int ret = low-1;
       while (ret<low) {

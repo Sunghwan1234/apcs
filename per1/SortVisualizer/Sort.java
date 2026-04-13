@@ -13,6 +13,8 @@ public class Sort {
     this.array = array;
 
     switch (type) {
+      case 4: sort4(); break;
+      case 3: sort3(); break;
       case 2: sort2(); break;
       case 1: sort1(); break;
       default: sort1(); break;
