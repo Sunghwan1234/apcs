@@ -6,6 +6,20 @@
   "configurations": [
     {
       "type": "java",
+      "name": "FtoCTemp",
+      "request": "launch",
+      "mainClass": "FtoCTemp",
+      "projectName": "apcs_143a8c93"
+    },
+    {
+      "type": "java",
+      "name": "TurtleTester",
+      "request": "launch",
+      "mainClass": "lab.lab.Sem2.lab8_4.TurtleTester",
+      "projectName": "apcs_143a8c93"
+    },
+    {
+      "type": "java",
       "name": "Test",
       "request": "launch",
       "mainClass": "Test",

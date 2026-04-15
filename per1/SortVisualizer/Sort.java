@@ -37,25 +37,41 @@ public class Sort {
     
   }
 
-  /** Back-Tracing Insertion Sort */
+  /** Front-Back Choosing Teleport Bubble Sort */
   public void sort3() {
-    int pointer = 0;
-    int pointer2 = 0;
+    setLogVarTypes(new String[] {"i", "ic", "s", "m"});
 
-    setLogVarTypes(new String[] {"p", "p+1", "p2"});
+    int middle=0;
+    for (int i=0;i<1;i++) {
+      middle+=;
+      logVars(array, new Object[] {i, i+1, 0, 0});
+    }
 
-    while (pointer+1<array.length) {
-      if (array[pointer]>array[pointer+1]) {
-        swapIndices(pointer, pointer+1);
+    int index = 0;
+    int save = -1;
+    while (index+1<array.length) {
+      if (array[index]>array[index+1]) {
+        if (save==-1) {save=index+1;}
+        swapIndices(index, index+1);
 
-        if (pointer>0) {pointer--;} else {
-          pointer++;
+        if (index>0) {index--;} else {
+          if (save>-1) {
+            index = save;
+            save = -1;
+          } else {
+            index++;
+          }
         }
       } else {
-        pointer++;
+        if (save>-1) {
+          index = save;
+          save = -1;
+        } else {
+          index++;
+        }
       }
 
-      logVars(array, new Object[] {pointer, pointer+1, pointer2});
+      logVars(array, new Object[] {index, index+1, save});
     }
   }
 
