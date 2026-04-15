@@ -6,6 +6,20 @@
   "configurations": [
     {
       "type": "java",
+      "name": "RecursionTester",
+      "request": "launch",
+      "mainClass": "lab.lab.lab8_2.RecursionTester",
+      "projectName": "apcs_3ca23c05"
+    },
+    {
+      "type": "java",
+      "name": "PalindromeTester",
+      "request": "launch",
+      "mainClass": "lab.lab.lab8_2.PalindromeTester",
+      "projectName": "apcs_3ca23c05"
+    },
+    {
+      "type": "java",
       "name": "HotelTester",
       "request": "launch",
       "mainClass": "lab.AP.TestPractice.Hotel.HotelTester",
