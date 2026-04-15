@@ -1,4 +1,4 @@
-package lab.lab.lab8_2;
+package lab.lab.Sem2.lab8_2;
 
 /**
  * RecursionTester contains three static recursive methods, as well as a main method to
