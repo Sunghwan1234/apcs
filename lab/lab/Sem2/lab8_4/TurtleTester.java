@@ -1,4 +1,4 @@
-package lab.lab.Sem2.lab8_4;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,9 +25,9 @@ public class TurtleTester {
         //myTurtle.hexagon(40);
     
         // runs freeForm method in DrawTutrle
-        myTurtle.pointAndMove(-90, 300);
-        myTurtle.penDown();
-        myTurtle.freeForm(200, 126, 50);
+        // myTurtle.pointAndMove(-90, 300);
+        // myTurtle.penDown();
+        // myTurtle.freeForm(200, 126, 50);
     
         // runs squiral method in DrawTurtle (you may add parameters as needed)
         //myTurtle.squiral(10,10);
@@ -38,13 +38,13 @@ public class TurtleTester {
     
         // runs fractal method in DrawTurtle (you may add parameters as needed)
         
-        // myTurtle.left(135);
-        // myTurtle.forward(500);
-        // myTurtle.right(135);
-        // myTurtle.fractalTriangle(1000,16);
+        myTurtle.left(135);
+        myTurtle.forward(500);
+        myTurtle.right(135);
+        myTurtle.fractalTriangle(1000,16);
     
         // runs beehive method in DrawTurtle
-        myTurtle.beehive(4, 10);
+//        myTurtle.beehive(4, 10);
       
       }
     };

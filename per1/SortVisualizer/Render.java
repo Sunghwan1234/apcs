@@ -60,7 +60,7 @@ public class Render {
   public static int delay = 500;
   public static int ticks = -1;
   private static Sort sort;
-  private static int sortType = 1;
+  private static int sortType = 2;
 
   public static Point mouse = new Point(0, 10);
 
