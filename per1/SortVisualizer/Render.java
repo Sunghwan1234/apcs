@@ -60,11 +60,11 @@ public class Render {
   public static int delay = 500;
   public static int ticks = -1;
   private static Sort sort;
-  private static int sortType = 2;
+  private static String sortType = "Gnome";
 
   public static Point mouse = new Point(0, 10);
 
-  static int[] array;// = {4,3,7,8,2,9,1,5,6,0};
+  static int[] array; // = {4,3,7,8,2,9,1,5,6,0};
 
   public static int pointerX = 0;
 
@@ -82,7 +82,13 @@ public class Render {
     frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     panel.setLayout(new BorderLayout());
-    
+    JComboBox<String> chooseSort = new JComboBox<String>(Sort.sortTypes);
+    chooseSort.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+          sortType = (String)chooseSort.getSelectedItem();
+      }
+    });
     JButton randomizeButton = new JButton("Randomize");
     randomizeButton.addActionListener(new ActionListener() {
         @Override
@@ -119,6 +125,7 @@ public class Render {
       }
     });
     JPanel controlPanel = new JPanel();
+    controlPanel.add(chooseSort);
     controlPanel.add(randomizeButton);
     controlPanel.add(runButton);
     controlPanel.add(slider);

@@ -9,14 +9,17 @@ public class Sort {
   private ArrayList<int[]> logArray = new ArrayList<>();
   private ArrayList<Object[]> log = new ArrayList<>();
 
-  public Sort(int[] array, int type) {
+  public static final String[] sortTypes = {"Gnome", "Insertion"};
+
+  public Sort(int[] array, String type) {
     this.array = array;
 
+
     switch (type) {
-      case 4: sort4(); break;
-      case 3: sort3(); break;
-      case 2: sort2(); break;
-      case 1: sort1(); break;
+      case "sort4": sort4(); break;
+      //case "sort3": sort3(); break;
+      case "Insertion": sort2(); break;
+      case "Gnome": sort1(); break;
       default: sort1(); break;
     }
   }
@@ -38,45 +41,45 @@ public class Sort {
   }
 
   /** Front-Back Choosing Teleport Bubble Sort */
-  public void sort3() {
-    setLogVarTypes(new String[] {"i", "i-1", "i2", "m"});
+  // public void sort3() {
+  //   setLogVarTypes(new String[] {"i", "i-1", "i2", "m"});
 
-    int[] sums = new int[array.length];
-    for (int i=0;i<array.length;i++) {
-      sums[i] = (i==0?0:sums[i-1])+array[i];
-      logVars(array, new Object[] {i, -1, -1, -1});
-    }
+  //   int[] sums = new int[array.length];
+  //   for (int i=0;i<array.length;i++) {
+  //     sums[i] = (i==0?0:sums[i-1])+array[i];
+  //     logVars(array, new Object[] {i, -1, -1, -1});
+  //   }
 
-    int index = 1;
-    int index2 = -1;
-    int middle = -1;
-    while (index<array.length) {
-      if (array[index-1]>array[index]) { // i-1 > i (not in order)
-        middle = sums[index]/index;
-        if (array[index] < middle) {
-          index2 = 1;
-        }
-        while (true) {
-          if (array[index] > middle) { // MAIN LOGIC: is this < average?
-            index=0;
-          }
-          swapIndices(index, index+1);
+  //   int index = 1;
+  //   int index2 = -1;
+  //   int middle = -1;
+  //   while (index<array.length) {
+  //     if (array[index-1]>array[index]) { // i-1 > i (not in order)
+  //       middle = sums[index]/index;
+  //       if (array[index] < middle) {
+  //         index2 = 1;
+  //       }
+  //       while (true) {
+  //         if (array[index] > middle) { // MAIN LOGIC: is this < average?
+  //           index=0;
+  //         }
+  //         swapIndices(index, index+1);
 
-          index--;
-        }
-      }
-      if (index<1) { // i == 0 (Start going backwards)
-        if (save>-1) { // Go to savepoint if exists
-          index = save;
-          save = -1;
-        } else {
-          index++;
-        }
-      }
+  //         index--;
+  //       }
+  //     }
+  //     if (index<1) { // i == 0 (Start going backwards)
+  //       if (save>-1) { // Go to savepoint if exists
+  //         index = save;
+  //         save = -1;
+  //       } else {
+  //         index++;
+  //       }
+  //     }
 
-      logVars(array, new Object[] {index, index+1, save, middle});
-    }
-  }
+  //     logVars(array, new Object[] {index, index+1, save, middle});
+  //   }
+  // }
 
   /** Insertion Sort */
   public void sort2() {
