@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "AoC",
+      "request": "launch",
+      "mainClass": "note.split.AoC",
+      "projectName": "apcs_143a8c93"
+    },
+    {
+      "type": "java",
       "name": "TurtleTester",
       "request": "launch",
       "mainClass": "TurtleTester",

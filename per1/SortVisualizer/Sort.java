@@ -9,35 +9,48 @@ public class Sort {
   private ArrayList<int[]> logArray = new ArrayList<>();
   private ArrayList<Object[]> log = new ArrayList<>();
 
-  public static final String[] sortTypes = {"Gnome", "Insertion"};
+  public static final String[] sortTypes = {"Gnome", "Insertion", "Selection"};
 
   public Sort(int[] array, String type) {
     this.array = array;
 
 
     switch (type) {
-      case "sort4": sort4(); break;
-      //case "sort3": sort3(); break;
+      case "Merge": mergeSort(0,array.length); break;
+      case "Selection": sort4(); break;
       case "Insertion": sort2(); break;
       case "Gnome": sort1(); break;
       default: sort1(); break;
     }
   }
+  public void mergeSort(int left, int right) {
+    if (left<right) {
+      int mid = left + (right-left)/2;
+      mergeSort(left, right);
+      mergeSort((right-left)/2+1, right);
 
-  public void sort4() {
-    setLogVarTypes(new String[] {"i","hi","li"});
-
-    int highest=array[0], lowest=array[0];
-    int highestIndex=0, lowestIndex=0;
-    for (int i=0;i<array.length;i++) {
-      if (array[i]>highest) {highestIndex=i;}
-      if (array[i]<lowest) {lowestIndex=i;}
-
-      logVars(array, new Object[] {i, highestIndex, lowestIndex});
     }
-    swapIndices(highestIndex, lowestIndex);
+  }
+  private void merge(int left, int mid, int right) {
 
-    
+  }
+  /**
+   * Selection Sort
+   */
+  public void sort4() {
+    setLogVarTypes(new String[] {"i","si","li"});
+    logVars(array, new Object[] {0, 0, 1});
+    for (int index=0;index<array.length-1;index++) {
+      int lowestIndex=index;
+      for (int i=index+1;i<array.length;i++) {
+        if (array[i]<array[lowestIndex]) {lowestIndex=i;}
+        logVars(array, new Object[] {index, i, lowestIndex});
+      }
+      if (index!=lowestIndex) {
+        swapIndices(index, lowestIndex);
+        logVars(array, new Object[] {index, index, lowestIndex});
+      }
+    }
   }
 
   /** Front-Back Choosing Teleport Bubble Sort */
