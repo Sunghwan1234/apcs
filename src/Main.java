@@ -4,9 +4,64 @@ import java.lang.Math;
 public class Main {
     public static void main(String[] args) {
       Scanner scanner = new Scanner(System.in);
-      
-      String str = "qrstu"; String result = ""; for (int j = 0; j < str.length(); j++) { result += str.substring(0, j + 1); } System.out.println(result);
-      
+      boolean game = true;
+      int level = 1;
+      while (game) {
+        double max = Math.pow(10, level);
+        double num = Math.ceil(Math.random()*max);
+        pl("The computer picked a number between 1 and "+max);
+        int guesses=0;
+        while (true) {
+          int guess=0;
+          while (true) {
+            try {
+              p("Your Guess: ");
+              guess = scanner.nextInt();
+              if (guess<1 || guess>max) {
+                pl("Not in range");
+              } else {
+                break;
+              }
+            } catch (Exception e) {
+              pl("Try Again: "+e.toString());
+              guess = 0;
+            }
+          }
+          guesses++;
+          if (guess==num) {
+            pl("Correct! You guessed this in "+guesses+" guesses!");
+            double optimal = Math.ceil(Math.log(max)/Math.log(2));
+            if (guesses>optimal) {
+              pl("Suboptimal ("+optimal+"), but thats ok!");
+            } else {
+              pl("Optimal ("+optimal+")! Congrats!");
+            }
+            break;
+          } else if (guess>num) {
+            pl("Too High!");
+          } else {
+            pl("Too Low!");
+          }
+        }
+        p("replay (-1), quit(0), or choose a level: ");
+        while (true) {
+          int choice = -2;
+          try {
+            choice = scanner.nextInt();
+            if (choice==-1) {
+              break;
+            } else if (choice==0) {
+              game = false;
+              break;
+            } else if (choice>0){
+              level = choice;
+              break;
+            }
+          } catch (Exception e) {
+            pl("no.");
+          }
+        }
+      }
       scanner.close();
     }
     public static int reqI(Scanner scanner, String ask, int low) {
@@ -25,8 +80,11 @@ public class Main {
     public static double dist(double[] p1,double[] p2) {
       return Math.sqrt(Math.pow(p2[0]-p1[0],2)+Math.pow(p2[1]-p1[1],2));
     }
-    public static void p(Object o) {
+    public static void pl(Object o) {
       System.out.println(o);
+    }
+    public static void p(Object o) {
+      System.out.print(o);
     }
     public static void printOut(String[] out) {
       for (int i = 0; i < out.length; i++) {
