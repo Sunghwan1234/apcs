@@ -9,74 +9,108 @@ public class Sort {
   private ArrayList<int[]> logArray = new ArrayList<>();
   private ArrayList<Object[]> log = new ArrayList<>();
 
-  public Sort(int[] array, int type) {
+  public static final String[] sortTypes = {"Gnome", "Insertion", "Selection"};
+
+  public Sort(int[] array, String type) {
     this.array = array;
 
+
     switch (type) {
-      case 2: sort2(); break;
-      case 1: sort1(); break;
+      case "Merge": mergeSort(0,array.length); break;
+      case "Selection": sort4(); break;
+      case "Insertion": sort2(); break;
+      case "Gnome": sort1(); break;
       default: sort1(); break;
     }
   }
+  public void mergeSort(int left, int right) {
+    if (left<right) {
+      int mid = left + (right-left)/2;
+      mergeSort(left, right);
+      mergeSort((right-left)/2+1, right);
 
+    }
+  }
+  private void merge(int left, int mid, int right) {
+
+  }
+  /**
+   * Selection Sort
+   */
   public void sort4() {
-    setLogVarTypes(new String[] {"i","hi","li"});
-
-    int highest=array[0], lowest=array[0];
-    int highestIndex=0, lowestIndex=0;
-    for (int i=0;i<array.length;i++) {
-      if (array[i]>highest) {highestIndex=i;}
-      if (array[i]<lowest) {lowestIndex=i;}
-
-      logVars(array, new Object[] {i, highestIndex, lowestIndex});
-    }
-    swapIndices(highestIndex, lowestIndex);
-
-    
-  }
-
-  /** Back-Tracing Insertion Sort */
-  public void sort3() {
-    int pointer = 0;
-    int pointer2 = 0;
-
-    setLogVarTypes(new String[] {"p", "p+1", "p2"});
-
-    while (pointer+1<array.length) {
-      if (array[pointer]>array[pointer+1]) {
-        swapIndices(pointer, pointer+1);
-
-        if (pointer>0) {pointer--;} else {
-          pointer++;
-        }
-      } else {
-        pointer++;
+    setLogVarTypes(new String[] {"i","si","li"});
+    logVars(array, new Object[] {0, 0, 1});
+    for (int index=0;index<array.length-1;index++) {
+      int lowestIndex=index;
+      for (int i=index+1;i<array.length;i++) {
+        if (array[i]<array[lowestIndex]) {lowestIndex=i;}
+        logVars(array, new Object[] {index, i, lowestIndex});
       }
-
-      logVars(array, new Object[] {pointer, pointer+1, pointer2});
+      if (index!=lowestIndex) {
+        swapIndices(index, lowestIndex);
+        logVars(array, new Object[] {index, index, lowestIndex});
+      }
     }
   }
 
-  /** Teleporting Bubble Sort: Super Efficient */
+  /** Front-Back Choosing Teleport Bubble Sort */
+  // public void sort3() {
+  //   setLogVarTypes(new String[] {"i", "i-1", "i2", "m"});
+
+  //   int[] sums = new int[array.length];
+  //   for (int i=0;i<array.length;i++) {
+  //     sums[i] = (i==0?0:sums[i-1])+array[i];
+  //     logVars(array, new Object[] {i, -1, -1, -1});
+  //   }
+
+  //   int index = 1;
+  //   int index2 = -1;
+  //   int middle = -1;
+  //   while (index<array.length) {
+  //     if (array[index-1]>array[index]) { // i-1 > i (not in order)
+  //       middle = sums[index]/index;
+  //       if (array[index] < middle) {
+  //         index2 = 1;
+  //       }
+  //       while (true) {
+  //         if (array[index] > middle) { // MAIN LOGIC: is this < average?
+  //           index=0;
+  //         }
+  //         swapIndices(index, index+1);
+
+  //         index--;
+  //       }
+  //     }
+  //     if (index<1) { // i == 0 (Start going backwards)
+  //       if (save>-1) { // Go to savepoint if exists
+  //         index = save;
+  //         save = -1;
+  //       } else {
+  //         index++;
+  //       }
+  //     }
+
+  //     logVars(array, new Object[] {index, index+1, save, middle});
+  //   }
+  // }
+
+  /** Insertion Sort */
   public void sort2() {
     setLogVarTypes(new String[] {"p", "p+1", "s"});
 
     int pointer = 0;
     int save = -1;
+    logVars(array, new Object[] {pointer, pointer+1, save});
     while (pointer+1<array.length) {
-      if (array[pointer]>array[pointer+1]) {
-        if (save==-1) {save=pointer+1;}
+      if (array[pointer]>array[pointer+1]) { // Not in order?
+        if (save==-1) {save=pointer+1;} // Set save
         swapIndices(pointer, pointer+1);
 
-        if (pointer>0) {pointer--;} else {
-          if (save>-1) {
-            pointer = save;
-            save = -1;
-          } else {
-            pointer++;
-          }
+        if (pointer>0) {
+          pointer--;
         }
-      } else {
+      }
+      if (!(array[pointer]>array[pointer+1]) || pointer<0) {
         if (save>-1) {
           pointer = save;
           save = -1;
@@ -84,7 +118,6 @@ public class Sort {
           pointer++;
         }
       }
-
       logVars(array, new Object[] {pointer, pointer+1, save});
     }
   }
@@ -92,7 +125,7 @@ public class Sort {
   
 
   /** 
-   * Bubble Sort: Bubbling Back (Pull Sort)
+   * Gnome Sort (Stupid Sort)
    * Sort right to left until cannot, then go left to right until can.
    */
   public void sort1() {
@@ -117,7 +150,7 @@ public class Sort {
     array[index2]=temp;
   }
 
-  /** Efficient Push */
+  /** Push O(n) */
   private void push(int index, int toIndex) {
     int value = array[index];
     int i=index;

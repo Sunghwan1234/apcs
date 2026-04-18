@@ -50,30 +50,41 @@ public class Block {
   // }
 
   public static int getXAt(int index) {
-    return (index+1)*(Render.FRAME_WIDTH)/(Block.blockArray.length+1);
+    return (index)*(Render.FRAME_WIDTH)/(Block.blockArray.length+1);
     //return (index-(Block.blockArray.length-1)/2)
   }
 
   public void paint(Graphics g) {
-
+    Color color = Color.WHITE;
     // Follow the value in the array around
     if (Render.ticks>-1) {
-      for (int i=0;i<Render.getCTArray().length;i++) {
-        if (Render.getCTArray()[i]==value) {
-          this.index = i;
-          this.goalX = getXAt(i);
-          break;
+      setGoalX(Render.getCTArray());
+      final Object[] varArray = Render.getCVArray();
+      for (int i=0;i<varArray.length;i++) {
+        if (this.index == (int)varArray[i]) {
+          color = Color.getHSBColor((float) i/varArray.length, (float) 0.5, 1);
         }
       }
     }
 
     x += (goalX-x)/5;
 
-    g.setColor(Color.WHITE);
+    g.setColor(color);
     g.fillRect((int)x, (int)y, width, height);
     g.setColor(Color.GRAY);
     g.drawRect((int)x, (int)y, width, height);
     g.drawString(value+"", (int)x+7, (int)y+height+15);
+  }
+  public static void setGoalX(int[] array) {
+    for (Block b : blockArray) {
+      for (int i=0;i<array.length;i++) {
+        if (array[i]==b.value) {
+          b.index = i;
+          b.goalX = getXAt(i);
+          break;
+        }
+      }
+    }
   }
 
   public String toString() {
