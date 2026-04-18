@@ -9,30 +9,53 @@ public class Sort {
   private ArrayList<int[]> logArray = new ArrayList<>();
   private ArrayList<Object[]> log = new ArrayList<>();
 
-  public static final String[] sortTypes = {"Gnome", "Insertion", "Selection"};
+  public static final String[] sortTypes = {"Gnome", "Insertion", "Selection","Merge"};
 
   public Sort(int[] array, String type) {
     this.array = array;
 
 
     switch (type) {
-      case "Merge": mergeSort(0,array.length); break;
+      case "Merge": 
+        setLogVarTypes(new String[] {"i","li","ri","l","m","r"});
+        mergeSort(0,array.length-1); break;
       case "Selection": sort4(); break;
-      case "Insertion": sort2(); break;
+      case "Insertion": 
+        setLogVarTypes(new String[] {"p", "p+1", "s"});
+        insertionSort(0, array.length-1); break;
       case "Gnome": sort1(); break;
       default: sort1(); break;
     }
   }
-  public void mergeSort(int left, int right) {
+  /**
+   * Merge sort of O(nlogn) Efficiency.
+   * @param left
+   * @param right
+   */
+  private void mergeSort(int left, int right) {
     if (left<right) {
       int mid = left + (right-left)/2;
-      mergeSort(left, right);
-      mergeSort((right-left)/2+1, right);
-
+      logVars(array,new Object[] {-1,-1,-1,left,mid,right});
+      mergeSort(left, mid);
+      mergeSort(mid+1, right);
+      merge(left,mid,right);
     }
   }
   private void merge(int left, int mid, int right) {
-
+    int[] arrayCopy = Arrays.copyOf(array, array.length);
+    int leftIndex = left;
+    int rightIndex = mid+1;
+    for (int i=left;i<=right;i++) {
+      //System.out.println(i+" "+right+" | "+leftIndex+" "+rightIndex);
+      if (rightIndex>right) {
+        array[i] = arrayCopy[leftIndex++];
+      } else if (leftIndex>mid) {
+        array[i] = arrayCopy[rightIndex++];
+      } else {
+        array[i] = arrayCopy[(arrayCopy[leftIndex]<=arrayCopy[rightIndex])?leftIndex++:rightIndex++];
+      }
+      logVars(array,new Object[] {i,leftIndex,rightIndex,left,mid,right});
+    }
   }
   /**
    * Selection Sort
@@ -95,22 +118,20 @@ public class Sort {
   // }
 
   /** Insertion Sort */
-  public void sort2() {
-    setLogVarTypes(new String[] {"p", "p+1", "s"});
-
-    int pointer = 0;
+  public void insertionSort(int left, int right) {
+    int pointer = left;
     int save = -1;
     logVars(array, new Object[] {pointer, pointer+1, save});
-    while (pointer+1<array.length) {
+    while (pointer+1<right+1) {
       if (array[pointer]>array[pointer+1]) { // Not in order?
         if (save==-1) {save=pointer+1;} // Set save
         swapIndices(pointer, pointer+1);
 
-        if (pointer>0) {
+        if (pointer>left) {
           pointer--;
         }
       }
-      if (!(array[pointer]>array[pointer+1]) || pointer<0) {
+      if (!(array[pointer]>array[pointer+1]) || pointer<left) {
         if (save>-1) {
           pointer = save;
           save = -1;

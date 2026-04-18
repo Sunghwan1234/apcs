@@ -26,8 +26,10 @@ public class Render {
         super.paintComponent(g);
         g.setColor(Color.LIGHT_GRAY); g.fillRect(0, 0, FRAME_WIDTH, FRAME_HEIGHT);
         
-        g.setColor(Color.black);
-        g.drawRect(mouse.x, mouse.y, 10, 10);
+        if (mouse!=null) {
+          g.setColor(Color.black);
+          g.drawRect(mouse.x, mouse.y, 10, 10);
+        }
 
         for (Block b:Block.blockArray) {
           b.paint(g);
@@ -69,15 +71,7 @@ public class Render {
   public static int pointerX = 0;
 
   public static void main(String[] args) {
-    array = new int[items];
-    ArrayList<Integer> listOfNumbers = new ArrayList<Integer>();
-    for (int i=0;i<items;i++) {
-      listOfNumbers.add(i);
-    }
-    for(int i=0;i<items;i++) {
-      int randIndex = (int)(Math.random()*listOfNumbers.size());
-      array[i]=listOfNumbers.remove(randIndex);
-    }
+    randomizeArray();
 
     frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -93,14 +87,7 @@ public class Render {
     randomizeButton.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-          ArrayList<Integer> listOfNumbers = new ArrayList<Integer>();
-          for (int i=0;i<items;i++) {
-            listOfNumbers.add(i);
-          }
-          for(int i=0;i<items;i++) {
-            int randIndex = (int)(Math.random()*listOfNumbers.size());
-            array[i]=listOfNumbers.remove(randIndex);
-          }
+          randomizeArray();
           Block.setGoalX(array);
         }
     });
@@ -110,6 +97,21 @@ public class Render {
         public void actionPerformed(ActionEvent e) {
             System.out.println("Button clicked!");
             startAnimation();
+        }
+    });
+    JButton simulateButton = new JButton("Simulate 100");
+    simulateButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("Button clicked!");
+            int total = 0;
+            for (int i=0;i<100;i++) {
+              randomizeArray();
+              sort = new Sort(array, sortType);
+              total+=sort.getLogLength();
+            }
+            total/=100;
+            System.out.println("Average: "+total+" Steps");
         }
     });
     JSlider slider = new JSlider(0, 1000);
@@ -129,6 +131,7 @@ public class Render {
     controlPanel.add(randomizeButton);
     controlPanel.add(runButton);
     controlPanel.add(slider);
+    controlPanel.add(simulateButton);
     // Init Finished //
 
     for (int i=0;i<array.length;i++) {
@@ -140,6 +143,18 @@ public class Render {
     frame.add(panel);
     frame.setVisible(true);
     ticker.start();
+  }
+
+  public static void randomizeArray() {
+    array = new int[items];
+    ArrayList<Integer> listOfNumbers = new ArrayList<Integer>();
+    for (int i=0;i<items;i++) {
+      listOfNumbers.add(i);
+    }
+    for(int i=0;i<items;i++) {
+      int randIndex = (int)(Math.random()*listOfNumbers.size());
+      array[i]=listOfNumbers.remove(randIndex);
+    }
   }
 
   public static void startAnimation() {
