@@ -14,11 +14,11 @@ public class Block {
   public Block(int index, int value) {
     this.index=index;
     this.value=value;
-    this.height=value*20+10;
+    this.height=value*(Render.PANEL_HEIGHT)/Render.items+5;
 
     this.x = getXAt(index);
     this.goalX = x;
-    this.y = Render.FRAME_HEIGHT-height-120;
+    this.y = Render.PANEL_HEIGHT-height;
   }
 
   // public static void swap(int index1, int index2) {
@@ -72,7 +72,9 @@ public class Block {
     g.setColor(color);
     g.fillRect((int)x, (int)y, width, height);
     g.setColor(Color.GRAY);
-    g.drawRect((int)x, (int)y, width, height);
+    if (Render.MARGIN!=0) {
+      g.drawRect((int)x, (int)y, width, height);
+    }
     g.drawString(value+"", (int)x+7, (int)y+height+15);
   }
   public static void setGoalX(int[] array) {

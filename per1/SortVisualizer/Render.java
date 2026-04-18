@@ -15,9 +15,11 @@ import java.util.Arrays;
 import java.util.ArrayList;
 
 public class Render {
-  public static final int items = 25;
-  public static final int FRAME_WIDTH = 40*items, FRAME_HEIGHT = 25*items;
-  public static final int PANEL_HEIGHT = FRAME_HEIGHT-60;
+  public static int[] array; // = {4,3,7,8,2,9,1,5,6,0};
+  public static final int items = 75;
+  public static final int MARGIN = items>75?0:5;
+  public static final int FRAME_WIDTH = (20+MARGIN)*items, FRAME_HEIGHT = 1000;
+  public static final int PANEL_HEIGHT = FRAME_HEIGHT-100;
 
   private static final JFrame frame = new JFrame("JFrame");
   private static final JPanel panel = new JPanel() {
@@ -65,10 +67,6 @@ public class Render {
   private static String sortType = "Gnome";
 
   public static Point mouse = new Point(0, 10);
-
-  static int[] array; // = {4,3,7,8,2,9,1,5,6,0};
-
-  public static int pointerX = 0;
 
   public static void main(String[] args) {
     randomizeArray();

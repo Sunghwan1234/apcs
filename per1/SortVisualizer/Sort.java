@@ -42,7 +42,11 @@ public class Sort {
     }
   }
   private void merge(int left, int mid, int right) {
-    int[] arrayCopy = Arrays.copyOf(array, array.length);
+    int[] arrayCopy = new int[array.length];
+    for (int i=left;i<=right;i++) {
+      arrayCopy[i]=array[i];
+      logVars(array,new Object[] {i,-1,-1,left,mid,right});
+    }
     int leftIndex = left;
     int rightIndex = mid+1;
     for (int i=left;i<=right;i++) {
