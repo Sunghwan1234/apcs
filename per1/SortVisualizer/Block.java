@@ -6,7 +6,7 @@ import java.awt.Color;
 public class Block {
   public static Block[] blockArray = new Block[Render.array.length];
 
-  private int width = 20, height;
+  private final int width, height;
   public int value, index;
   private double x, y;
   private double goalX;
@@ -14,6 +14,7 @@ public class Block {
   public Block(int index, int value) {
     this.index=index;
     this.value=value;
+    this.width=20;
     this.height=value*(Render.PANEL_HEIGHT)/Render.items+5;
 
     this.x = getXAt(index);

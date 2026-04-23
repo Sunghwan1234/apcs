@@ -16,13 +16,61 @@ import java.util.ArrayList;
 
 public class Render {
   public static int[] array; // = {4,3,7,8,2,9,1,5,6,0};
-  public static final int items = 75;
-  public static final int MARGIN = items>75?0:5;
-  public static final int FRAME_WIDTH = (20+MARGIN)*items, FRAME_HEIGHT = 1000;
-  public static final int PANEL_HEIGHT = FRAME_HEIGHT-100;
+  public static int items = 75;
+  public static int MARGIN = items>75?0:5;
+  public static int FRAME_WIDTH = items>=75?1875:(20+MARGIN)*items, FRAME_HEIGHT = 1000;
+  public static int PANEL_HEIGHT = FRAME_HEIGHT-100;
 
-  private static final JFrame frame = new JFrame("JFrame");
-  private static final JPanel panel = new JPanel() {
+  public static Timer timer = new Timer(500, new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      animateTick();
+    }
+  });
+
+  /** Delay in ms */
+  public static int delay = 500;
+  public static int ticks = -1;
+  private static Sort sort;
+  private static String sortType = "Gnome";
+
+  public static Point mouse = new Point(0, 10);
+
+  public static void main(String[] args) {
+    final JFrame launcher = new JFrame("Launcher");
+    final JPanel launcherPanel = new JPanel();
+    final JSpinner launcherItemSpinner = new JSpinner(new SpinnerNumberModel(75, 2, 200, 1));
+      launcherItemSpinner.addChangeListener(new ChangeListener() {
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            items = (int) launcherItemSpinner.getValue();
+        }
+      });
+    final JButton launchButton = new JButton("Launch");
+      launchButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          launch();
+        }
+      });
+
+    launcherPanel.add(launcherItemSpinner);
+    launcherPanel.add(launchButton);
+    launcherPanel.setPreferredSize(new Dimension(100,100));
+    launcher.add(launcherPanel);
+
+    launcher.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    launcher.pack();
+    launcher.setVisible(true);
+  }
+  private static void launch() {
+    MARGIN = items>75?0:5;
+    FRAME_WIDTH = items>=75?1875:(20+MARGIN)*items; FRAME_HEIGHT = 1000;
+    PANEL_HEIGHT = FRAME_HEIGHT-100;
+
+    final JFrame frame = new JFrame("JFrame");
+    final JPanel panel = new JPanel() {
       @Override
       public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -46,7 +94,8 @@ public class Render {
 
       }
     };
-  public static final Timer ticker = new Timer(1, new ActionListener() {
+
+    final Timer ticker = new Timer(1, new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         mouse = panel.getMousePosition()==null ? mouse : panel.getMousePosition();
@@ -54,34 +103,17 @@ public class Render {
       }
     });;
 
-  private static Timer timer = new Timer(500, new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      animateTick();
-    }
-  });
-  /** Delay in ms */
-  public static int delay = 500;
-  public static int ticks = -1;
-  private static Sort sort;
-  private static String sortType = "Gnome";
-
-  public static Point mouse = new Point(0, 10);
-
-  public static void main(String[] args) {
-    randomizeArray();
-
     frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     panel.setLayout(new BorderLayout());
-    JComboBox<String> chooseSort = new JComboBox<String>(Sort.sortTypes);
-    chooseSort.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-          sortType = (String)chooseSort.getSelectedItem();
-      }
-    });
-    JButton randomizeButton = new JButton("Randomize");
+
+    final JComboBox<String> chooseSort = new JComboBox<String>(Sort.sortTypes);
+      chooseSort.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            sortType = (String)chooseSort.getSelectedItem();
+        }
+      });
+    final JButton randomizeButton = new JButton("Randomize");
     randomizeButton.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -89,7 +121,7 @@ public class Render {
           Block.setGoalX(array);
         }
     });
-    JButton runButton = new JButton("Run");
+    final JButton runButton = new JButton("Run");
     runButton.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -97,7 +129,7 @@ public class Render {
             startAnimation();
         }
     });
-    JButton simulateButton = new JButton("Simulate 100");
+    final JButton simulateButton = new JButton("Simulate 100");
     simulateButton.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -112,7 +144,7 @@ public class Render {
             System.out.println("Average: "+total+" Steps");
         }
     });
-    JSlider slider = new JSlider(0, 1000);
+    final JSlider slider = new JSlider(0, 1000);
     slider.addChangeListener(new ChangeListener() {
       @Override
       public void stateChanged(ChangeEvent e) {
@@ -124,13 +156,15 @@ public class Render {
         }
       }
     });
-    JPanel controlPanel = new JPanel();
+    final JPanel controlPanel = new JPanel();
     controlPanel.add(chooseSort);
     controlPanel.add(randomizeButton);
     controlPanel.add(runButton);
     controlPanel.add(slider);
     controlPanel.add(simulateButton);
     // Init Finished //
+
+    randomizeArray();
 
     for (int i=0;i<array.length;i++) {
       Block.blockArray[i] = new Block(i,array[i]);
