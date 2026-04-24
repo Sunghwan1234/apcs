@@ -165,7 +165,7 @@ public class Render {
     // Init Finished //
 
     randomizeArray();
-
+    Block.blockArray = new Block[items];
     for (int i=0;i<array.length;i++) {
       Block.blockArray[i] = new Block(i,array[i]);
     }
