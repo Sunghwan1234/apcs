@@ -11,6 +11,9 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
 import java.util.Arrays;
 import java.util.ArrayList;
 
@@ -32,14 +35,14 @@ public class Render {
   public static int delay = 500;
   public static int ticks = -1;
   private static Sort sort;
-  private static String sortType = "Gnome";
+  private static String sortType = "Merge";
 
   public static Point mouse = new Point(0, 10);
 
   public static void main(String[] args) {
     final JFrame launcher = new JFrame("Launcher");
     final JPanel launcherPanel = new JPanel();
-    final JSpinner launcherItemSpinner = new JSpinner(new SpinnerNumberModel(75, 2, 200, 1));
+    final JSpinner launcherItemSpinner = new JSpinner(new SpinnerNumberModel(75, 2, 1000, 10));
       launcherItemSpinner.addChangeListener(new ChangeListener() {
         @Override
         public void stateChanged(ChangeEvent e) {
@@ -104,6 +107,12 @@ public class Render {
     });;
 
     frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+    frame.addWindowStateListener(new WindowAdapter() {
+      @Override
+      public void windowClosed(WindowEvent e) {
+        timer.stop();
+      }
+    });
     panel.setLayout(new BorderLayout());
 
     final JComboBox<String> chooseSort = new JComboBox<String>(Sort.sortTypes);
@@ -121,12 +130,20 @@ public class Render {
           Block.setGoalX(array);
         }
     });
-    final JButton runButton = new JButton("Run");
+    final JButton runButton = new JButton("Run (With Slider)");
     runButton.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             System.out.println("Button clicked!");
-            startAnimation();
+            startAnimation(true);
+        }
+    });
+    final JButton runFastestButton = new JButton("Run (Full Speed)");
+    runButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("Button clicked!");
+            startAnimation(false);
         }
     });
     final JButton simulateButton = new JButton("Simulate 100");
@@ -149,10 +166,9 @@ public class Render {
       @Override
       public void stateChanged(ChangeEvent e) {
         timer.setDelay(slider.getValue());
+        timer.setInitialDelay(slider.getValue());
         if (ticks>-1) {
           timer.restart();
-        } else {
-          timer.setInitialDelay(slider.getValue());
         }
       }
     });
@@ -161,6 +177,7 @@ public class Render {
     controlPanel.add(randomizeButton);
     controlPanel.add(runButton);
     controlPanel.add(slider);
+    controlPanel.add(runFastestButton);
     controlPanel.add(simulateButton);
     // Init Finished //
 
@@ -189,12 +206,21 @@ public class Render {
     }
   }
 
-  public static void startAnimation() {
+  public static void startAnimation(boolean useTimer) {
     sort = new Sort(array, sortType);
     //System.out.println(sort);
     ticks = 0;
-    timer.start();
-    System.out.println("Timer Started.");
+    if (useTimer) {
+      timer.start();
+      System.out.println("Timer Started.");
+    } else {
+      System.out.println("Started.");
+      while (ticks<sort.getLogLength()) {
+        ticks++;
+      }
+      System.out.println("Stopped.");
+      System.out.println("Sort has finished in "+ticks+" Ticks.");
+    }
   }
 
   public static void animateTick() {

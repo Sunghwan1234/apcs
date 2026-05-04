@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "ATVTester",
+      "request": "launch",
+      "mainClass": "lab.lab.Sem2.lab7_1.ATVTester",
+      "projectName": "apcs_143a8c93"
+    },
+    {
+      "type": "java",
       "name": "AoC",
       "request": "launch",
       "mainClass": "note.split.AoC",
