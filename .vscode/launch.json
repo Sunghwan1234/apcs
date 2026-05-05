@@ -6,6 +6,41 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Shuffler",
+      "request": "launch",
+      "mainClass": "lab.lab.Sem2.lab7_ABC.Shuffler",
+      "projectName": "apcs_143a8c93"
+    },
+    {
+      "type": "java",
+      "name": "DeckTester",
+      "request": "launch",
+      "mainClass": "lab.lab.Sem2.lab7_ABC.DeckTester",
+      "projectName": "apcs_143a8c93"
+    },
+    {
+      "type": "java",
+      "name": "CardTester",
+      "request": "launch",
+      "mainClass": "lab.lab.Sem2.lab7_A.CardTester",
+      "projectName": "apcs_143a8c93"
+    },
+    {
+      "type": "java",
+      "name": "MusicianTester",
+      "request": "launch",
+      "mainClass": "lab.lab.Sem2.lab7_2.MusicianTester",
+      "projectName": "apcs_143a8c93"
+    },
+    {
+      "type": "java",
+      "name": "PacManTester",
+      "request": "launch",
+      "mainClass": "lab.lab.Sem2.lab7_1.PacManTester",
+      "projectName": "apcs_143a8c93"
+    },
+    {
+      "type": "java",
       "name": "ATVTester",
       "request": "launch",
       "mainClass": "lab.lab.Sem2.lab7_1.ATVTester",

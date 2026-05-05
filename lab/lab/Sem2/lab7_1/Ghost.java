@@ -27,7 +27,13 @@ public class Ghost extends PacMan {
         return attackMode;
     }
     public void setAttackMode() {
+        if (getMcPacMan().getPowerPellet()) {
+            attackMode=false;
+        } else {
+            attackMode=true;
+        }
         setColor();
+        reverseFacing();
     }
     public MsPacMan getMcPacMan() {
         return mcPacMan;
@@ -47,4 +53,9 @@ public class Ghost extends PacMan {
         setFacing(getFacing().opposite);
     }
 
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return super.toString()+" Color "+currentColor+" ATT: "+attackMode;
+    }
 }
